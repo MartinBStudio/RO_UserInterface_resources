@@ -1,8 +1,9 @@
 {
   "name": "Crimson UI",
-  "version": "1.0.1",
-  "upload_date": "2026-08-23T17:40:19.873+02:00",
-  "description": "Crimson themed UI and Cursors for RO Toolbox. This pack includes a complete set of UI elements and cursors designed to give your RO experience a crimson aesthetic.",
+  "version": "1.5.2",
+  "upload_date": "2026-08-31T23:40:01.035-04:00",
+  "createdAt": "2026-08-31T23:40:01.035-04:00",
+  "description": "Crimson themed UI and cursors. Dark red glass with a warm accent.",
   "url": "https://forum.roseonlinegame.com/topic/7749-void-ui-%E2%80%94-four-full-interface-recolors-void-crimson-moldie-ancient/",
   "managedSubfolders": [
     "FILE_LIST.TXT"

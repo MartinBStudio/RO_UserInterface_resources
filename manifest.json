@@ -1,7 +1,7 @@
 {
   "name": "RO_UserInterface_resources",
-  "version": "1.0.9",
-  "timestamp": "2026-08-29T17:39:28+02:00",
+  "version": "1.0.10",
+  "timestamp": "2026-08-31T23:40:03.170-04:00",
   "description": "UI resource packs for RO Toolbox, containing profile-specific UI elements and cursors.",
   "author": "MartinBStudio",
   "repository": "https://github.com/MartinBStudio/RO_UserInterface_resources"
