@@ -1,0 +1,321 @@
+<rml>
+
+    <head>
+        <title>Summon Gauge</title>
+
+        <link type="text/template" href="../templates/window-box.html" />
+
+        <style>
+            /* ================================================================
+               VOID HALLOWEEN -- SUMMON GAUGE, functional pass
+
+               Everything the data model exposes, and nothing it does not:
+                   gauge.value / gauge.max_value      the capacity bar
+                   gauge.summons                      the list
+                   summon.name, hp, max_hp, is_near, obj_idx
+                   gauge.selected_summon_idx
+
+               What changed, and why:
+                 * READABLE AT REST. Rows used to sit at 60% opacity with no
+                   backdrop until hovered -- but you glance at summons mid
+                   fight, which is exactly when the mouse is elsewhere.
+                 * LOW HP PULSES. Under 30% a row throbs, so a dying summon is
+                   noticed before it is gone rather than after.
+                 * OUT OF RANGE IS SAID. The HP bar used to vanish silently
+                   when a summon was far away; now a label takes its place.
+                 * CAPACITY FREE, not used. "105/110" asked you to subtract mid
+                   fight; the header now says how much room is left.
+                 * HP AS A NUMBER, beside each name.
+                 * Despawn stays hover-only: an always-visible X next to every
+                   summon is an easy misclick in a fight.
+
+               Colours are the spooky UI's own greys plus one violet accent.
+               Holiday dressing is a separate pass.
+               ================================================================ */
+
+            body {
+                z-index: 900;
+            }
+
+            .title {
+                display: inline-block;
+                cursor: drag;
+                text-align: center;
+            }
+
+            .header {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+            }
+
+            .title #summon-title {
+                visibility: hidden;
+                font-size: 12dp;
+                font-weight: 600;
+                color: #d8d0ff;
+            }
+
+            /* THE GHOST GLOW.
+
+               The rest of the spooky UI gets its white glow from frame art in
+               the atlas, not from CSS -- there is no box-shadow anywhere in
+               it. This panel uses no frame template, so the glow is built from
+               three nested 1dp borders, each fainter than the one inside it.
+               Stepped rather than smooth, but at 1dp a step reads as a fade. */
+            #glow-outer {
+                display: block;
+                padding: 1dp;
+                border-width: 1dp;
+                border-radius: 8dp;
+                border-color: rgba(236, 232, 255, 30);
+            }
+
+            #glow-mid {
+                display: block;
+                padding: 1dp;
+                border-width: 1dp;
+                border-radius: 7dp;
+                border-color: rgba(236, 232, 255, 78);
+            }
+
+            #gauge-area {
+                display: block;
+                align-items: center;
+
+                width: 172dp;
+                padding: 6dp;
+                border-radius: 6dp;
+
+                /* a backdrop AT REST, so the rows have something to sit on */
+                background-color: rgba(14, 12, 22, 150);
+                border-width: 1dp;
+                border-color: rgba(244, 240, 255, 175);
+                transition: background-color 0.4s;
+            }
+
+            #gauge-area:hover {
+                background-color: rgba(14, 12, 22, 205);
+                transition: background-color 0.2s;
+            }
+
+            #gauge-area:hover #summon-title {
+                visibility: visible;
+            }
+
+            #summon-gauge {
+                width: 100%;
+                margin: 0dp;
+            }
+
+            .free {
+                display: block;
+                margin-top: 2dp;
+                text-align: right;
+                font-size: 10dp;
+                font-weight: 700;
+                color: #cfc8ee;
+                font-effect: outline(1dp black);
+            }
+
+            .free.full {
+                color: #ff8a7a;
+            }
+
+            #summons {
+                display: block;
+                margin-top: 4dp;
+                line-height: 1.5;
+                color: white;
+                font-effect: outline(1dp black);
+            }
+
+            .summon-item {
+                padding: 4dp 5dp;
+                margin-bottom: 2dp;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+
+                width: 160dp;
+                height: 17dp;
+
+                font-size: 10dp;
+                font-weight: 800;
+                line-height: 1;
+
+                /* was 0.6 until hovered */
+                opacity: 1;
+                border-radius: 3dp;
+                border-left-width: 2dp;
+                border-left-color: rgba(0, 0, 0, 0);
+                transition: background 0.3s;
+            }
+
+            .summon-line {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .summon-name {
+                flex: 1;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .summon-hp {
+                font-size: 9dp;
+                font-weight: 700;
+                color: #d6d0ea;
+                margin-right: 16dp;
+            }
+
+            .far {
+                display: block;
+                margin-top: 2dp;
+                font-size: 8dp;
+                font-weight: 600;
+                color: #a8a2c4;
+                font-style: italic;
+            }
+
+            .summon-item:hover {
+                background: rgba(150, 60, 240, 70);
+                transition: background 0.2s;
+                cursor: hand;
+            }
+
+            .summon-item.selected {
+                background: rgba(150, 60, 240, 110);
+                border-left-color: rgba(200, 160, 255, 230);
+            }
+
+            /* LOW HP: under 30%, the row pulses */
+            /* LOW HP: under 30%, the row pulses.
+
+               The first version wrote the condition as "is_near and hp low".
+               RmlUi's expressions are C-like -- && || ! -- so "and" failed to
+               parse and the class never applied. Rather than trust how "&&"
+               survives an XML attribute, the two conditions are now separate
+               classes and the CSS selector does the AND: a row that is both
+               .low and .far does not pulse, because a summon out of range has
+               no HP bar to back the warning up.
+
+               background-color, not background: the shorthand is not reliably
+               animatable here. */
+            @keyframes summon-low {
+                from { background-color: rgba(214, 38, 34, 45); }
+                to   { background-color: rgba(214, 38, 34, 160); }
+            }
+
+            .summon-item.low {
+                animation: 0.9s cubic-in-out infinite alternate summon-low;
+            }
+
+            .summon-item.low.far {
+                animation: none;
+                background-color: rgba(0, 0, 0, 0);
+            }
+
+            .summon-item.low .summon-hp {
+                color: #ff9a8a;
+            }
+
+            .summon-item .despawn {
+                visibility: hidden;
+            }
+
+            #gauge-area:hover .despawn {
+                visibility: visible;
+            }
+
+            .despawntip {
+                position: absolute;
+                right: 2dp;
+                top: 3dp;
+                display: inline-block;
+            }
+
+            .despawntip .despawntiptext {
+                z-index: 1;
+                position: absolute;
+                visibility: hidden;
+
+                font-size: 12dp;
+                width: 120dp;
+                background-color: rgba(0, 0, 0, 170);
+                color: #ff8a7a;
+                text-align: center;
+                padding: 5dp 0;
+                border-radius: 6px;
+
+                top: 2dp;
+                left: 25dp;
+            }
+
+            .despawntip:hover .despawntiptext {
+                visibility: visible;
+            }
+
+            @keyframes swap-colors {
+                from { color: #e6dcff; }
+                to   { color: #b48cff; }
+            }
+
+            .summon-tip {
+                padding-top: 5dp;
+                width: 100%;
+                text-align: center;
+                color: white;
+                font-weight: 800;
+                font-size: 11dp;
+                font-effect: outline(1dp black);
+            }
+
+            .summon-tip b {
+                animation: infinite cubic-in-out 2s alternate swap-colors;
+            }
+        </style>
+    </head>
+
+    <body id="game-summon-gauge">
+      <div id="glow-outer">
+       <div id="glow-mid">
+        <div id="gauge-area" data-model="summon-gauge-data">
+            <handle class="title" move_target="#document">
+                <label id="summon-title">Summon Gauge</label>
+                <gauge id="summon-gauge" class="horizontal-sm-md pink" data-attr-gvalue="gauge.value"
+                    data-attr-gmax="gauge.max_value">
+                    <span><label id="value"/>/<label id="max"/></span>
+                </gauge>
+            </handle>
+            <span class="free" data-class-full="gauge.value >= gauge.max_value">{{gauge.max_value - gauge.value}} free</span>
+
+            <div id="summons" data-for="summon : gauge.summons">
+                <div data-attr-id="summon.obj_idx" class="summon-item"
+                     data-class-selected="summon.obj_idx == gauge.selected_summon_idx"
+                     data-class-low="summon.hp * 10 < summon.max_hp * 3"
+                     data-class-far="!summon.is_near"
+                     onclick="select">
+                    <div class="summon-line">
+                        <span class="summon-name">{{summon.name}}</span>
+                        <span data-if="summon.is_near" class="summon-hp">{{summon.hp}}/{{summon.max_hp}}</span>
+                    </div>
+                    <gauge data-if="summon.is_near" class="horizontal-sm-sm red" data-attr-gvalue="summon.hp" data-attr-gmax="summon.max_hp"></gauge>
+                    <span data-if="!summon.is_near" class="far">out of range</span>
+                    <button data-attr-id="summon.obj_idx" class="window-title-close despawn despawntip" onclick="despawn">
+                        <span class="despawntiptext">Despawn summon</span>
+                    </button>
+                </div>
+            </div>
+
+            <div data-if="gauge.selected_summon_idx > 0" class="summon-tip">
+                <span>Press <b>[Ctrl]</b> + <b>[Left Click]</b> to move your summon.</span>
+            </div>
+        </div>
+       </div>
+      </div>
+    </body>
+</rml>
