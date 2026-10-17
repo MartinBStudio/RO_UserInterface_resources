@@ -1,0 +1,17 @@
+/* Spooky UI -- the tombstone minimap's own sprites.
+ *
+ * These used to be written INTO spritesheet_glassui.css, which meant shipping
+ * a copy of the whole official sheet. The 16 Oct 2026 patch added sprites to
+ * that sheet (party controls, group manager); an old copy would hide them.
+ * Kept here instead, the official sheet stays the game's own.
+ *
+ * SPOOKY_MINIMAP_FRAME is the headstone (it was GEN_MINIMAP09 resized).
+ */
+@spritesheet spooky {
+    src: /3ddata/control/res/glassui_03.dds;
+    SPOOKY_MINIMAP_FRAME: 260px 0px 248px 286px;
+    VOID_SPIDER_A: 260px 300px 18px 18px;
+    VOID_SPIDER_B: 282px 300px 18px 18px;
+    VOID_EYES: 304px 300px 16px 8px;
+    VOID_BLANK: 500px 500px 4px 4px;
+}

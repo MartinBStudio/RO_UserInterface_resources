@@ -9,11 +9,13 @@ data\ui\themes\rose\game\minimap.html
 data\ui\themes\rose\game\summon_gauge.html
 data\ui\themes\rose\imgs\gauge.dds
 data\ui\themes\rose\imgs\glassui_0.dds
+data\ui\themes\rose\imgs\group_manager.dds
+data\ui\themes\rose\imgs\party_controls.dds
 data\ui\themes\rose\styles\colors.css
 data\ui\themes\rose\styles\input.css
 data\ui\themes\rose\styles\listbox.css
 data\ui\themes\rose\styles\scrollbar.css
-data\ui\themes\rose\styles\spritesheet_glassui.css
+data\ui\themes\rose\styles\spritesheet_spooky.css
 res\appraisalstatextract.cur
 res\appraisalstattransfer.cur
 res\attack.cur

@@ -3,6 +3,7 @@
     <head>
         <title></title>
         <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/spritesheet_spooky.css" />
 
         <style>
             body {
@@ -29,7 +30,7 @@
                 overflow: visible;
             }
 
-            /* ââ Minimized state ââ */
+            /* ── Minimized state ── */
 
             #minimap-minimized {
                 position: relative;
@@ -84,7 +85,7 @@
                 top: 2dp;
             }
 
-            /* ââ Normal state ââ */
+            /* ── Normal state ── */
 
             #minimap-normal {
                 position: relative;
@@ -120,13 +121,17 @@
                 top: -36dp;
                 width: 248dp;
                 height: 286dp;
-                decorator: image(GEN_MINIMAP09);
+                decorator: image(SPOOKY_MINIMAP_FRAME);
                 pointer-events: none;
             }
 
             /* Minimap viewport */
             #minimap-viewport {
                 position: absolute;
+                left: 33dp;
+                top: 33dp;
+                width: 142dp;
+                height: 142dp;
                 overflow: hidden;
                 clip: always;
                 left: 42dp;
@@ -167,7 +172,7 @@
                 position: absolute;
             }
 
-            /* ââ Buttons ââ */
+            /* ── Buttons ── */
             /* Minimize */
             .btn-minimize {
                 position: absolute;
@@ -471,7 +476,7 @@
                 height: 18dp;
             }
 
-            /* ââ Tooltips ââ */
+            /* ── Tooltips ── */
             .minimap-tooltip {
                 display: none;
                 position: absolute;
@@ -515,7 +520,7 @@
 
     <body id="game-minimap">
         <div id="minimap-root" data-model="minimap">
-            <!-- âââ Minimized state âââ -->
+            <!-- ─── Minimized state ─── -->
             <div id="minimap-minimized" data-class-hidden="!is_minimized">
                 <handle move_target="#document" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;"></handle>
                 <span id="zone-name-min">{{zone_name}}</span>
@@ -523,14 +528,16 @@
                 <button class="btn-restore" data-event-click="toggle_minimize"></button>
             </div>
 
-            <!-- âââ Normal state âââ -->
+            <!-- ─── Normal state ─── -->
             <div id="minimap-normal" data-class-hidden="is_minimized">
                 <!-- Map Viewport -->
                 <masked id="minimap-viewport" mask-radius="4dp">
-                    <div id="minimap-map">
+                    <div id="minimap-map" data-style-width="map_width + 'dp'" data-style-height="map_height + 'dp'"
+                         data-style-left="map_left + 'px'" data-style-top="map_top + 'px'">
                         <img id="minimap-map-image"
                              class="map-image"
                              data-attr-src="map_texture_source"
+                             data-style-width="map_width + 'dp'" data-style-height="map_height + 'dp'"
                         ></img>
 
                         <img
