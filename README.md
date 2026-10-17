@@ -44,7 +44,7 @@ ROSE Online Toolbox themes
 --------------------------
 183 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
 `scripts/export-ui-resources.ts`. They restyle the game windows, minimap and HUD (data/ui/themes/rose)
-and keep the default cursors. Each folder's manifestUi.json links to the theme's page, and
+and recolor the cursors (res/) to match. Each folder's manifestUi.json links to the theme's page, and
 .preview/ holds a screenshot.
 
 - Premium themes: RoyalRegalia, MoonsilverGrove, Dragonforge, ArcanePrism, CelestialObservatory, SakuraLacquer, ArumicNexus, JadeDynasty
