@@ -935,59 +935,16 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(200, 255, 90, 255);
 }
 
-body#game-minimap #minimap-normal
-{
-    box-sizing: border-box;
-    decorator: vertical-gradient(rgba(26, 28, 20, 232) rgba(19, 20, 14, 232));
-    background-color: transparent;
-    border-width: 2dp;
-    border-top-color: rgba(106, 122, 74, 255);
-    border-left-color: rgba(106, 122, 74, 255);
-    border-bottom-color: rgba(8, 9, 10, 255);
-    border-right-color: rgba(8, 9, 10, 255);
-    border-radius: 0dp;
-}
-
 body#game-minimap #minimap-frame
 {
-    decorator: none;
-    left: 27dp;
-    top: 27dp;
-    width: 154dp;
-    height: 154dp;
-    box-sizing: border-box;
-    border-width: 6dp;
-    border-top-color: rgba(106, 122, 74, 255);
-    border-left-color: rgba(106, 122, 74, 255);
-    border-bottom-color: rgba(8, 9, 10, 255);
-    border-right-color: rgba(8, 9, 10, 255);
-    border-radius: 77dp;
-}
-
-body#game-minimap #minimap-normal handle.title
-{
-    height: 34dp;
-    margin: 0dp;
-    decorator: horizontal-gradient(rgba(58, 58, 26, 255) rgba(35, 35, 16, 255));
-}
-
-body#game-minimap #coordinates-text, body#game-minimap #time-area
-{
-    background-color: rgba(26, 28, 20, 170);
-    border-radius: 3dp;
+    image-color: rgba(222, 255, 155, 255);
 }
 
 body#game-minimap #minimap-minimized
 {
     box-sizing: border-box;
-    decorator: vertical-gradient(rgba(26, 28, 20, 232) rgba(19, 20, 14, 232));
-    background-color: transparent;
-    border-width: 2dp;
-    border-top-color: rgba(106, 122, 74, 255);
-    border-left-color: rgba(106, 122, 74, 255);
-    border-bottom-color: rgba(8, 9, 10, 255);
-    border-right-color: rgba(8, 9, 10, 255);
-    border-radius: 0dp;
+    decorator: tiled-box(window-tl, window-t, window-tr, window-l, window-c, window-r, window-bl, window-b, window-br);
+    image-color: rgba(222, 255, 155, 255);
 }
 
 body#game-minimap #zone-name, body#game-minimap #zone-name-min
