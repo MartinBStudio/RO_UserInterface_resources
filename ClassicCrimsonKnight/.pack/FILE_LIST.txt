@@ -1,0 +1,2 @@
+data\ui\themes\rose\imgs\rtb-premium-classic-crimson-knight.dds
+data\ui\themes\rose\styles\window.css

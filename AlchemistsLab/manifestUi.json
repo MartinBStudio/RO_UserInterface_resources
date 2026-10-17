@@ -1,0 +1,12 @@
+{
+  "name": "Alchemist's Lab",
+  "version": "1.0.1",
+  "upload_date": "2026-10-17T15:04:24.153+07:00",
+  "createdAt": "2026-10-17T15:04:24.153+07:00",
+  "description": "Bubbling green potions and violet smoke.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=alchemist-lab",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

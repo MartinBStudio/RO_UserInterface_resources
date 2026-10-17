@@ -1,0 +1,12 @@
+{
+  "name": "Cryo Lab",
+  "version": "1.1.1",
+  "upload_date": "2026-10-17T15:04:24.061+07:00",
+  "createdAt": "2026-10-17T15:04:24.061+07:00",
+  "description": "Frosted, rounded panels with white-ice edges, like a cryogenics lab console.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=cryo-lab",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

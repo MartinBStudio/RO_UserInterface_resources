@@ -1,0 +1,12 @@
+{
+  "name": "Zant Canyon",
+  "version": "1.1.1",
+  "upload_date": "2026-10-17T15:04:24.050+07:00",
+  "createdAt": "2026-10-17T15:04:24.050+07:00",
+  "description": "Rust-red canyon rock with dusty turquoise highlights, from the Canyon City of Zant.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=zant-canyon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

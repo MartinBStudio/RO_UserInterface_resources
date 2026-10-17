@@ -1,0 +1,12 @@
+{
+  "name": "Stone Keep",
+  "version": "1.1.1",
+  "upload_date": "2026-10-17T15:04:24.060+07:00",
+  "createdAt": "2026-10-17T15:04:24.060+07:00",
+  "description": "Cut-stone gray blocks with iron edges and torch-orange highlights.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=stone-keep",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

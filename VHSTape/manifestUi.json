@@ -1,0 +1,12 @@
+{
+  "name": "VHS Tape",
+  "version": "1.0.1",
+  "upload_date": "2026-10-17T15:04:24.157+07:00",
+  "createdAt": "2026-10-17T15:04:24.157+07:00",
+  "description": "Blue-screen VHS menus with white text and a red tracking line.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=vhs-tape",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

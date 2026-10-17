@@ -1,0 +1,12 @@
+{
+  "name": "Dragonforge",
+  "version": "1.0.2",
+  "upload_date": "2026-10-17T15:04:23.975+07:00",
+  "createdAt": "2026-10-17T15:04:23.975+07:00",
+  "description": "Blackened iron plates and riveted corners, glowing from within like a forge.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=dragonforge",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

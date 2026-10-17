@@ -1,0 +1,12 @@
+{
+  "name": "Arumic Nexus",
+  "version": "1.0.2",
+  "upload_date": "2026-10-17T15:04:23.983+07:00",
+  "createdAt": "2026-10-17T15:04:23.983+07:00",
+  "description": "Gunmetal panels with cut corners and cyan circuit lines, built for the Arumic age.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=arumic-nexus",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}
