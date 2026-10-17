@@ -266,6 +266,11 @@ span.line-splitter {
     padding-right: 1dp;
 }
 
+body#hud #window-title-text
+{
+    width: 195dp;
+}
+
 #party, #arena-group, body.waiting
 {
     background-color: transparent;
@@ -898,6 +903,170 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(255, 210, 122, 255);
 }
 
+body#game-minimap #minimap-normal
+{
+    box-sizing: border-box;
+    decorator: none;
+    background-color: rgba(34, 34, 34, 224);
+    border: 1dp rgba(154, 154, 154, 255);
+    border-radius: 4dp;
+}
+
+body#game-minimap #minimap-frame
+{
+    decorator: none;
+    left: 27dp;
+    top: 27dp;
+    width: 154dp;
+    height: 154dp;
+    box-sizing: border-box;
+    border: 6dp rgba(154, 154, 154, 255);
+    border-radius: 77dp;
+}
+
+body#game-minimap #minimap-normal handle.title
+{
+    height: 34dp;
+    margin: 0dp;
+    decorator: vertical-gradient(rgba(56, 56, 56, 230) rgba(36, 36, 36, 230));
+    border-bottom: 1dp rgba(154, 154, 154, 255);
+    border-radius: 4dp 4dp 0dp 0dp;
+}
+
+body#game-minimap #coordinates-text, body#game-minimap #time-area
+{
+    background-color: rgba(34, 34, 34, 170);
+    border-radius: 3dp;
+}
+
+body#game-minimap #minimap-minimized
+{
+    box-sizing: border-box;
+    decorator: none;
+    background-color: rgba(34, 34, 34, 224);
+    border: 1dp rgba(154, 154, 154, 255);
+    border-radius: 4dp;
+}
+
+body#game-minimap #zone-name, body#game-minimap #zone-name-min
+{
+    color: rgba(255, 255, 255, 255);
+}
+
+body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+{
+    image-color: rgba(255, 255, 255, 255);
+}
+
+body#game-minimap .minimap-tooltip
+{
+    background-color: rgba(34, 34, 34, 235);
+    color: rgba(255, 255, 255, 255);
+}
+
+body#game-minimap .time-tooltip-label
+{
+    color: rgba(255, 210, 122, 255);
+}
+
+body#game-chat-box:not(.rtb-chat-backing) #virtual-messages, body#game-chat-box:not(.rtb-chat-backing) #virtual-system, body#game-chat-box:not(.rtb-chat-backing) #input-container
+{
+    decorator: horizontal-gradient(rgba(34, 34, 34, 140) rgba(34, 34, 34, 40));
+}
+
+body#hud b.weight, body#hud span.level
+{
+    color: rgba(255, 210, 122, 255);
+}
+
+body#hud .tooltip .tooltiptext
+{
+    background: rgba(34, 34, 34, 235);
+}
+
+body #party-entrust
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 210, 122, 255);
+}
+
+body #party-entrust:hover
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 255, 255, 255);
+}
+
+body #party-entrust:disabled
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 210, 122, 110);
+}
+
+body #party-kick
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 210, 122, 255);
+}
+
+body #party-kick:hover
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 255, 255, 255);
+}
+
+body #party-kick:disabled
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 210, 122, 110);
+}
+
+body #party-leave
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 210, 122, 255);
+}
+
+body #party-leave:hover
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 255, 255, 255);
+}
+
+body #party-leave:disabled
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 210, 122, 110);
+}
+
+body #party-options
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 210, 122, 255);
+}
+
+body #party-options:hover
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 255, 255, 255);
+}
+
+body #party-options:disabled
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 210, 122, 110);
+}
+
+body .party-level
+{
+    color: rgba(255, 210, 122, 255);
+}
+
+body#party #party-tooltip
+{
+    background: rgba(34, 34, 34, 235);
+    border-color: rgba(154, 154, 154, 255);
+}
+
 @spritesheet rtb-premium
 {
     src: /data/ui/themes/rose/imgs/rtb-premium-og-warp-portal.dds;
@@ -959,9 +1128,25 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 
 #hud .window-fixed-size
 {
-    padding-left: 4dp;
-    padding-right: 4dp;
-    padding-bottom: 4dp;
+    padding-left: 7dp;
+    padding-right: 7dp;
+}
+
+#hud #window-content
+{
+    padding-left: 1dp;
+    padding-right: 1dp;
+}
+
+body#hud div.hud, body#hud #window-title-text
+{
+    width: 201dp;
+}
+
+body#hud div.footer
+{
+    margin-left: 6dp;
+    margin-right: 6dp;
 }
 
 #window-content, .window-pane
@@ -973,6 +1158,22 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 }
 
 .window-title
+{
+    decorator: tiled-horizontal(rtb-title-l, rtb-title-c, rtb-title-r);
+    background-color: transparent;
+    border-width: 0dp;
+    border-radius: 0dp;
+}
+
+body#game-minimap #minimap-normal, body#game-minimap #minimap-minimized
+{
+    decorator: tiled-box(rtb-frame-tl, rtb-frame-t, rtb-frame-tr, rtb-frame-l, rtb-frame-c, rtb-frame-r, rtb-frame-bl, rtb-frame-b, rtb-frame-br);
+    background-color: transparent;
+    border-width: 0dp;
+    border-radius: 0dp;
+}
+
+body#game-minimap #minimap-normal handle.title
 {
     decorator: tiled-horizontal(rtb-title-l, rtb-title-c, rtb-title-r);
     background-color: transparent;

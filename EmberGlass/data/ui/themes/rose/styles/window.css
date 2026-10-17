@@ -842,3 +842,134 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 {
     background-color: rgba(255, 207, 106, 255);
 }
+
+body#game-minimap #minimap-frame
+{
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body#game-minimap #minimap-minimized
+{
+    box-sizing: border-box;
+    decorator: tiled-box(window-tl, window-t, window-tr, window-l, window-c, window-r, window-bl, window-b, window-br);
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body#game-minimap #zone-name, body#game-minimap #zone-name-min
+{
+    color: rgba(255, 240, 226, 255);
+}
+
+body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+{
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body#game-minimap .minimap-tooltip
+{
+    background-color: rgba(36, 20, 12, 235);
+    color: rgba(255, 242, 232, 255);
+}
+
+body#game-minimap .time-tooltip-label
+{
+    color: rgba(255, 207, 106, 255);
+}
+
+body#game-chat-box:not(.rtb-chat-backing) #virtual-messages, body#game-chat-box:not(.rtb-chat-backing) #virtual-system, body#game-chat-box:not(.rtb-chat-backing) #input-container
+{
+    decorator: horizontal-gradient(rgba(36, 20, 12, 140) rgba(36, 20, 12, 40));
+}
+
+body#hud b.weight, body#hud span.level
+{
+    color: rgba(255, 207, 106, 255);
+}
+
+body#hud .tooltip .tooltiptext
+{
+    background: rgba(36, 20, 12, 235);
+}
+
+body #party-entrust
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body #party-entrust:hover
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 224, 196, 255);
+}
+
+body #party-entrust:disabled
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 201, 160, 110);
+}
+
+body #party-kick
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body #party-kick:hover
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 224, 196, 255);
+}
+
+body #party-kick:disabled
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 201, 160, 110);
+}
+
+body #party-leave
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body #party-leave:hover
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 224, 196, 255);
+}
+
+body #party-leave:disabled
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 201, 160, 110);
+}
+
+body #party-options
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 201, 160, 255);
+}
+
+body #party-options:hover
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 224, 196, 255);
+}
+
+body #party-options:disabled
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 201, 160, 110);
+}
+
+body .party-level
+{
+    color: rgba(255, 207, 106, 255);
+}
+
+body#party #party-tooltip
+{
+    background: rgba(36, 20, 12, 235);
+    border-color: rgba(255, 201, 160, 255);
+}

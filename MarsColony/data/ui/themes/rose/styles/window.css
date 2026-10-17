@@ -266,6 +266,11 @@ span.line-splitter {
     padding-right: 1dp;
 }
 
+body#hud #window-title-text
+{
+    width: 195dp;
+}
+
 #party, #arena-group, body.waiting
 {
     background-color: transparent;
@@ -896,4 +901,168 @@ scrollbarhorizontal sliderbar
 scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 {
     background-color: rgba(255, 176, 138, 255);
+}
+
+body#game-minimap #minimap-normal
+{
+    box-sizing: border-box;
+    decorator: vertical-gradient(rgba(30, 14, 8, 232) rgba(22, 10, 6, 232));
+    background-color: transparent;
+    border: 1dp rgba(232, 224, 216, 255);
+    border-radius: 2dp;
+}
+
+body#game-minimap #minimap-frame
+{
+    decorator: none;
+    left: 27dp;
+    top: 27dp;
+    width: 154dp;
+    height: 154dp;
+    box-sizing: border-box;
+    border: 6dp rgba(232, 224, 216, 255);
+    border-radius: 77dp;
+}
+
+body#game-minimap #minimap-normal handle.title
+{
+    height: 34dp;
+    margin: 0dp;
+    decorator: vertical-gradient(rgba(138, 58, 26, 255) rgba(83, 35, 16, 255));
+    border-bottom: 1dp rgba(232, 224, 216, 255);
+    border-radius: 2dp 2dp 0dp 0dp;
+}
+
+body#game-minimap #coordinates-text, body#game-minimap #time-area
+{
+    background-color: rgba(30, 14, 8, 170);
+    border-radius: 3dp;
+}
+
+body#game-minimap #minimap-minimized
+{
+    box-sizing: border-box;
+    decorator: vertical-gradient(rgba(30, 14, 8, 232) rgba(22, 10, 6, 232));
+    background-color: transparent;
+    border: 1dp rgba(232, 224, 216, 255);
+    border-radius: 2dp;
+}
+
+body#game-minimap #zone-name, body#game-minimap #zone-name-min
+{
+    color: rgba(255, 231, 220, 255);
+}
+
+body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+{
+    image-color: rgba(255, 246, 237, 255);
+}
+
+body#game-minimap .minimap-tooltip
+{
+    background-color: rgba(30, 14, 8, 235);
+    color: rgba(255, 249, 246, 255);
+}
+
+body#game-minimap .time-tooltip-label
+{
+    color: rgba(255, 176, 138, 255);
+}
+
+body#game-chat-box:not(.rtb-chat-backing) #virtual-messages, body#game-chat-box:not(.rtb-chat-backing) #virtual-system, body#game-chat-box:not(.rtb-chat-backing) #input-container
+{
+    decorator: horizontal-gradient(rgba(30, 14, 8, 140) rgba(30, 14, 8, 40));
+}
+
+body#hud b.weight, body#hud span.level
+{
+    color: rgba(255, 176, 138, 255);
+}
+
+body#hud .tooltip .tooltiptext
+{
+    background: rgba(30, 14, 8, 235);
+}
+
+body #party-entrust
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 176, 138, 255);
+}
+
+body #party-entrust:hover
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 249, 246, 255);
+}
+
+body #party-entrust:disabled
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(255, 176, 138, 110);
+}
+
+body #party-kick
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 176, 138, 255);
+}
+
+body #party-kick:hover
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 249, 246, 255);
+}
+
+body #party-kick:disabled
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(255, 176, 138, 110);
+}
+
+body #party-leave
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 176, 138, 255);
+}
+
+body #party-leave:hover
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 249, 246, 255);
+}
+
+body #party-leave:disabled
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(255, 176, 138, 110);
+}
+
+body #party-options
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 176, 138, 255);
+}
+
+body #party-options:hover
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 249, 246, 255);
+}
+
+body #party-options:disabled
+{
+    decorator: image(party-options-d);
+    image-color: rgba(255, 176, 138, 110);
+}
+
+body .party-level
+{
+    color: rgba(255, 176, 138, 255);
+}
+
+body#party #party-tooltip
+{
+    background: rgba(30, 14, 8, 235);
+    border-color: rgba(232, 224, 216, 255);
 }
