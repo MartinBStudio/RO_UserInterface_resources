@@ -1,0 +1,12 @@
+{
+  "name": "Orbital Station",
+  "version": "1.0.1",
+  "upload_date": "2026-10-17T15:04:24.165+07:00",
+  "createdAt": "2026-10-17T15:04:24.165+07:00",
+  "description": "Station-white trims, hull gray and hazard orange.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=orbital-station",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada"
+}

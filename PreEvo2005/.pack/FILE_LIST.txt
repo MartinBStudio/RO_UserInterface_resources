@@ -1,0 +1,2 @@
+data\ui\themes\rose\imgs\rtb-premium-og-pre-evo-2005.dds
+data\ui\themes\rose\styles\window.css
