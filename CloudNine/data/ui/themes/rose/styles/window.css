@@ -1123,17 +1123,15 @@ body#party #party-tooltip
     padding-bottom: 14dp;
 }
 
-#hud .window-fixed-size
+body#hud div.hud
 {
-    padding-left: 4dp;
-    padding-right: 4dp;
-    padding-bottom: 7dp;
+    width: 201dp;
 }
 
 body#hud div.footer
 {
-    margin-left: 10dp;
-    margin-right: 10dp;
+    margin-left: 6dp;
+    margin-right: 6dp;
 }
 
 #window-content, .window-pane
