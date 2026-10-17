@@ -1106,6 +1106,15 @@ body#party #party-tooltip
     rtb-btn-d-l: 150px 66px 15px 30px;
     rtb-btn-d-c: 174px 66px 1px 30px;
     rtb-btn-d-r: 183px 66px 15px 30px;
+    rtb-title9-tl: 92px 0px 30px 13px;
+    rtb-title9-t: 156px 0px 1px 13px;
+    rtb-title9-tr: 190px 0px 30px 13px;
+    rtb-title9-l: 92px 13px 30px 1px;
+    rtb-title9-c: 156px 13px 1px 1px;
+    rtb-title9-r: 190px 13px 30px 1px;
+    rtb-title9-bl: 92px 13px 30px 13px;
+    rtb-title9-b: 156px 13px 1px 13px;
+    rtb-title9-br: 190px 13px 30px 13px;
 }
 
 .window-fixed-size, .window-resizeable, .window-fixed, .window-box, .window-small
@@ -1132,6 +1141,7 @@ body#party #party-tooltip
 {
     padding-left: 7dp;
     padding-right: 7dp;
+    padding-top: 25dp;
 }
 
 #hud #window-content
@@ -1140,15 +1150,22 @@ body#party #party-tooltip
     padding-right: 1dp;
 }
 
-body#hud div.hud, body#hud #window-title-text
+body#hud div.hud
 {
     width: 201dp;
 }
 
+body#hud #window-title-text
+{
+    width: 201dp;
+    height: 26dp;
+    padding-top: 3dp;
+}
+
 body#hud div.footer
 {
-    margin-left: 6dp;
-    margin-right: 6dp;
+    margin-left: 8dp;
+    margin-right: 8dp;
 }
 
 #window-content, .window-pane
@@ -1177,7 +1194,7 @@ body#game-minimap #minimap-normal, body#game-minimap #minimap-minimized
 
 body#game-minimap #minimap-normal handle.title
 {
-    decorator: tiled-horizontal(rtb-title-l, rtb-title-c, rtb-title-r);
+    decorator: tiled-box(rtb-title9-tl, rtb-title9-t, rtb-title9-tr, rtb-title9-l, rtb-title9-c, rtb-title9-r, rtb-title9-bl, rtb-title9-b, rtb-title9-br);
     background-color: transparent;
     border-width: 0dp;
     border-radius: 0dp;
