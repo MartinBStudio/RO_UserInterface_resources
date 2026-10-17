@@ -632,6 +632,7 @@ button.default:not(button[disabled]):active, button.default:active, button.defau
     background-color: rgba(223, 174, 37, 255);
     border-color: rgba(255, 210, 58, 255);
     color: rgba(0, 0, 0, 255);
+    font-effect: none;
 }
 
 tab.default
@@ -668,6 +669,7 @@ tab.default:not(button[disabled]):active, tab.default:active, tab.default:select
     background-color: rgba(223, 174, 37, 255);
     border-color: rgba(255, 210, 58, 255);
     color: rgba(0, 0, 0, 255);
+    font-effect: none;
 }
 
 .ui-tabs > button.default, button.default.ui-compact
@@ -1125,7 +1127,13 @@ body#party #party-tooltip
 {
     padding-left: 4dp;
     padding-right: 4dp;
-    padding-bottom: 4dp;
+    padding-bottom: 7dp;
+}
+
+body#hud div.footer
+{
+    margin-left: 10dp;
+    margin-right: 10dp;
 }
 
 #window-content, .window-pane

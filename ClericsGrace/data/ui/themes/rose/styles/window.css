@@ -631,7 +631,8 @@ button.default:not(button[disabled]):active, button.default:active, button.defau
     decorator: none;
     background-color: rgba(184, 154, 74, 255);
     border-color: rgba(255, 231, 163, 255);
-    color: rgba(0, 0, 0, 255);
+    color: rgba(255, 255, 255, 255);
+    font-effect: none;
 }
 
 tab.default
@@ -667,7 +668,8 @@ tab.default:not(button[disabled]):active, tab.default:active, tab.default:select
     decorator: none;
     background-color: rgba(184, 154, 74, 255);
     border-color: rgba(255, 231, 163, 255);
-    color: rgba(0, 0, 0, 255);
+    color: rgba(255, 255, 255, 255);
+    font-effect: none;
 }
 
 .ui-tabs > button.default, button.default.ui-compact
