@@ -1,4 +1,4 @@
-HERO MENU BLUE  (version 1.2.2)
+HERO MENU BLUE  (version 1.4.1)
 ===============================
 Royal-blue gradient boxes with bright white borders, like a 16-bit RPG menu.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

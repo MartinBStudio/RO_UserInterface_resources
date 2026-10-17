@@ -1,4 +1,4 @@
-TAVERN LEATHER  (version 1.2.1)
+TAVERN LEATHER  (version 1.4.1)
 ===============================
 Worn leather panels with brass-gold trim, like the fantasy MMOs of the early 2000s.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

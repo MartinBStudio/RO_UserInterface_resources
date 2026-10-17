@@ -1,4 +1,4 @@
-MOONSILVER GROVE  (version 1.0.2)
+MOONSILVER GROVE  (version 1.2.1)
 =================================
 Jade-dark glass edged in moonlit silver, with silver leaves curling from every corner.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-moonsilver-grove.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

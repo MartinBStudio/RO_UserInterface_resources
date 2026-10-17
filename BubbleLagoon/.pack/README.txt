@@ -1,4 +1,4 @@
-BUBBLE LAGOON  (version 1.0.0)
+BUBBLE LAGOON  (version 1.2.1)
 ==============================
 Deep lagoon teal with pearly rims and soap bubbles floating up every corner.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-bubble-lagoon.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

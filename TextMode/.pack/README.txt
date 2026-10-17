@@ -1,4 +1,4 @@
-TEXT MODE  (version 1.1.1)
+TEXT MODE  (version 1.3.1)
 ==========================
 Navy-blue windows with gray borders and cyan title bars, like an old text-mode program.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

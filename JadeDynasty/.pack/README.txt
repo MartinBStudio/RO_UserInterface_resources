@@ -1,4 +1,4 @@
-JADE DYNASTY  (version 1.0.2)
+JADE DYNASTY  (version 1.2.1)
 =============================
 Imperial jade framed in gold scrollwork, with cinnabar-red pressed buttons.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-jade-dynasty.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

@@ -1,4 +1,4 @@
-EUCAR ARCANA  (version 1.2.0)
+EUCAR ARCANA  (version 1.4.1)
 =============================
 The stock glass frames steeped in the violet magic of the Magic City of the Eucar.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

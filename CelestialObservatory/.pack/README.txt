@@ -1,4 +1,4 @@
-CELESTIAL OBSERVATORY  (version 1.0.2)
+CELESTIAL OBSERVATORY  (version 1.2.1)
 ======================================
 Midnight indigo under pale gold starlight, with four-point stars on every corner.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-celestial-observatory.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

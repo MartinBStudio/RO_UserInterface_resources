@@ -1,2 +1,3 @@
 data\ui\themes\rose\imgs\rtb-premium-classic-silver-moon.dds
+data\ui\themes\rose\styles\html.css
 data\ui\themes\rose\styles\window.css

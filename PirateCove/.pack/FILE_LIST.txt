@@ -1,1 +1,2 @@
+data\ui\themes\rose\styles\html.css
 data\ui\themes\rose\styles\window.css

@@ -1,4 +1,4 @@
-DESERT OF THE DEAD  (version 1.0.1)
+DESERT OF THE DEAD  (version 1.2.1)
 ===================================
 Bone-white edges over ashen sand, with an ember-red pressed state.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

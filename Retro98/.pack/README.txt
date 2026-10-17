@@ -1,4 +1,4 @@
-RETRO 98  (version 1.2.2)
+RETRO 98  (version 1.4.1)
 =========================
 Chunky beveled gray chrome and navy-to-blue title bars, straight out of a 1998 desktop.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

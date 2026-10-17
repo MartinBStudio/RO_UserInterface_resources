@@ -1,4 +1,4 @@
-SEVEN HEARTS (2002)  (version 1.0.0)
+SEVEN HEARTS (2002)  (version 1.2.1)
 ====================================
 A tribute to Seven Hearts, the fairy-tale MMORPG Trigger Soft was building before it became ROSE.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-og-seven-hearts.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

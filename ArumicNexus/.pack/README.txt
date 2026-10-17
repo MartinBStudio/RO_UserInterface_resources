@@ -1,4 +1,4 @@
-ARUMIC NEXUS  (version 1.0.2)
+ARUMIC NEXUS  (version 1.2.1)
 =============================
 Gunmetal panels with cut corners and cyan circuit lines, built for the Arumic age.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-arumic-nexus.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

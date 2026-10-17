@@ -1,4 +1,4 @@
-CLOUD NINE  (version 1.0.0)
+CLOUD NINE  (version 1.2.1)
 ===========================
 Twilight-blue sky windows trimmed in cloud white, with puffy clouds and a little sun.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-cloud-nine.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

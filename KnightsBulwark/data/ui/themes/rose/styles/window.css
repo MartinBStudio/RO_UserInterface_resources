@@ -929,3 +929,177 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 {
     background-color: rgba(143, 192, 255, 255);
 }
+
+body#game-minimap #minimap-normal
+{
+    box-sizing: border-box;
+    decorator: vertical-gradient(rgba(30, 38, 51, 242) rgba(21, 27, 37, 242));
+    background-color: transparent;
+    border-width: 2dp;
+    border-top-color: rgba(184, 198, 216, 255);
+    border-left-color: rgba(184, 198, 216, 255);
+    border-bottom-color: rgba(10, 13, 18, 255);
+    border-right-color: rgba(10, 13, 18, 255);
+    border-radius: 0dp;
+}
+
+body#game-minimap #minimap-frame
+{
+    decorator: none;
+    left: 27dp;
+    top: 27dp;
+    width: 154dp;
+    height: 154dp;
+    box-sizing: border-box;
+    border-width: 6dp;
+    border-top-color: rgba(184, 198, 216, 255);
+    border-left-color: rgba(184, 198, 216, 255);
+    border-bottom-color: rgba(10, 13, 18, 255);
+    border-right-color: rgba(10, 13, 18, 255);
+    border-radius: 77dp;
+}
+
+body#game-minimap #minimap-normal handle.title
+{
+    height: 34dp;
+    margin: 0dp;
+    decorator: horizontal-gradient(rgba(44, 74, 122, 255) rgba(27, 47, 82, 255));
+}
+
+body#game-minimap #coordinates-text, body#game-minimap #time-area
+{
+    background-color: rgba(30, 38, 51, 170);
+    border-radius: 3dp;
+}
+
+body#game-minimap #minimap-minimized
+{
+    box-sizing: border-box;
+    decorator: vertical-gradient(rgba(30, 38, 51, 242) rgba(21, 27, 37, 242));
+    background-color: transparent;
+    border-width: 2dp;
+    border-top-color: rgba(184, 198, 216, 255);
+    border-left-color: rgba(184, 198, 216, 255);
+    border-bottom-color: rgba(10, 13, 18, 255);
+    border-right-color: rgba(10, 13, 18, 255);
+    border-radius: 0dp;
+}
+
+body#game-minimap #zone-name, body#game-minimap #zone-name-min
+{
+    color: rgba(234, 242, 255, 255);
+}
+
+body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+{
+    image-color: rgba(217, 234, 255, 255);
+}
+
+body#game-minimap .minimap-tooltip
+{
+    background-color: rgba(30, 38, 51, 235);
+    color: rgba(230, 236, 244, 255);
+}
+
+body#game-minimap .time-tooltip-label
+{
+    color: rgba(143, 192, 255, 255);
+}
+
+body#game-chat-box:not(.rtb-chat-backing) #virtual-messages, body#game-chat-box:not(.rtb-chat-backing) #virtual-system, body#game-chat-box:not(.rtb-chat-backing) #input-container
+{
+    decorator: horizontal-gradient(rgba(30, 38, 51, 140) rgba(30, 38, 51, 40));
+}
+
+body#hud b.weight, body#hud span.level
+{
+    color: rgba(143, 192, 255, 255);
+}
+
+body#hud .tooltip .tooltiptext
+{
+    background: rgba(30, 38, 51, 235);
+}
+
+body #party-entrust
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(143, 192, 255, 255);
+}
+
+body #party-entrust:hover
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(230, 236, 244, 255);
+}
+
+body #party-entrust:disabled
+{
+    decorator: image(party-entrust-d);
+    image-color: rgba(143, 192, 255, 110);
+}
+
+body #party-kick
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(143, 192, 255, 255);
+}
+
+body #party-kick:hover
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(230, 236, 244, 255);
+}
+
+body #party-kick:disabled
+{
+    decorator: image(party-kick-d);
+    image-color: rgba(143, 192, 255, 110);
+}
+
+body #party-leave
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(143, 192, 255, 255);
+}
+
+body #party-leave:hover
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(230, 236, 244, 255);
+}
+
+body #party-leave:disabled
+{
+    decorator: image(party-leave-d);
+    image-color: rgba(143, 192, 255, 110);
+}
+
+body #party-options
+{
+    decorator: image(party-options-d);
+    image-color: rgba(143, 192, 255, 255);
+}
+
+body #party-options:hover
+{
+    decorator: image(party-options-d);
+    image-color: rgba(230, 236, 244, 255);
+}
+
+body #party-options:disabled
+{
+    decorator: image(party-options-d);
+    image-color: rgba(143, 192, 255, 110);
+}
+
+body .party-level
+{
+    color: rgba(143, 192, 255, 255);
+}
+
+body#party #party-tooltip
+{
+    background: rgba(30, 38, 51, 235);
+    border-color: rgba(169, 184, 204, 255);
+}

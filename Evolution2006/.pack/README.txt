@@ -1,4 +1,4 @@
-EVOLUTION 2006  (version 1.0.0)
+EVOLUTION 2006  (version 1.2.1)
 ===============================
 ROSE Evolution: the 2006 system update, with its bright royal-blue frames and white outlines.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-og-evolution-2006.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

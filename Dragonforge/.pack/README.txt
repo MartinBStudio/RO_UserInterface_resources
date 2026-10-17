@@ -1,4 +1,4 @@
-DRAGONFORGE  (version 1.0.2)
+DRAGONFORGE  (version 1.2.1)
 ============================
 Blackened iron plates and riveted corners, glowing from within like a forge.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-dragonforge.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

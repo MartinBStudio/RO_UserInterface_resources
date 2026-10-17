@@ -1,4 +1,4 @@
-CLASSIC LILAC DREAM  (version 1.0.1)
+CLASSIC LILAC DREAM  (version 1.2.1)
 ====================================
 Classic pre-Evolution windows in soft lilac, with violet buttons and yellow selected tabs.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-classic-lilac-dream.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

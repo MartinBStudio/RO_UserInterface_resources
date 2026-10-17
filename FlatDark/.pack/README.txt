@@ -1,4 +1,4 @@
-FLAT DARK  (version 1.3.1)
+FLAT DARK  (version 1.5.1)
 ==========================
 Replaces the glass window frames, buttons, tabs and scrollbars with flat dark panels.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

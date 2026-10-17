@@ -1,4 +1,4 @@
-JUNON VERDANT  (version 1.2.0)
+JUNON VERDANT  (version 1.4.1)
 ==============================
 ROSE's own glass frames washed in the meadow greens and sunlit gold of Junon.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

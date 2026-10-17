@@ -1,4 +1,4 @@
-KROSE 2004  (version 1.0.0)
+KROSE 2004  (version 1.2.1)
 ===========================
 Rush On Seven Episodes: the 2004 Korean beta, in the gold and violet of the original ROSE logo.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-og-krose-2004.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

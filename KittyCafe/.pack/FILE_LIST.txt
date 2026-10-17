@@ -1,2 +1,3 @@
 data\ui\themes\rose\imgs\rtb-premium-kitty-cafe.dds
+data\ui\themes\rose\styles\html.css
 data\ui\themes\rose\styles\window.css

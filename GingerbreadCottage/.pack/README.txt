@@ -1,4 +1,4 @@
-GINGERBREAD COTTAGE  (version 1.0.0)
+GINGERBREAD COTTAGE  (version 1.2.1)
 ====================================
 Cookie-brown windows piped with white icing and topped with sugared gumdrops.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-gingerbread-cottage.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

@@ -1,4 +1,4 @@
-CLASSIC ROSE PETAL  (version 1.0.1)
+CLASSIC ROSE PETAL  (version 1.2.1)
 ===================================
 The classic pre-Evolution windows dyed rose: white-rimmed pink frames, glossy title bars and raspberry tabs that light up yellow.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-classic-rose-petal.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

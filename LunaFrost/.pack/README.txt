@@ -1,4 +1,4 @@
-LUNA FROST  (version 1.2.1)
+LUNA FROST  (version 1.4.1)
 ===========================
 Night-blue ice panels with crystal-cyan highlights from the snowfields of Luna.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

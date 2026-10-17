@@ -1,4 +1,4 @@
-GOBLIN CAVE  (version 1.1.1)
+GOBLIN CAVE  (version 1.3.1)
 ============================
 Damp cave stone, moss-green bevels and a goblin-lime glint.
 
@@ -14,6 +14,7 @@ UNINSTALL
     Delete those files. The game falls back to its stock UI.
 
 FILES
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the

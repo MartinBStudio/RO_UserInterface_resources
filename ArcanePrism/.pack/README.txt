@@ -1,4 +1,4 @@
-ARCANE PRISM  (version 1.0.2)
+ARCANE PRISM  (version 1.2.1)
 =============================
 Cut-corner violet crystal with glowing shards at each corner.
 
@@ -15,6 +15,7 @@ UNINSTALL
 
 FILES
     data\ui\themes\rose\imgs\rtb-premium-arcane-prism.dds
+    data\ui\themes\rose\styles\html.css
     data\ui\themes\rose\styles\window.css
 
 This theme replaces whole UI files. After a game patch, check the
