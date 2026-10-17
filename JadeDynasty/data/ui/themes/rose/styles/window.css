@@ -266,6 +266,11 @@ span.line-splitter {
     padding-right: 1dp;
 }
 
+body#hud #window-title-text
+{
+    width: 195dp;
+}
+
 #party, #arena-group, body.waiting
 {
     background-color: transparent;
@@ -1121,7 +1126,19 @@ body#party #party-tooltip
     padding-bottom: 14dp;
 }
 
-body#hud div.hud
+#hud .window-fixed-size
+{
+    padding-left: 7dp;
+    padding-right: 7dp;
+}
+
+#hud #window-content
+{
+    padding-left: 1dp;
+    padding-right: 1dp;
+}
+
+body#hud div.hud, body#hud #window-title-text
 {
     width: 201dp;
 }
