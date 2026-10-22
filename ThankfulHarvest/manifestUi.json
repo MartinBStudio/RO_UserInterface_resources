@@ -1,0 +1,31 @@
+{
+  "name": "Thankful Harvest",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.461+07:00",
+  "createdAt": "2026-10-23T00:09:13.461+07:00",
+  "description": "Warm walnut panels in wheat-gold frames, autumn leaves at the corners and russet titles.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=thankful-harvest",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "premium",
+    "ornament:leaf",
+    "edge:metal",
+    "title:scroll",
+    "buttons:plate",
+    "color:brown",
+    "color:orange",
+    "mood:cozy",
+    "cursors"
+  ]
+}

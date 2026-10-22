@@ -919,7 +919,7 @@ body#game-minimap #minimap-minimized
 
 body#game-minimap #zone-name, body#game-minimap #zone-name-min
 {
-    color: rgba(17, 17, 17, 255);
+    color: rgba(255, 255, 255, 255);
 }
 
 body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore

@@ -1,12 +1,32 @@
 {
   "name": "Sakura Lacquer",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.479+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.410+07:00",
   "createdAt": "2026-10-17T15:04:23.981+07:00",
   "description": "Black lacquer with gold trim, vermilion title bars and cherry blossoms at the corners.",
   "url": "https://roseonlinetoolbox.com/mods?mod=sakura-lacquer",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:blossom",
+    "edge:metal",
+    "title:scroll",
+    "buttons:tab",
+    "color:red",
+    "color:brown",
+    "color:orange",
+    "mood:regal",
+    "cursors"
+  ]
 }

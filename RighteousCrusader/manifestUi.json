@@ -1,0 +1,32 @@
+{
+  "name": "Righteous Crusader",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.437+07:00",
+  "createdAt": "2026-10-23T00:09:13.437+07:00",
+  "description": "Steel-blue panels in polished silver, crusader-red banner titles and a gold sun at every corner.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=righteous-crusader",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:star",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:tab",
+    "color:red",
+    "color:white",
+    "color:yellow",
+    "mood:regal",
+    "cursors"
+  ]
+}

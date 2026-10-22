@@ -1,0 +1,31 @@
+{
+  "name": "Terrasaurus",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.480+07:00",
+  "createdAt": "2026-10-23T00:09:13.480+07:00",
+  "description": "Olive-hide panels in sandstone slabs, claw-raked corners and amber-eyed highlights.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=terrasaurus",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thick",
+    "premium",
+    "ornament:claw",
+    "edge:stone",
+    "title:bar",
+    "buttons:plate",
+    "color:orange",
+    "color:brown",
+    "mood:fierce",
+    "cursors"
+  ]
+}

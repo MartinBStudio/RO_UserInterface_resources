@@ -1,0 +1,27 @@
+{
+  "name": "Phoenix Roost",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.666+07:00",
+  "createdAt": "2026-10-23T00:09:14.666+07:00",
+  "description": "Ember-black nest panels, flame-feather title bars and sun-gold highlights, softly rounded.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=phoenix-roost",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:rpg",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "color:orange",
+    "color:brown",
+    "color:yellow",
+    "mood:fierce",
+    "cursors"
+  ]
+}

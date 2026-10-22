@@ -1,0 +1,32 @@
+{
+  "name": "Ferrell Guild",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.433+07:00",
+  "createdAt": "2026-10-23T00:09:13.433+07:00",
+  "description": "Harbor-teal panels in brass, a ledger quill at every corner and brass nameplate titles, like a Ferrell Guild ferry office.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=ferrell-guild",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:feather",
+    "edge:metal",
+    "title:plaque",
+    "buttons:plate",
+    "color:teal",
+    "color:orange",
+    "color:yellow",
+    "mood:cozy",
+    "cursors"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Queen Bibi's Hive",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.516+07:00",
+  "createdAt": "2026-10-23T00:09:13.516+07:00",
+  "description": "Comb-dark windows in a bee-striped amber and black frame, a honey bee in every corner and honeycomb buttons that press into amber.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=queen-bibi-hive",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thick",
+    "premium",
+    "ornament:bee",
+    "edge:striped",
+    "title:bar",
+    "buttons:hex",
+    "color:brown",
+    "color:yellow",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

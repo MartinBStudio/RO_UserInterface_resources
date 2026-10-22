@@ -1,0 +1,26 @@
+{
+  "name": "Colorblind Safe",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.832+07:00",
+  "createdAt": "2026-10-23T00:09:14.832+07:00",
+  "description": "Neutral gray panels with blue selections and orange highlights that read without red or green.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=colorblind-safe",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "color:blue",
+    "color:gray",
+    "color:orange",
+    "cursors"
+  ]
+}

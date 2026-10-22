@@ -1,0 +1,32 @@
+{
+  "name": "Heart Candy Express",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.498+07:00",
+  "createdAt": "2026-10-23T00:09:13.498+07:00",
+  "description": "Wine-red windows in twin rose-gold lines, Qpid's arrow through a heart candy in every corner and candy-apple pressed buttons.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=heart-candy-express",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "premium",
+    "ornament:arrow",
+    "edge:double",
+    "title:scroll",
+    "buttons:pill",
+    "color:red",
+    "color:orange",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

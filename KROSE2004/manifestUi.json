@@ -8,5 +8,24 @@
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:og",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:rose",
+    "edge:metal",
+    "title:bar",
+    "buttons:soft",
+    "color:yellow",
+    "color:purple",
+    "mood:nostalgic",
+    "cursors"
+  ]
 }

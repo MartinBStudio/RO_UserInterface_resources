@@ -1,0 +1,33 @@
+{
+  "name": "Grand Ballroom",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.503+07:00",
+  "createdAt": "2026-10-23T00:09:13.503+07:00",
+  "description": "Warm ebony windows in champagne pinstripes, a Lacrima teardrop set in every corner and pointed buttons that press into Lacrima blue.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=grand-ballroom",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:lacrima",
+    "edge:double",
+    "title:scroll",
+    "buttons:hex",
+    "color:blue",
+    "color:orange",
+    "color:brown",
+    "mood:regal",
+    "mood:sleek",
+    "cursors"
+  ]
+}

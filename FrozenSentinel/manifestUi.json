@@ -1,0 +1,31 @@
+{
+  "name": "Frozen Sentinel",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.470+07:00",
+  "createdAt": "2026-10-23T00:09:13.470+07:00",
+  "description": "Glacier panels with faceted ice corners, snow-white frames and steel-ice titles.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=frozen-sentinel",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:crystal",
+    "edge:stone",
+    "title:plaque",
+    "buttons:soft",
+    "color:blue",
+    "color:teal",
+    "mood:calm",
+    "cursors"
+  ]
+}

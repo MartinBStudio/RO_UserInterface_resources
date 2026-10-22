@@ -1,12 +1,26 @@
 {
   "name": "Pocket Dot",
-  "version": "1.3.6",
-  "upload_date": "2026-10-17T21:22:03.946+07:00",
+  "version": "1.3.7",
+  "upload_date": "2026-10-23T00:09:13.899+07:00",
   "createdAt": "2026-10-17T15:04:24.057+07:00",
   "description": "Four shades of olive green on chunky square frames, like a 1989 handheld.",
   "url": "https://roseonlinetoolbox.com/mods?mod=pocket-dot",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:retro",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:green",
+    "mood:nostalgic",
+    "mood:cute",
+    "cursors"
+  ]
 }

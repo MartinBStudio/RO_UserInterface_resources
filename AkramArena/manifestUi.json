@@ -1,0 +1,26 @@
+{
+  "name": "Akram Arena",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.482+07:00",
+  "createdAt": "2026-10-23T00:09:14.482+07:00",
+  "description": "Carved limestone bevels and teal frieze bands from the old arena of Akram.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=akram-arena",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:planets",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:yellow",
+    "color:teal",
+    "mood:fierce",
+    "cursors"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "Luna Wolf",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.452+07:00",
+  "createdAt": "2026-10-23T00:09:13.452+07:00",
+  "description": "Plum-night panels in silver-fur frames, a crescent moon at every corner and moon-lilac highlights.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=luna-wolf",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:moon",
+    "edge:glow",
+    "title:bar",
+    "buttons:soft",
+    "color:purple",
+    "color:white",
+    "color:pink",
+    "mood:mystic",
+    "cursors"
+  ]
+}

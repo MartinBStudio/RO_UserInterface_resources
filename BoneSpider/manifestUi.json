@@ -1,0 +1,33 @@
+{
+  "name": "Bone Spider",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.485+07:00",
+  "createdAt": "2026-10-23T00:09:13.485+07:00",
+  "description": "Violet-black panels strung with bone-white silk, cobwebs in every corner and pointed, leg-like buttons.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=bone-spider",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:web",
+    "edge:double",
+    "title:bar",
+    "buttons:hex",
+    "color:purple",
+    "color:white",
+    "color:yellow",
+    "mood:spooky",
+    "mood:sleek",
+    "cursors"
+  ]
+}

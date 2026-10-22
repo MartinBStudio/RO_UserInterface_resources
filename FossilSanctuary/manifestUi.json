@@ -1,0 +1,27 @@
+{
+  "name": "Fossil Sanctuary",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.511+07:00",
+  "createdAt": "2026-10-23T00:09:14.511+07:00",
+  "description": "Bone-ivory bevels over sediment brown, with a lagoon-blue pressed state and fern green.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=fossil-sanctuary",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:planets",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:yellow",
+    "color:green",
+    "color:brown",
+    "mood:calm",
+    "cursors"
+  ]
+}

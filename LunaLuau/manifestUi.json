@@ -1,0 +1,33 @@
+{
+  "name": "Luna Luau",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.507+07:00",
+  "createdAt": "2026-10-23T00:09:13.507+07:00",
+  "description": "Night-lagoon windows in a bamboo frame with notched corners, a hibiscus in every corner and round buttons that press into hibiscus red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=luna-luau",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thick",
+    "premium",
+    "ornament:hibiscus",
+    "edge:striped",
+    "title:plaque",
+    "buttons:pill",
+    "color:teal",
+    "color:yellow",
+    "color:red",
+    "mood:cozy",
+    "mood:calm",
+    "cursors"
+  ]
+}

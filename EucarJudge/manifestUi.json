@@ -1,0 +1,31 @@
+{
+  "name": "Eucar Judge",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.475+07:00",
+  "createdAt": "2026-10-23T00:09:13.475+07:00",
+  "description": "Charcoal panels in plain pewter, square and quiet, with oxblood for every verdict.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=eucar-judge",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "edge:double",
+    "title:plaque",
+    "buttons:plate",
+    "color:gray",
+    "color:white",
+    "color:black",
+    "mood:sleek",
+    "cursors"
+  ]
+}

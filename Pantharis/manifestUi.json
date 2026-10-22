@@ -1,0 +1,32 @@
+{
+  "name": "Pantharis",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.457+07:00",
+  "createdAt": "2026-10-23T00:09:13.457+07:00",
+  "description": "Obsidian panels in black chrome, emerald eyes at the corners and sleek pill buttons.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=pantharis",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:gem",
+    "edge:double",
+    "title:bar",
+    "buttons:pill",
+    "color:green",
+    "color:gray",
+    "color:black",
+    "mood:sleek",
+    "cursors"
+  ]
+}
