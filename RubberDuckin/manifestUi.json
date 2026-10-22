@@ -1,0 +1,33 @@
+{
+  "name": "Rubber Duckin'",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.521+07:00",
+  "createdAt": "2026-10-23T00:09:13.521+07:00",
+  "description": "Bath-blue windows in cartoon-inked tile-white frames, a rubber duck in every corner and chunky buttons that press into beak orange.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=rubber-duckin",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "premium",
+    "ornament:duck",
+    "edge:ink",
+    "title:ribbon",
+    "buttons:ink",
+    "color:blue",
+    "color:yellow",
+    "color:orange",
+    "mood:cute",
+    "mood:nostalgic",
+    "cursors"
+  ]
+}

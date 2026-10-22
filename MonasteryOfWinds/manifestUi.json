@@ -1,0 +1,27 @@
+{
+  "name": "Monastery of Winds",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.656+07:00",
+  "createdAt": "2026-10-23T00:09:14.656+07:00",
+  "description": "Maroon-robe panels, saffron title bars and a prayer-flag blue press from a cliffside monastery.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=monastery-of-winds",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:rpg",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "color:brown",
+    "color:orange",
+    "color:blue",
+    "mood:calm",
+    "cursors"
+  ]
+}

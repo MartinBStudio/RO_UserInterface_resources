@@ -285,8 +285,8 @@ body#hud #window-title-text
 
 .window-title
 {
-    color: rgba(64, 28, 30, 255);
-    decorator: vertical-gradient(rgba(255, 255, 255, 245) rgba(231, 187, 190, 245));
+    color: rgba(250, 229, 230, 255);
+    decorator: vertical-gradient(rgba(140, 71, 76, 245) rgba(82, 40, 42, 245));
     border-bottom: 1dp rgba(250, 229, 230, 255);
     border-radius: 4dp 4dp 0dp 0dp;
 }
@@ -928,7 +928,7 @@ body#game-minimap #minimap-normal handle.title
 {
     height: 34dp;
     margin: 0dp;
-    decorator: vertical-gradient(rgba(255, 255, 255, 245) rgba(231, 187, 190, 245));
+    decorator: vertical-gradient(rgba(140, 71, 76, 245) rgba(82, 40, 42, 245));
     border-bottom: 1dp rgba(250, 229, 230, 255);
     border-radius: 4dp 4dp 0dp 0dp;
 }
@@ -950,7 +950,7 @@ body#game-minimap #minimap-minimized
 
 body#game-minimap #zone-name, body#game-minimap #zone-name-min
 {
-    color: rgba(64, 28, 30, 255);
+    color: rgba(250, 229, 230, 255);
 }
 
 body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore

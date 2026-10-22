@@ -1,0 +1,33 @@
+{
+  "name": "Luna Shamanist",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.489+07:00",
+  "createdAt": "2026-10-23T00:09:13.489+07:00",
+  "description": "Spirit-teal night in a carved-wood totem frame, with spirit feathers and a ghost-green glow.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=luna-shamanist",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thick",
+    "premium",
+    "ornament:feather",
+    "edge:stone",
+    "title:scroll",
+    "buttons:tab",
+    "color:teal",
+    "color:green",
+    "color:orange",
+    "mood:mystic",
+    "mood:calm",
+    "cursors"
+  ]
+}

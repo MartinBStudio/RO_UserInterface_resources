@@ -1,12 +1,32 @@
 {
   "name": "Dragonforge",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.453+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.379+07:00",
   "createdAt": "2026-10-17T15:04:23.975+07:00",
-  "description": "Blackened iron plates and riveted corners, glowing from within like a forge.",
+  "description": "Blackened iron slabs, forge flames at the corners and bolted plaques, glowing from within like a forge.",
   "url": "https://roseonlinetoolbox.com/mods?mod=dragonforge",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:flame",
+    "edge:stone",
+    "title:plaque",
+    "buttons:plate",
+    "color:orange",
+    "color:gray",
+    "color:brown",
+    "mood:fierce",
+    "cursors"
+  ]
 }

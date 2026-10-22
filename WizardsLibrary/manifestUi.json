@@ -1,0 +1,28 @@
+{
+  "name": "Wizard's Library",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.670+07:00",
+  "createdAt": "2026-10-23T00:09:14.670+07:00",
+  "description": "Mahogany shelves, gilt-edged bevels, green reading-lamp titles and an oxblood press.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=wizards-library",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:rpg",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:orange",
+    "color:yellow",
+    "color:green",
+    "mood:mystic",
+    "mood:cozy",
+    "cursors"
+  ]
+}

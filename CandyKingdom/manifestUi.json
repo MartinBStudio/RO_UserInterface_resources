@@ -1,12 +1,32 @@
 {
   "name": "Candy Kingdom",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.515+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.540+07:00",
   "createdAt": "2026-10-17T15:04:23.988+07:00",
   "description": "Candy-ribbon rims, lollipops on every corner and lemon-drop pressed buttons.",
   "url": "https://roseonlinetoolbox.com/mods?mod=candy-kingdom",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:whimsical",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:lollipop",
+    "edge:striped",
+    "title:bar",
+    "buttons:ink",
+    "color:pink",
+    "color:purple",
+    "color:orange",
+    "mood:cute",
+    "cursors"
+  ]
 }

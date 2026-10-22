@@ -1,0 +1,32 @@
+{
+  "name": "Junon Polis Invasion",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.466+07:00",
+  "createdAt": "2026-10-23T00:09:13.466+07:00",
+  "description": "Haunted-violet panels in pumpkin-orange frames, with grinning skulls and slime-green highlights.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=junon-invasion",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thick",
+    "premium",
+    "ornament:skull",
+    "edge:ink",
+    "title:bar",
+    "buttons:ink",
+    "color:purple",
+    "color:orange",
+    "color:green",
+    "mood:spooky",
+    "cursors"
+  ]
+}

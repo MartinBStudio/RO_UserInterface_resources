@@ -1,12 +1,31 @@
 {
   "name": "Rainbow Unicorn",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.569+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.584+07:00",
   "createdAt": "2026-10-17T15:04:23.999+07:00",
-  "description": "Full rainbow rims, sparkling stars and tiny hearts. Maximum whimsy, zero apologies.",
+  "description": "Full rainbow rims and little unicorn wings on every corner. Maximum whimsy, zero apologies.",
   "url": "https://roseonlinetoolbox.com/mods?mod=rainbow-unicorn",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:whimsical",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:wing",
+    "edge:striped",
+    "title:bar",
+    "buttons:pill",
+    "color:pink",
+    "color:purple",
+    "mood:cute",
+    "cursors"
+  ]
 }

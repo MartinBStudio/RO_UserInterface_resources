@@ -1,0 +1,27 @@
+{
+  "name": "Warm Night",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.827+07:00",
+  "createdAt": "2026-10-23T00:09:14.827+07:00",
+  "description": "Low blue light amber panels for late-night sessions that are easy on tired eyes.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=warm-night",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "color:brown",
+    "color:orange",
+    "color:black",
+    "mood:cozy",
+    "cursors"
+  ]
+}

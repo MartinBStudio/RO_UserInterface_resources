@@ -1,0 +1,26 @@
+{
+  "name": "True Black",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.823+07:00",
+  "createdAt": "2026-10-23T00:09:14.823+07:00",
+  "description": "Pure black panels that switch off OLED pixels, with dim gray edges and a soft blue accent.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=true-black",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "color:black",
+    "color:blue",
+    "mood:sleek",
+    "cursors"
+  ]
+}

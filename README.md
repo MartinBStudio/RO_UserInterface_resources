@@ -42,21 +42,26 @@ Usage notes
 <!-- rose-online-toolbox:start -->
 ROSE Online Toolbox themes
 --------------------------
-183 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
+204 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
 `scripts/export-ui-resources.ts`. They restyle the game windows, minimap and HUD (data/ui/themes/rose)
 and recolor the cursors (res/) to match. Each folder's manifestUi.json links to the theme's page, and
 .preview/ holds a screenshot.
 
-- Premium themes: RoyalRegalia, MoonsilverGrove, Dragonforge, ArcanePrism, CelestialObservatory, SakuraLacquer, ArumicNexus, JadeDynasty
+Every manifestUi.json also has `made` ("ai" or "handmade") and `tags` to filter by, all `key:value`
+except a few bare words: `style:flat|bevel|tint|neon`, `color:<name>` (up to three, most used first),
+`corners:square|rounded`, `border:thin|thick`, `series:<series>`, `made:ai|handmade`, and `premium` for
+themes with drawn art. Folders with recolored cursors also carry `cursors`.
+
+- Premium themes: RoyalRegalia, MoonsilverGrove, Dragonforge, ArcanePrism, CelestialObservatory, SakuraLacquer, ArumicNexus, JadeDynasty, FerrellGuild, RighteousCrusader, IkanessMech, LunaWolf, Pantharis, ThankfulHarvest, JunonPolisInvasion, FrozenSentinel, EucarJudge, Terrasaurus, BoneSpider, LunaShamanist, LeprechaunRun, HeartCandyExpress, GrandBallroom, LunaLuau, Valedictorian, QueenBibisHive, RubberDuckin, TwilightCandleGhost
 - Whimsical themes: JellybeanJamboree, CandyKingdom, CloudNine, MushroomHollow, KittyCafe, BubbleLagoon, DreamySlumber, RainbowUnicorn, GingerbreadCottage
 - OG ROSE themes: SevenHearts2002, KROSE2004, PreEvo2005, Evolution2006, NaROSEAzure, WarpPortalEra
-- Classic colorways: ClassicRosePetal, ClassicMintBreeze, ClassicLemonDrop, ClassicLilacDream, ClassicPeachSunset, ClassicSkyBlue, ClassicSilverMoon, ClassicCocoaCream, ClassicCrimsonKnight, ClassicForestRanger, ClassicTealLagoon, ClassicPlumWine
-- Essentials: FlatDark, HighContrast, SoftSlate, EmberGlass, RoseQuartzGlass, JadeGlass, Graphite, MidnightBlue, Fjord, DuskMauve, Mocha
-- Planet themes: JunonVerdant, KenjiBeach, LunaFrost, EucarArcana, EldeonWildwood, MarshOfGhosts, OrloDunes, AruasRadiance, HebarnsEclipse, ZantCanyon, PolisRoyal, LunaAurora, LunarGlass, AnimaLake, AdventurersPlains, SnowValley, GoblinCave, ElVerloonDesert, SikukuRuins, ForgottenTemple, XitaRefuge, SunshineCoast, BirthIsland, BreezyHills, ForestOfWisdom, LuxemTower, DesertOfTheDead, GorgeOfSilence, CaveOfUlverick, ManaSnowfields, ArumicValley, ShadyJungle, ForestOfWandering, DesertCityOfMuris, TheWasteland, DraconisPeaks, OblivionTemple, SeaOfDawn, GardenOfAru
+- Classic colorways: ClassicRosePetal, ClassicMintBreeze, ClassicLemonDrop, ClassicLilacDream, ClassicPeachSunset, ClassicSkyBlue, ClassicSilverMoon, ClassicCocoaCream, ClassicCrimsonKnight, ClassicForestRanger
+- Essentials: FlatDark, HighContrast, SoftSlate, EmberGlass, RoseQuartzGlass, JadeGlass, MidnightBlue, DuskMauve, Mocha, TrueBlack, WarmNight, ColorblindSafe
+- Planet themes: JunonVerdant, KenjiBeach, LunaFrost, EucarArcana, EldeonWildwood, MarshOfGhosts, OrloDunes, AruasRadiance, HebarnsEclipse, ZantCanyon, PolisRoyal, LunaAurora, LunarGlass, AnimaLake, AdventurersPlains, SnowValley, GoblinCave, ElVerloonDesert, SikukuRuins, ForgottenTemple, SunshineCoast, BirthIsland, BreezyHills, ForestOfWisdom, LuxemTower, DesertOfTheDead, GorgeOfSilence, CaveOfUlverick, ManaSnowfields, ArumicValley, ShadyJungle, ForestOfWandering, DesertCityOfMuris, TheWasteland, DraconisPeaks, OblivionTemple, SeaOfDawn, GardenOfAru, AkramArena, SikukuCatacombs, CrystalDefenders, LunaClanField, FossilSanctuary
 - Retro themes: Retro98, TavernLeather, HeroMenuBlue, PhosphorTerminal, AmberCRT, PocketDot, InkParchment, ArcadeMarquee, StoneKeep, ComicPanel, TextMode, VaporMall, PixelCastle, FilmNoir, SepiaPhotograph, HiFiStereo, VHSTape, Blueprint, Chalkboard, FantasyConsole, 16BitTwilight, Typewriter
-- Futuristic themes: NeonGrid, HoloCyan, CastleGear, CarbonStrike, CryoLab, Biohazard, VoidChrome, SolarFlare, SakuraCircuit, DeepSeaSonar, MarsColony, QuantumPrism, NightOps, GoldChrome, Glitch, SynthwaveSunset, PlasmaCore, OrbitalStation, IonStorm, StarlightNav
+- Futuristic themes: NeonGrid, HoloCyan, CastleGear, CarbonStrike, Biohazard, VoidChrome, SolarFlare, SakuraCircuit, DeepSeaSonar, MarsColony, QuantumPrism, NightOps, GoldChrome, Glitch, SynthwaveSunset, PlasmaCore, OrbitalStation, StarlightNav
 - Job class themes: KnightsBulwark, ChampionsFury, MagesArcana, ClericsGrace, RaidersShade, ScoutsTrail, BourgeoisVelvet, ArtisansWorkshop, SoldiersSteel, MusesStarlight, HawkersWind, DealersLedger
-- Fantasy RPG themes: GothicCathedral, ElvenGrove, DwarvenForge, SamuraiLacquer, PirateCove, RoyalGuard, WitchsHut, CrystalMenu, NecromancersCrypt, PaladinsLight, DruidsCircle, DragonsHoard, FrostGiant, SunkenTemple, VampireCourt, DesertSultan, VikingHall, ShrineGate, AlchemistsLab, FairyTale, GolemStone, RangersCampfire
-- Seasonal themes: PumpkinNight, WinterFestival, SpringBlossom, SummerLanterns, HarvestMoon, LunarNewYear, HeartsDay, AutumnLeaves, RainySeason, FireworksNight, EggHunt, SantaPlanetoid
-- Gemstone themes: RubyGlass, SapphireGlass, AquamarineGlass, Emerald, Amethyst, Topaz, Opal, Onyx, Pearl, Garnet
+- Fantasy RPG themes: GothicCathedral, ElvenGrove, DwarvenForge, PirateCove, RoyalGuard, WitchsHut, CrystalMenu, NecromancersCrypt, PaladinsLight, DruidsCircle, DragonsHoard, FrostGiant, SunkenTemple, VampireCourt, DesertSultan, VikingHall, ShrineGate, AlchemistsLab, GolemStone, MonasteryOfWinds, BasaltSteps, PhoenixRoost, WizardsLibrary, HauntedManor
+- Seasonal themes: PumpkinNight, WinterFestival, SpringBlossom, SummerLanterns, LunarNewYear, HeartsDay, AutumnLeaves, FireworksNight, EggHunt, SantaPlanetoid, MarigoldNight
+- Gemstone themes: RubyGlass, SapphireGlass, AquamarineGlass, Emerald, Amethyst, Onyx, Pearl, Garnet, Diamond
 <!-- rose-online-toolbox:end -->

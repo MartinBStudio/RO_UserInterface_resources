@@ -1,0 +1,33 @@
+{
+  "name": "Ikaness Mech",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.442+07:00",
+  "createdAt": "2026-10-23T00:09:13.442+07:00",
+  "description": "Gunmetal plates with cut corners, hazard-striped rims and amber warning lights.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=ikaness-mech",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thick",
+    "premium",
+    "ornament:rivets",
+    "edge:striped",
+    "title:bracket",
+    "buttons:hex",
+    "color:yellow",
+    "color:gray",
+    "color:brown",
+    "mood:techy",
+    "mood:fierce",
+    "cursors"
+  ]
+}

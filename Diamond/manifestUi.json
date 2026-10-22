@@ -1,0 +1,26 @@
+{
+  "name": "Diamond",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.606+07:00",
+  "createdAt": "2026-10-23T00:09:14.606+07:00",
+  "description": "Brilliant icy-white edges with a cool cyan sparkle on dark, square-cut panels.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=diamond",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:gems",
+    "made:ai",
+    "status:beta",
+    "style:neon",
+    "corners:square",
+    "border:thin",
+    "color:blue",
+    "color:teal",
+    "mood:sleek",
+    "cursors"
+  ]
+}

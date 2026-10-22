@@ -1,0 +1,33 @@
+{
+  "name": "Twilight Candle Ghost",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.525+07:00",
+  "createdAt": "2026-10-23T00:09:13.525+07:00",
+  "description": "Void-dark windows edged in candlelight, a hooded ghost with glowing eyes in every corner and hood-topped buttons that press into candle flame.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=twilight-candle-ghost",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thick",
+    "premium",
+    "ornament:hood",
+    "edge:glow",
+    "title:plaque",
+    "buttons:tab",
+    "color:purple",
+    "color:orange",
+    "color:yellow",
+    "mood:spooky",
+    "mood:cute",
+    "cursors"
+  ]
+}

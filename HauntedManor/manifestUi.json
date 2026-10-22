@@ -1,0 +1,26 @@
+{
+  "name": "Haunted Manor",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.677+07:00",
+  "createdAt": "2026-10-23T00:09:14.677+07:00",
+  "description": "Pitch-dark halls traced in moonlit ghost-blue lines, with faded damask titles and candle-amber scrollbars.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=haunted-manor",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:rpg",
+    "made:ai",
+    "status:beta",
+    "style:neon",
+    "corners:square",
+    "border:thin",
+    "color:blue",
+    "color:purple",
+    "mood:spooky",
+    "cursors"
+  ]
+}

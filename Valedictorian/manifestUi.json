@@ -1,0 +1,33 @@
+{
+  "name": "Valedictorian",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.512+07:00",
+  "createdAt": "2026-10-23T00:09:13.512+07:00",
+  "description": "Ink-navy windows ruled in crisp ink lines, a mortarboard with a gold tassel in every corner and folder-tab buttons that press into crimson.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=valedictorian",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "premium",
+    "ornament:mortarboard",
+    "edge:ink",
+    "title:ribbon",
+    "buttons:tab",
+    "color:blue",
+    "color:yellow",
+    "color:red",
+    "mood:regal",
+    "mood:calm",
+    "cursors"
+  ]
+}

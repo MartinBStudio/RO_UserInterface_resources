@@ -1,0 +1,27 @@
+{
+  "name": "Basalt Steps",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.661+07:00",
+  "createdAt": "2026-10-23T00:09:14.661+07:00",
+  "description": "Blue-black basalt columns, wet-stone bevels, storm-sea titles and a lichen-yellow glint.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=basalt-steps",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:rpg",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:teal",
+    "color:gray",
+    "color:yellow",
+    "mood:calm",
+    "cursors"
+  ]
+}

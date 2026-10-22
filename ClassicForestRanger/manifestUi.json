@@ -1,12 +1,30 @@
 {
   "name": "Classic Forest Ranger",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.726+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.712+07:00",
   "createdAt": "2026-10-17T15:04:24.027+07:00",
   "description": "Classic pre-Evolution windows in leafy green, with moss buttons and yellow selected tabs.",
   "url": "https://roseonlinetoolbox.com/mods?mod=classic-forest-ranger",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:classic",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "edge:striped",
+    "title:bar",
+    "buttons:soft",
+    "color:green",
+    "color:yellow",
+    "mood:nostalgic",
+    "cursors"
+  ]
 }

@@ -1,12 +1,32 @@
 {
   "name": "Royal Regalia",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.426+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.357+07:00",
   "createdAt": "2026-10-17T15:03:43.999+07:00",
-  "description": "Navy velvet framed in triple gold trim, with ruby-set corners and jeweled buttons.",
+  "description": "Navy velvet framed in triple gold trim, with crowned corners and a royal banner across every title.",
   "url": "https://roseonlinetoolbox.com/mods?mod=royal-regalia",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:crown",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:soft",
+    "color:blue",
+    "color:yellow",
+    "color:red",
+    "mood:regal",
+    "cursors"
+  ]
 }

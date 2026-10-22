@@ -1,0 +1,32 @@
+{
+  "name": "Leprechaun Run",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:13.494+07:00",
+  "createdAt": "2026-10-23T00:09:13.494+07:00",
+  "description": "Shamrock-green windows in a gold-and-green banded frame, a four-leaf clover in every corner and a leprechaun's gold coin beside it.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=leprechaun-run",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thick",
+    "premium",
+    "ornament:clover",
+    "edge:striped",
+    "title:ribbon",
+    "buttons:pill",
+    "color:green",
+    "color:yellow",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

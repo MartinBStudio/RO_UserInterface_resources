@@ -1,12 +1,33 @@
 {
   "name": "Kitty Café",
-  "version": "1.2.8",
-  "upload_date": "2026-10-17T21:22:03.544+07:00",
+  "version": "1.3.0",
+  "upload_date": "2026-10-23T00:09:13.561+07:00",
   "createdAt": "2026-10-17T15:04:17.467+07:00",
   "description": "Cocoa and cream windows with pink paw prints on every corner. Purr-fectly cozy.",
   "url": "https://roseonlinetoolbox.com/mods?mod=kitty-cafe",
   "managedSubfolders": [
     "FILE_LIST.TXT"
   ],
-  "author": "ivqonsanada"
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:whimsical",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:paw",
+    "edge:metal",
+    "title:plaque",
+    "buttons:pill",
+    "color:orange",
+    "color:brown",
+    "color:pink",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
 }

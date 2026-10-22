@@ -1,0 +1,27 @@
+{
+  "name": "Marigold Night",
+  "version": "1.0.0",
+  "upload_date": "2026-10-23T00:09:14.803+07:00",
+  "createdAt": "2026-10-23T00:09:14.803+07:00",
+  "description": "Marigold orange and papel-picado magenta on deep plum, for the Day of the Dead.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=marigold-night",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:seasons",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "color:purple",
+    "color:orange",
+    "color:pink",
+    "mood:cozy",
+    "cursors"
+  ]
+}
