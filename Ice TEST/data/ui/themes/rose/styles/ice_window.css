@@ -1,0 +1,265 @@
+/* Shared ice theme for standard windows (Game Arena composition).
+ * Link AFTER components.css:  <link type="text/rcss" href="../styles/ice_window.css" />
+ * Needs ../styles/ice_sprites.css linked too.
+ * Flourishes: add  <div class="ice-fx ice-tl"></div><div class="ice-fx ice-br"></div>  at the end of <body>
+ * (add class "small" to both for compact windows). */
+
+/* frame + title band */
+.window-fixed-size, .window-resizeable {
+    decorator: tiled-box(
+        ice-frame-tl, ice-frame-t, ice-frame-tr,
+        ice-frame-l,  ice-frame-c, ice-frame-r,
+        ice-frame-bl, ice-frame-b, ice-frame-br
+    );
+    background-color: rgba(0, 0, 0, 0);
+    padding: 6dp;
+    padding-top: 40dp;
+}
+.window-title {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 40dp;
+    padding-left: 60dp;
+    color: white;
+    font-size: 18dp;
+    font-weight: 820;
+    font-effect: outline(1.5dp rgb(28, 78, 138));
+    text-align: left;
+    line-height: 40dp;
+}
+.window-title-text { margin-left: 0dp; }
+button.window-title-close { top: 7dp; right: 8dp; z-index: 20; }
+
+/* cream inner panel */
+body #window-content {
+    decorator: tiled-box(
+        ice-panel-tl, ice-panel-t, ice-panel-tr,
+        ice-panel-l,  ice-panel-c, ice-panel-r,
+        ice-panel-bl, ice-panel-b, ice-panel-br
+    );
+    background-color: rgba(0, 0, 0, 0);
+    overflow: visible;
+    z-index: 0;
+    color: rgb(36, 58, 98);
+    font-effect: none;
+}
+
+/* light ice-blue content box */
+.content-box, .ice-box {
+    padding: 8dp;
+    background-color: rgb(236, 244, 251);
+    border: 1dp rgb(176, 206, 232);
+    border-radius: 8dp;
+}
+.ui-section-title { color: rgb(30, 62, 112); }
+.ui-footer { border-top: 1dp rgb(214, 226, 238); }
+.ui-currency {
+    color: rgb(36, 58, 98);
+    font-weight: 820;
+    font-effect: none;
+}
+
+/* tabs: blue pill, active/selected = gold */
+.ui-tabs { gap: 6dp; }
+.ui-tabs > button.default {
+    decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+    overflow: visible;
+    height: 28dp;
+    line-height: 28dp;
+    padding: 0dp 6dp;
+    font-size: 14dp;
+    font-weight: 820;
+    color: rgb(30, 62, 112);
+    font-effect: none;
+}
+body[id] .ui-tabs > button.default:not([disabled]):hover {
+    decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+}
+body[id] .ui-tabs > button.active,
+body[id] .ui-tabs > button.selected,
+body[id] .ui-tabs > button.active:hover,
+body[id] .ui-tabs > button.selected:hover {
+    decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+    color: rgb(92, 50, 8);
+}
+
+/* regular buttons */
+body[id] button.default {
+    decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+    color: rgb(30, 62, 112);
+    font-weight: 820;
+    font-effect: none;
+}
+body[id] button.default:not([disabled]):hover {
+    decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+}
+body[id] button.default:not([disabled]):active {
+    decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+}
+body[id] button.default:disabled,
+body[id] button.default[disabled] {
+    decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+    opacity: 0.45;
+}
+/* primary action (give a button class "ice-primary") */
+body[id] button.default.ice-primary {
+    decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+    color: rgb(92, 50, 8);
+}
+body[id] button.default.ice-primary:not([disabled]):hover {
+    decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+}
+
+/* empty item slots: shaded ice tile instead of the dark slot art */
+item-slot[empty="1"] { decorator: image(ice-slot); }
+
+/* text inputs */
+body[id] input[type="text"] {
+    decorator: none;
+    background-color: rgb(255, 255, 255);
+    border: 1dp rgb(150, 190, 225);
+    border-radius: 5dp;
+    color: rgb(30, 62, 112);
+    font-effect: none;
+}
+
+/* older windows: <tabset><tab class="default"> tabs, window-pane / window-inner boxes */
+body[id] tab.default {
+    decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+    height: 28dp;
+    line-height: 28dp;
+    padding: 0dp 10dp;
+    color: rgb(30, 62, 112);
+    font-effect: none;
+}
+body[id] tab.default:not([disabled]):hover {
+    decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+}
+body[id] tab.default:selected,
+body[id] tab.default:selected:hover {
+    decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+    color: rgb(92, 50, 8);
+}
+body[id] .window-pane,
+body[id] .window-inner {
+    decorator: none;
+    background-color: rgb(236, 244, 251);
+    border: 1dp rgb(176, 206, 232);
+    border-radius: 8dp;
+}
+
+/* resizeable windows keep room for the resize grip */
+.window-resizeable { padding-bottom: 14dp; }
+
+/* dropdowns */
+body[id] select {
+    decorator: none;
+    background-color: rgb(255, 255, 255);
+    border: 1dp rgb(150, 190, 225);
+    border-radius: 5dp;
+    color: rgb(30, 62, 112);
+    font-effect: none;
+}
+body[id] select selectvalue:hover { color: rgb(170, 100, 20); }
+body[id] select selectbox {
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1dp rgb(150, 190, 225);
+    border-left: 1dp rgb(150, 190, 225);
+    border-right: 1dp rgb(150, 190, 225);
+}
+body[id] select option { color: rgb(30, 62, 112); border-top: 1dp rgb(220, 232, 244); }
+body[id] select option:hover { background-color: rgb(222, 238, 252); color: rgb(170, 100, 20); }
+body[id] select selectbox option[selected] { color: rgb(170, 100, 20); }
+/* dropdown arrow = blue close-style button (sprite ice-dd-* lives in ice_sprites2.css: link it in windows with dropdowns) */
+body[id] select selectarrow {
+    width: 18dp; height: 18dp; margin-top: 2dp; margin-right: 2dp;
+    decorator: image(ice-dd-n);
+}
+body[id] select:hover selectarrow { decorator: image(ice-dd-h); }
+body[id] select selectarrow:active { decorator: image(ice-dd-a); }
+body[id] select[disabled] selectarrow { decorator: image(ice-dd-n); opacity: 0.45; }
+
+/* checkboxes + radio buttons: white when off, blue (tick / dot) when on */
+body[id] input[type="checkbox"],
+body[id] input[type="radio"] {
+    width: 14dp;
+    height: 14dp;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0dp rgba(0, 0, 0, 0);
+    vertical-align: middle;
+    margin-right: 5dp;
+}
+body[id] input[type="checkbox"] { decorator: image(ice-check-off); }
+body[id] input[type="checkbox"]:hover { decorator: image(ice-check-off-hover); }
+body[id] input[type="checkbox"]:checked { decorator: image(ice-check-on); }
+body[id] input[type="checkbox"]:checked:hover { decorator: image(ice-check-on-hover); }
+body[id] input[type="radio"] { decorator: image(ice-radio-off); }
+body[id] input[type="radio"]:hover { decorator: image(ice-radio-off-hover); }
+body[id] input[type="radio"]:checked { decorator: image(ice-radio-on); }
+body[id] input[type="radio"]:checked:hover { decorator: image(ice-radio-on-hover); }
+
+/* range sliders: light-blue track, gold knob */
+body[id] input.range slidertrack,
+body[id] input[type="range"] slidertrack {
+    decorator: none;
+    image-color: rgb(255, 255, 255);
+    height: 8dp;
+    margin-top: 5dp;
+    background-color: rgb(214, 228, 242);
+    border: 1dp rgb(176, 206, 232);
+    border-radius: 4dp;
+}
+body[id] input.range sliderbar,
+body[id] input[type="range"] sliderbar {
+    decorator: image(ice-equip-gold);
+    image-color: rgb(255, 255, 255);
+    width: 16dp;
+    height: 18dp;
+    margin-top: 0dp;
+    margin-left: 0dp;
+}
+body[id] input.range sliderbar:hover,
+body[id] input[type="range"] sliderbar:hover { image-color: rgb(255, 245, 225); }
+
+/* collapsible sections: blue +/- marker */
+body[id] details > summary > summary-text { color: rgb(30, 62, 112); font-effect: none; }
+body[id] details > summary:hover { color: rgb(170, 100, 20); }
+body[id] details > summary > summary-marker,
+body[id] details > summary:hover > summary-marker {
+    width: 16dp;
+    height: 16dp;
+    margin-right: 5dp;
+    decorator: image(ice-plus);
+}
+body[id] details > summary:hover > summary-marker { decorator: image(ice-plus-hover); }
+body[id] details[open] > summary > summary-marker { decorator: image(ice-minus); }
+body[id] details[open] > summary:hover > summary-marker { decorator: image(ice-minus-hover); }
+
+/* scrollbars (Game Arena style) */
+/* scrollbars: same glossy ice thumb + inset track as the Game Arena */
+body[id] scrollbarvertical { width: 14dp; }
+body[id] scrollbarvertical slidertrack {
+    decorator: tiled-vertical(ice-strack-t, ice-strack-c, ice-strack-b);
+    image-color: rgb(255, 255, 255);
+    margin-left: 3dp;
+    width: 8dp;
+}
+body[id] scrollbarvertical sliderbar {
+    decorator: tiled-vertical(ice-sbar-t, ice-sbar-c, ice-sbar-b);
+    margin-left: 2dp;
+    width: 10dp;
+    min-height: 28dp;
+}
+body[id] scrollbarvertical sliderbar:hover,
+body[id] scrollbarvertical sliderbar:active {
+    decorator: tiled-vertical(ice-sbar-hover-t, ice-sbar-hover-c, ice-sbar-hover-b);
+}
+
+/* corner flourishes (positioned against #window-content) */
+.ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+.ice-fx.ice-tl { left: -8dp; top: -63dp; width: 81dp; height: 70dp; decorator: image(ice-corner-tl); }
+.ice-fx.ice-br { right: -8dp; bottom: -21dp; width: 77dp; height: 67dp; decorator: image(ice-corner-br); }
+.ice-fx.ice-tl.small { left: -7dp; top: -58dp; width: 65dp; height: 56dp; }
+.ice-fx.ice-br.small { right: -8dp; bottom: -18dp; width: 62dp; height: 54dp; }

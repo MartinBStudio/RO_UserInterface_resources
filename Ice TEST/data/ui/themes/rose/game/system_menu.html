@@ -1,0 +1,100 @@
+<rml>
+    <head>
+        <title>System Menu</title>
+
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+
+        <style>
+            body {
+                width: 200dp;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            /* ===== ice theme (same composition as Game Arena) ===== */
+            .window-fixed-size {
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                padding: 6dp;
+                padding-top: 40dp;
+            }
+            .window-title {
+                position: absolute;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 40dp;
+                padding-left: 52dp;
+                color: white;
+                font-size: 18dp;
+                font-weight: 820;
+                font-effect: outline(1.5dp rgb(28, 78, 138));
+                text-align: left;
+                line-height: 40dp;
+            }
+            .window-title-text { margin-left: 0dp; }
+            button.window-title-close { top: 7dp; right: 8dp; z-index: 20; }
+
+            body #window-content {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                padding: 8dp;
+                overflow: visible;
+                z-index: 0;
+            }
+
+            .sm-box {
+                display: flex;
+                flex-direction: column;
+                gap: 5dp;
+                padding: 8dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+
+            .sm-box button.default {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                height: 30dp;
+                line-height: 30dp;
+                padding: 0dp 8dp;
+                min-width: 0dp;
+                color: rgb(30, 62, 112);
+                font-weight: 820;
+                font-effect: none;
+            }
+            .sm-box button.default:not([disabled]):hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            .sm-box button.default:not([disabled]):active {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+            }
+            .sm-box button#sm-logout { color: rgb(170, 40, 40); }
+
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #ice-corner-tl { left: -7dp; top: -58dp; width: 65dp; height: 56dp; decorator: image(ice-corner-tl); }
+            #ice-corner-br { right: -8dp; bottom: -18dp; width: 62dp; height: 54dp; decorator: image(ice-corner-br); }
+        </style>
+    </head>
+
+    <body template="window-fixed-size">
+        <div class="sm-box">
+            <button class="default" onclick="open-options">Options</button>
+            <button class="default" onclick="open-support">Support</button>
+            <button class="default" onclick="character-select">Character Select</button>
+            <button class="default" id="sm-logout" onclick="logout">Logout</button>
+        </div>
+        <div class="ice-fx" id="ice-corner-tl"></div>
+        <div class="ice-fx" id="ice-corner-br"></div>
+    </body>
+</rml>

@@ -1,0 +1,31 @@
+<rml>
+    <head>
+        <title>Monster names</title>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/spritesheet_world_ui.css" />
+        <link type="text/rcss" href="../styles/spritesheet_targetmark.css" />
+        <link type="text/rcss" href="../styles/spritesheet_elementicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_gauge.css" />
+        <link type="text/rcss" href="../styles/gauge.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_gauges.css" />
+        <style>
+            .monster-nameplate { margin-top: -24dp; }
+            .monster-nameplate.detailed { margin-top: -44dp; }
+            .monster-marker:not(.generic) { position: absolute; height: 18dp; top: 50%; margin-top: -9dp; }
+            .monster-debug { position: absolute; bottom: 100%; width: 100%; font-size: 10dp; color: yellow; }
+        </style>
+    </head>
+    <body id="monster-nameplates">
+        <!-- The model binds on a child: a body-level model attaches after parsing, too late for data-for templates. -->
+        <div id="monster-nameplates-root" data-model="monster-nameplates" data-style-font-size="font_size + 'dp'">
+        <div class="monster-nameplate" data-for="plate : nameplates" data-if="plate.visible" data-class-detailed="plate.detailed"
+             data-style-left="plate.x + 'px'" data-style-top="plate.y + 'px'" data-style-transform="plate.transform" data-style-color="plate.color">
+            <div class="monster-name-line"><span class="monster-name">{{plate.name}}</span><img class="monster-marker left" data-if="plate.show_left" data-class-generic="plate.generic" data-attr-sprite="plate.left_sprite"/><img class="monster-marker right" data-if="plate.show_right" data-class-generic="plate.generic" data-class-mirrored="plate.mirrored" data-attr-sprite="plate.right_sprite"/></div>
+            <gauge class="monster-health horizontal-sm-md red" animation-enabled="false" data-if="plate.show_health" data-attr-gmax="plate.max_hp" data-attr-gvalue="plate.hp"/>
+            <div class="monster-debug" data-if="plate.show_debug">{{plate.debug_info}}</div>
+        </div>
+        </div>
+    </body>
+</rml>

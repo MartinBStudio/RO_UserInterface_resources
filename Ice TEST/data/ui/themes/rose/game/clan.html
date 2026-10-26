@@ -1,0 +1,371 @@
+<rml>
+    <head>
+        <title>Clan</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <link type="text/rcss" href="../styles/spritesheet_clanback.css" />
+        <link type="text/rcss" href="../styles/spritesheet_clancenter.css" />
+        <link type="text/rcss" href="../styles/clan_mark.css" />
+
+        <style>
+            #game-clan {
+                width: 800dp;
+                min-width: 800dp;
+                height: 480dp;
+                min-height: 480dp;
+            }
+
+            .header {
+                pointer-events: auto;
+            }
+
+            .name {
+                word-break: break-all;
+            }
+
+            tabset {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            panels {
+                flex: 1;
+            }
+
+            td {
+                text-align: left;
+                vertical-align: middle;
+            }
+
+            .clan-mark-container {
+                display: inline-block;
+                width: 40dp;
+                height: 40dp;
+                padding: 0dp;
+            }
+            clan-mark {
+                display: inline-block;
+                width: 20dp;
+                height: 20dp;
+                vertical-align: top;
+                line-height: 40dp;
+                position: relative;
+                top: 10dp;
+                left: 10dp;
+            }
+
+            .clan-info > tr {
+                padding: 2dp;
+            }
+
+            listbox-item {
+                padding: 0dp;
+            }
+            listbox-item:not([disabled])[selected] {
+                color: rgb(36, 58, 98);
+                background-color: rgb(255, 246, 214);
+            }
+            listbox-item:not([disabled]):hover {
+                color: rgb(36, 58, 98);
+                background-color: rgb(232, 242, 252);
+            }
+            listbox-item:not([disabled])[selected] .clan-member-name {
+                color: rgb(170, 100, 20);
+            }
+            listbox-item:not([disabled]):hover .clan-member-name {
+                color: rgb(30, 62, 112);
+            }
+
+            tab.default {
+                padding-left: 25dp;
+                padding-right: 25dp;
+            }
+
+            listbox {
+                display: table;
+            }
+
+            listbox-item {
+                display: table-row;
+                cursor: hand;
+            }
+            .clan-member
+            {
+            }
+            .offline {
+                color: rgb(150, 162, 180);
+            }
+            .clan-member-header {
+                padding-right: 18dp;
+                height: 1.5em;
+            }
+            .clan-member-header td:hover {
+                background: rgb(222, 236, 250);
+                cursor: hand;
+            }
+            .clan-member-icon {
+                width: 20dp;
+                height: 16dp;
+            }
+            .clan-member-name {
+                min-width: 150dp;
+            }
+            .clan-member-rank {
+                width: 110dp;
+            }
+            .clan-member-level {
+                width: 40dp;
+            }
+            .clan-member-job {
+                width: 80dp;
+            }
+            .clan-member-contribution {
+                width: 150dp;
+            }
+            .clan-member-last-seen {
+                width: 180dp;
+            }
+
+            .content-box {
+                margin: 2dp;
+                padding: 4dp;
+                padding-left: 6dp;
+            }
+
+            /* ===== ice theme ===== */
+            #game-clan .ice-fx.ice-br { bottom: -32dp; }
+            #game-clan .clan-info td:first-child, #game-clan .clan-info td str { color: rgb(90, 115, 150); }
+            #game-clan label.text { color: rgb(36, 58, 98); font-weight: 820; font-effect: none; }
+            /* value fields: white boxes (as mail) instead of the stock grey bars */
+            #game-clan label.text {
+                display: block;
+                decorator: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(196, 218, 238);
+                border-radius: 5dp;
+                padding: 2dp 6dp;
+                opacity: 1;
+            }
+            #game-clan label.text str, #game-clan label.text * { color: rgb(36, 58, 98); font-effect: none; }
+            #game-clan textarea {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 6dp;
+                padding: 4dp 6dp;
+                color: rgb(36, 58, 98);
+                font-effect: none;
+            }
+            #game-clan .clan-member-header td { color: rgb(30, 62, 112); font-weight: 820; font-effect: none; }
+            #game-clan listbox-item { color: rgb(36, 58, 98); font-effect: none; }
+            #game-clan listbox-item:nth-child(even) { background-color: rgb(255, 255, 255); }
+            #game-clan listbox-item:not(.offline) .clan-member-name { color: rgb(30, 130, 60); font-weight: 820; }
+            #game-clan .clan-member-contribution { color: rgb(170, 100, 20); }
+            /* you */
+            #game-clan listbox-item.cl-me { background-color: rgb(255, 238, 190); }
+            #game-clan listbox-item.cl-me .clan-member-name { color: rgb(170, 100, 20); font-weight: 820; }
+            /* inactive members (offline 7+ / 30+ days) */
+            #game-clan listbox-item.cl-away-week .last-seen { color: rgb(205, 125, 30); font-weight: 820; }
+            #game-clan listbox-item.cl-away-month .last-seen { color: rgb(190, 50, 50); font-weight: 820; }
+            /* footer: capacity gauge (same glossy style as HP/MP) + online count */
+            #game-clan .cl-footer { flex: 1; padding-left: 4dp; display: flex; flex-direction: row; align-items: center; gap: 10dp; }
+            #game-clan .cl-label { color: rgb(90, 115, 150); font-weight: 820; }
+            #game-clan gauge#cl-capacity { width: 190dp; height: 22dp; decorator: image(ice-gauge-bg); fill-image: ice-mp-fill; }
+            #game-clan gauge#cl-capacity > span { display: block; width: 100%; text-align: center; line-height: 22dp; font-size: 12dp; font-weight: 820; color: rgb(255, 255, 255); font-effect: outline(1.5dp rgb(16, 28, 52)); }
+            #game-clan .cl-online { color: rgb(30, 130, 60); font-weight: 820; }
+            #game-clan .cl-dot { color: rgb(60, 190, 80); }
+            #game-clan button.cl-danger { color: rgb(170, 40, 40); }
+            #game-clan button.cl-danger[disabled] { color: rgb(170, 140, 140); }
+        </style>
+        <script>
+-- Clan: count online members (rows without the 'offline' class) for the footer.
+local function count_online()
+    local total, online = 0, 0
+    local ok = pcall(function()
+        local items = document:GetElementsByTagName('listbox-item')
+        for i = 1, #items do
+            local it = items[i]
+            if it and not it:HasAttribute('data-for') then
+                total = total + 1
+                if not it:IsClassSet('offline') then online = online + 1 end
+            end
+        end
+    end)
+    local out = document:GetElementById('cl-online-count')
+    if out then
+        local text = ok and tostring(online) or '?'
+        if out.inner_rml ~= text then out.inner_rml = text end
+    end
+end
+document:AddEventListener('show', count_online)
+document:AddEventListener('mouseover', count_online)
+document:AddEventListener('click', count_online)
+count_online()
+        </script>
+    </head>
+
+    <body id="game-clan" template="window-resizeable">
+        <div data-model="clan" style="width: 100%; height: 100%">
+            <tabset>
+                <tab class="default"><str string-id="867" /></tab>
+                <panel>
+                    <div style="display: flex; width:100%; height: 100%; flex-direction: column;">
+                        <div style="flex: 1">
+                            <div class="content-box" style="padding-bottom: 0dp">
+                                <table class="clan-info">
+                                    <tr>
+                                        <td style="width: 150dp"><str string-id="861"/></td>
+                                        <td><label class="text">{{name}}</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><str string-id="46"/></td>
+                                        <td><label class="text">{{format_number(points)}}</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><str string-id="47"/></td>
+                                        <td><label class="text">{{slogan}}</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Icon</td>
+                                        <td style="vertical-align: middle; line-height: 42dp;">
+                                            <img sprite="CLAN_ICON_BG" class="clan-mark-container">
+                                                <clan-mark data-if="!is_editing_mark" data-attr-clan-id="id" data-attr-back="mark_back" data-attr-center="mark_center" data-attr-crc="mark_file_crc" />
+                                                <clan-mark data-if="is_editing_mark" id="clan-mark-preview" />
+                                            </img>
+                                            <button class="default" style="min-width: 100dp;"
+                                                data-if="can_update_mark(avatar_rank) && !is_editing_mark"
+                                                data-event-click="is_editing_mark = true"
+                                                onclick="edit_mark">Edit</button>
+                                            <button class="default"
+                                                data-if="is_editing_mark"
+                                                data-event-click="is_editing_mark = false"
+                                                onclick="save_mark"><str string-id="858" /></button>
+                                            <button class="default"
+                                                data-if="is_editing_mark"
+                                                data-event-click="is_editing_mark = false"><str string-id="859" /></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 150dp">
+                                            <div style="display: flex; flex-direction: column; height: 100%">
+                                                <div>Message of the Day</div>
+                                                <div style="flex: 1">&nbsp;</div>
+                                                <button class="default"
+                                                    data-if="can_update_motd(avatar_rank) && !is_editing_motd"
+                                                    data-event-click="is_editing_motd = true; motd_view = motd"
+                                                    onclick="edit_motd">Edit</button>
+                                                <button class="default"
+                                                    data-if="is_editing_motd"
+                                                    data-event-click="is_editing_motd = false"
+                                                    onclick="save_motd"><str string-id="858" /></button>
+                                                <button class="default"
+                                                    data-if="is_editing_motd"
+                                                    data-event-click="is_editing_motd = false; motd_view = motd"><str string-id="859" /></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <textarea style="width: 100%; height: 150dp" id="motd" maxlength="367" data-attrif-readonly="!is_editing_motd" data-value="motd_view"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="content-box" style="margin-top: 4dp;">
+                                <b>{{avatar_name}}</b>
+
+                                <div style="display: flex; flex-direction: row; align-items: center; gap: 10dp">
+                                    <img data-attr-sprite="'clan-rank-' + avatar_rank" style="width: 40dp; height: 40dp" />
+                                    <table class="clan-info" style="flex: 1">
+                                        <tr>
+                                            <td style="width: 150dp"><str string-id="50"/></td>
+                                            <td><label class="text"><str data-attr-clan-rank="avatar_rank" /></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 150dp"><str string-id="1283"/></td>
+                                            <td><label class="text">{{format_number(avatar_contribution)}}</label></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div style="width: 100%; text-align: right">
+                                    <button class="default cl-danger" data-if="can_leave(avatar_rank)" onclick="leave">Leave</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </panel>
+
+                <tab class="default"><str string-id="868" /></tab>
+                <panel>
+                    <div style="width: 100%;  height: 100%; display: flex; flex-direction: column;">
+                        <div class="content-box" style="padding-top: 0dp; padding-bottom: 0dp; margin-bottom: 0dp;">
+                            <table class="clan-member-header">
+                                <tr>
+                                    <td class="clan-member-icon" data-event-click="sort_members('channel')">&nbsp;</td>
+                                    <td class="clan-member-name" data-event-click="sort_members('name')"><str string-id="1272" /></td>
+                                    <td class="clan-member-rank" data-event-click="sort_members('rank')"><str string-id="50" /></td>
+                                    <td class="clan-member-level" data-event-click="sort_members('level')"><str string-id="313" /></td>
+                                    <td class="clan-member-job" data-event-click="sort_members('job_id')"><str string-id="813" /></td>
+                                    <td class="clan-member-contribution" data-event-click="sort_members('points_contribution')"><str string-id="1283" /></td>
+                                    <td class="clan-member-last-seen" data-event-click="sort_members('last_seen')"><str string-id="1277" /></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div style="flex: 1;" class="content-box">
+                            <div style="overflow: hidden scroll; width: 100%; height: 100%">
+                                <listbox data-event-change="selected_member_index = members.size > 0 ? ev.value : 0">
+                                    <listbox-item data-for="member, member_index : members" data-value="member_index" data-class-offline="member.channel == 255" data-class-cl-me="member.name == avatar_name" data-class-cl-away-week="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 604800 &amp;&amp; current_time - member.last_seen &lt; 2592000" data-class-cl-away-month="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 2592000">
+                                        <td class="clan-member-icon"><img data-attr-sprite="member.channel == 255 ? 'clan-member-offline' : 'clan-member-online'" /></td>
+                                        <td class="clan-member-name">{{member.name}}<br/></td>
+                                        <td class="clan-member-rank"><str data-attr-clan-rank="member.rank" /></td>
+                                        <td class="clan-member-level">{{member.level}}</td>
+                                        <td class="clan-member-job"><str data-attr-job-name="member.job_id" /></td>
+                                        <td class="clan-member-contribution">{{format_number(member.points_contribution)}}</td>
+                                        <td class="clan-member-last-seen">
+                                            <str data-attr-zone-name="member.zone_id" data-if="member.channel < 255" />
+                                            <span data-if="member.channel == 255" class="last-seen">{{format_seconds_ago(current_time - member.last_seen)}}</span>
+                                        </td>
+                                    </listbox-item>
+                                </listbox>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center">
+                            <div class="cl-footer">
+                                <span class="cl-label">Members</span>
+                                <gauge id="cl-capacity" class="horizontal-lg-lg" animation-enabled="false" data-attr-gvalue="members.size" data-attr-gmax="max_members">
+                                    <span>{{members.size}} / {{max_members}}</span>
+                                </gauge>
+                                <span class="cl-online"><span class="cl-dot">&#9679;</span> <span id="cl-online-count">-</span> online</span>
+                            </div>
+                            <button
+                                data-if="can_invite_member(avatar_rank)"
+                                data-attrif-disabled="members.size >= max_members"
+                                onclick="invite" class="default ice-primary">Invite</button>
+                            <button class="default"
+                                data-if="can_promote_member(avatar_rank)"
+                                data-attrif-disabled="selected_member_index < members.size ? members[selected_member_index].rank >= avatar_rank : true"
+                                onclick="promote_member">Promote</button>
+                            <button class="default"
+                                data-if="can_demote_member(avatar_rank)"
+                                data-attrif-disabled="selected_member_index < members.size ? members[selected_member_index].rank >= avatar_rank || members[selected_member_index].rank == 1 : true"
+                                onclick="demote_member">Demote</button>
+                            <button
+                                data-if="can_kick_member(avatar_rank)"
+                                data-attrif-disabled="selected_member_index < members.size ? members[selected_member_index].rank >= avatar_rank : true"
+                                onclick="kick_member" class="default cl-danger">Kick</button>
+                        </div>
+                    </div>
+                </panel>
+            </tabset>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

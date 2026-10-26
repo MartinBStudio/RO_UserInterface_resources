@@ -1,0 +1,201 @@
+<rml>
+
+    <head>
+        <title>Summon Gauge</title>
+
+        <link type="text/template" href="../templates/window-box.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+
+        <style>
+            .title {
+                display: inline-block;
+                cursor: drag;
+                text-align: center;
+            }
+
+            .title #summon-title {
+                visibility: hidden;
+                font-size: 12dp;
+                font-weight: 600;
+                color: yellow;
+            }
+
+            #gauge-area {
+                display: block;
+                align-items: center;
+
+                width: 150dp;
+                padding: 5dp;
+                border-radius: 3.5dp;
+                transition: background 0.4s;
+            }
+
+            #summon-gauge {
+                width: 100%;
+                margin: 0dp;
+            }
+
+            #summons {
+                display: inline-block;
+
+                margin-top: 4dp;
+                line-height: 1.5;
+                color: white;
+                font-effect: outline(1dp black);
+            }
+
+            #gauge-area:hover {
+                background: rgba(20, 20, 20, 178);
+                transition: background 0.2s;
+            }
+
+            #gauge-area:hover .summon-item {
+                opacity: 1;
+            }
+
+            #gauge-area:hover #summon-title {
+                visibility: visible;
+            }
+
+            #gauge-area:hover .despawn {
+                visibility: visible;
+            }
+
+            .summon-item {
+                padding: 5dp;
+                opacity: 0.6;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+
+                width: 140dp;
+                height: 15dp;
+
+                font-size: 10dp;
+                font-weight: 800;
+
+                line-height: 1;
+                transition: opacity 0.5s;
+                border-radius: 3dp;
+            }
+
+            .summon-item:hover {
+                background: rgba(255, 255, 0, 120);
+                transition: background 0.2s;
+                cursor: hand;
+            }
+
+            .summon-item.selected {
+                background: rgba(255, 255, 0, 120);
+            }
+
+            .summon-item .despawn {
+                visibility: hidden;
+            }
+
+            .despawntip {
+                position: relative;
+                display: inline-block;
+            }
+
+            .despawntip .despawntiptext {
+                z-index: 1;
+                position: absolute;
+                visibility: hidden;
+
+                font-size: 12dp;
+                width: 120dp;
+                background-color: rgba(0, 0, 0, 120);
+                color: #ff6f6f;
+                text-align: center;
+                padding: 5dp 0;
+                border-radius: 6px;
+
+                top: 2dp;
+                left: 25dp;
+            }
+
+            .despawntip:hover .despawntiptext {
+                visibility: visible;
+            }
+
+            @keyframes swap-colors {
+                from {
+                    color: yellow;
+                }
+
+                to {
+                    color: rgb(255, 153, 0);
+                }
+            }
+
+            .summon-tip {
+                padding-top: 5dp;
+                width: 100%;
+                text-align: center;
+                color: white;
+                font-weight: 800;
+                font-size: 12dp;
+                font-effect: outline(1dp black);
+                
+            }
+
+            .summon-tip b {
+                animation: infinite cubic-in-out 2s alternate swap-colors;
+            }
+
+            /* ===== ice theme (matches party / group bars and the dark-blue tooltips) ===== */
+            #game-summon-gauge { decorator: none; background-color: rgba(0, 0, 0, 0); }
+            #game-summon-gauge #window-content { decorator: none; background-color: rgba(0, 0, 0, 0); }
+            #gauge-area { border: 1dp rgba(0, 0, 0, 0); border-radius: 6dp; }
+            #gauge-area:hover { background: rgba(14, 32, 62, 200); border-color: rgb(150, 190, 225); }
+            .title #summon-title { color: rgb(255, 255, 255); font-weight: 820; font-effect: outline(1dp rgb(28, 78, 138)); }
+            gauge#summon-gauge { decorator: image(ice-gauge-bg); fill-image: ice-exp-fill; }
+            #summons .summon-item gauge { decorator: image(ice-gauge-bg); fill-image: ice-hp-fill; }
+            #summons { font-effect: outline(1dp rgb(8, 18, 36)); }
+            .summon-item:hover { background: rgba(150, 190, 225, 90); }
+            .summon-item.selected { background: rgba(214, 166, 60, 120); }
+            /* despawn = small red ice X */
+            .summon-item button.despawn {
+                position: absolute; right: 2dp; top: 2dp;
+                width: 14dp; height: 14dp; min-width: 14dp;
+                decorator: image(ice-close-n);
+            }
+            .summon-item button.despawn:hover { decorator: image(ice-close-h); }
+            .summon-item button.despawn:active { decorator: image(ice-close-a); }
+            .despawntip .despawntiptext {
+                background-color: rgba(14, 32, 62, 235);
+                border: 1dp rgb(150, 190, 225);
+                color: rgb(255, 150, 140);
+                font-effect: none;
+            }
+            .summon-tip { font-effect: outline(1dp rgb(8, 18, 36)); }
+        </style>
+    </head>
+
+    <body id="game-summon-gauge">
+        <div id="gauge-area" data-model="summon-gauge-data">
+            <handle class="title" move_target="#document">
+                <label id="summon-title">Summon Gauge</label>
+                <gauge id="summon-gauge" class="horizontal-sm-md pink" data-attr-gvalue="gauge.value"
+                    data-attr-gmax="gauge.max_value">
+                    <span><label id="value"/>/<label id="max"/></span>
+                </gauge>
+            </handle>
+
+            <div id="summons" data-for="summon : gauge.summons">
+                <div data-attr-id="summon.obj_idx" class="summon-item" data-class-selected="summon.obj_idx == gauge.selected_summon_idx" onclick="select">
+                    <span>{{summon.name}}</span>
+                    <gauge data-if="summon.is_near" class="horizontal-sm-sm red" data-attr-gvalue="summon.hp" data-attr-gmax="summon.max_hp"></gauge>
+                    <button data-attr-id="summon.obj_idx" class="window-title-close despawn despawntip" onclick="despawn">
+                        <span class="despawntiptext">Despawn summon</span>
+                    </button>
+                </div>
+            </div>
+
+            <div data-if="gauge.selected_summon_idx > 0" class="summon-tip">
+                <span>Press <b>[Ctrl]</b> + <b>[Left Click]</b> to move your summon.</span>
+            </div>
+        </div>
+    </body>
+</rml>

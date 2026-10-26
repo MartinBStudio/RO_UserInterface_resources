@@ -1,0 +1,318 @@
+<rml>
+
+    <head>
+        <title>Reinforcement</title>
+
+        <link type="text/template" href="../templates/window-small.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            body {
+                width: 300dp;
+            }
+
+            .title {
+                margin: 5dp;
+            }
+
+            .slot-custom {
+                display: block;
+                width: 100%;
+                height: 100%;
+                decorator: linear-gradient(to top right, red, white, blue);
+            }
+
+            #main-container {
+                display: flex;
+                flex-direction: column;
+                margin: 5dp;
+                gap: 5dp;
+            }
+
+            .sub-container {
+                padding: 5dp;
+            }
+
+            .inner-container {
+                margin: 5dp;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .material-container {
+                margin: 5dp;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+
+            .enhancer-container {
+                margin: 5dp;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 15dp;
+            }
+
+            .zulie-container {
+                margin: 5dp;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .risk-container {
+                margin: 5dp;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .reinforce-container {
+                margin: 5dp;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            label.item-name {
+                text-align: center;
+                margin-left: 5dp;
+                margin-right: 11dp;
+                flex: 1;
+            }
+
+            label.custom {
+                padding-top: 3dp;
+                padding-bottom: 1dp;
+                font-size: 12dp;
+                font-effect: outline(1dp black);
+                color: #ff0;
+            }
+
+            span.sub-title {
+                font-weight: 800;
+                color: rgb(252, 252, 193);
+            }
+
+            .warn-text {
+                margin: 5dp;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .warn-container {
+                margin: 5dp;
+                border-radius: 5dp;
+                background-color: #0000008b;
+                border-width: 1dp;
+                border-color: rgb(130, 130, 130);
+            }
+
+            .color-red {
+                color: rgb(255, 0, 0) !important;
+            }
+
+            option:disabled {
+                color: gray;
+            }
+
+            select#risk-level {
+                width: 120dp;
+            }
+
+            select option:not(option[disabled]):hover>* {
+                color: #f39c12;
+            }
+
+            /* ===== ice theme ===== */
+            #game-reinforcement .title { margin: 0dp; }
+            /* no template here, so the main container is the cream panel (and anchors the flourishes) */
+            #game-reinforcement #main-container {
+                position: relative;
+                margin: 0dp;
+                padding: 8dp;
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                color: rgb(36, 58, 98);
+                font-effect: none;
+            }
+            #game-reinforcement span.sub-title { color: rgb(30, 62, 112); }
+            #game-reinforcement .sub-container .inner-container { width: auto; }
+            #game-reinforcement label.item-name {
+                display: block;
+                padding: 4dp 6dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 6dp;
+                color: rgb(30, 62, 112);
+                font-weight: 820;
+                decorator: none;
+            }
+            #game-reinforcement label.custom { color: rgb(170, 100, 20); font-effect: none; font-weight: 820; font-size: 13dp; }
+            #game-reinforcement .color-red { color: rgb(190, 50, 40); }
+            #game-reinforcement .warn-container {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(196, 218, 238);
+                border-radius: 6dp;
+                color: rgb(36, 58, 98);
+            }
+            #game-reinforcement .warn-text span { text-align: center; }
+            /* in-text colours tuned for the light panel */
+            #game-reinforcement fc_gold { color: rgb(170, 100, 20); font-effect: none; }
+            #game-reinforcement fc_green { color: rgb(40, 140, 60); font-effect: none; }
+            #game-reinforcement fc_red { color: rgb(190, 50, 40); font-effect: none; }
+            #game-reinforcement fc_gray { color: rgb(120, 140, 170); font-effect: none; }
+            #game-reinforcement .tooltiptext fc_yellow { color: rgb(255, 224, 140); }
+            #game-reinforcement .reinforce-container button.default { min-width: 140dp; }
+            #game-reinforcement .ice-fx.ice-br.small { right: -7dp; }
+
+            /* zulie: close-button style Z icon (atlas2) */
+            body img[sprite="ice-zulie-n"] { width: 20dp; min-width: 20dp; height: 20dp; }
+            body button.zulie { width: 20dp; min-width: 20dp; height: 20dp; decorator: image(ice-zulie-n); background-color: rgba(0, 0, 0, 0); border-width: 0dp; }
+            body button.zulie:hover { decorator: image(ice-zulie-h); }
+            body button.zulie:active { decorator: image(ice-zulie-a); }
+            body button.zulie:disabled, body button.zulie[disabled] { decorator: image(ice-zulie-n); }
+            #game-reinforcement img[sprite="ice-percent"] { width: 20dp; height: 20dp; margin-right: 4dp; }
+        </style>
+    </head>
+
+    <body id="game-reinforcement" class="window-fixed-size">
+        <handle class="window-title title" move_target="#document" id="window-title-text"></handle>
+        <button class="window-title-close title" onclick="close"></button>
+
+        <div id="main-container" data-model="reinforcement">
+            <!-- Target Item -->
+            <div class="window-pane sub-container">
+                <span class="sub-title">
+                    <str string-id="1304" />
+                </span>
+                <div class="inner-container">
+                    <item-slot class="default" id="target-item" />
+                    <label class="textarea item-name">{{target_item.name}}</label>
+                </div>
+            </div>
+
+            <!-- Materials -->
+            <div class="window-pane sub-container">
+                <span class="sub-title">
+                    <str string-id="1305" />
+                </span>
+                <div class="material-container">
+                    <item-slot class="default" id="material-1" />
+                    <item-slot class="default" id="material-2" />
+                    <item-slot class="default" id="material-3" />
+                    <item-slot class="default" id="material-4" />
+                </div>
+                <div class="zulie-container">
+                    <span>+ </span>
+                    <button class="zulie" disabled></button>
+                    <label class="custom">
+                        <span data-class-color-red="!has_enough_money && require_money > 0">{{
+                            format_money(require_money) }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Enhancers -->
+            <div class="window-pane sub-container" hidden="true">
+                <span class="sub-title">
+                    <str string-id="1313" />
+                </span>
+                <div class="enhancer-container">
+                    <item-slot class="default" id="enhancer-1" />
+                </div>
+            </div>
+
+            <!-- Reinforced Item -->
+            <div class="window-pane sub-container">
+                <span class="sub-title">
+                    <str string-id="1306" />
+                </span>
+                <div class="inner-container">
+                    <item-slot class="default" id="enhanced-item" data-style-visibility="is_ready ? 'visible' : 'hidden'" />
+                    <label class="textarea item-name">{{is_ready ? target_item.name : ''}}</label>
+                </div>
+            </div>
+
+            <!-- Risk Level -->
+            <div class="risk-container">
+                <span class="sub-title">
+                    <fc_gold>Risk Level </fc_gold>
+                    <div class="tooltip" style="font-size: 12dp;">
+                        <fc_gray>(?)</fc_gray>
+                        <span class="tooltiptext">
+                            <fc_yellow>Increase your success rate by taking more risks.</fc_yellow>
+                        </span>
+                    </div>
+                </span>
+                <select id="risk-level" data-value="risk_level" onchange="set_risk_level" data-attrif-disabled="!is_ready">
+                    <option value="0" selected>
+                        <fc_green>No Risk</fc_green>
+                    </option>
+                    <option value="1" data-attrif-disabled="base_success_rate > 75">
+                        <fc_gold>Medium (+15%)</fc_gold>
+                    </option>
+                    <option value="2" data-attrif-disabled="base_success_rate > 60">
+                        <fc_red>High (+30%)</fc_red>
+                    </option>
+                </select>
+
+                <div class="warn-container">
+                    <div class="warn-text" data-if="risk_level == 0 && is_ready">
+                        <img id="suc-rate" sprite="warning-green-icon" width="16dp" height="16dp" />
+                        <span>Normal success rate, the item will stay the same in case of failure</span>
+                    </div>
+                    <div class="warn-text" data-if="risk_level == 1 && is_ready">
+                        <img id="suc-rate" sprite="warning-icon" width="16dp" height="16dp" />
+                        <span>Medium success rate, but the item durability will <b>DEGRADE</b> in case of failure.</span>
+                    </div>
+                    <div class="warn-text" data-if="risk_level == 2 && is_ready">
+                        <img id="suc-rate" sprite="warning-red-icon" width="16dp" height="16dp" />
+                        <span>Highest success rate, but the item will <b>BREAK</b> in case of failure.</span>
+                    </div>
+
+                    <div class="warn-text">
+                        <span style="font-size: 12dp; color: rgb(170, 100, 20);" data-if="risk_level == 0 && base_success_rate < 75">
+                            <b>Note: </b>Higher risk levels can only be applied if total success rate remains under <b>90%</b>.
+                        </span>
+                        <span style="font-size: 12dp; color: rgb(40, 140, 60);" data-if="risk_level == 0 && base_success_rate >= 75">
+                            <b>Note: </b>Risk level ignored because total success rate is greater than or equal to <b>90%</b>.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reinforce -->
+            <div class="reinforce-container">
+                <div class="zulie-container">
+                    <img id="suc-rate" sprite="ice-percent" />
+                    <label class="custom">{{success_rate}}%</label>
+                </div>
+
+                <button class="default accept ice-primary" onclick="reinforce" data-attrif-disabled="!is_ready">
+                    <str string-id="1307" />
+                </button>
+            </div>
+            <div class="ice-fx ice-tl small"></div>
+            <div class="ice-fx ice-br small"></div>
+        </div>
+    </body>
+</rml>

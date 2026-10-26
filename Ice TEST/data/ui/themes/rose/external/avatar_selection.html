@@ -1,0 +1,412 @@
+<rml>
+    <head>
+        <title>Avatar Selection</title>
+
+        <link type="text/template" href="../templates/window-fixed.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+            }
+
+            #avatar-selection-window
+            {
+                width: 270dp;
+                height: 80%;
+                right: 20dp;
+                margin: auto 0;
+                display: flex;
+                position: absolute;
+            }
+
+            button
+            {
+                width: 100%;
+            }
+
+            scrollbarvertical
+            {
+                width: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-right: 0;
+            }
+
+            /* character list scrollbar: same glossy ice thumb + inset track as the other windows */
+            #avatar-list scrollbarvertical { width: 14dp; margin: 0dp; }
+            #avatar-list scrollbarvertical slidertrack {
+                decorator: tiled-vertical(ice-strack-t, ice-strack-c, ice-strack-b);
+                image-color: rgb(255, 255, 255);
+                margin-left: 3dp;
+                width: 8dp;
+            }
+            #avatar-list scrollbarvertical sliderbar {
+                decorator: tiled-vertical(ice-sbar-t, ice-sbar-c, ice-sbar-b);
+                margin-left: 2dp;
+                width: 10dp;
+                min-height: 28dp;
+            }
+            #avatar-list scrollbarvertical sliderbar:hover,
+            #avatar-list scrollbarvertical sliderbar:active {
+                decorator: tiled-vertical(ice-sbar-hover-t, ice-sbar-hover-c, ice-sbar-hover-b);
+            }
+            #avatar-list scrollbarvertical sliderarrowdec,
+            #avatar-list scrollbarvertical sliderarrowinc { width: 0dp; height: 0dp; decorator: none; }
+
+            #window-content
+            {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            #avatar-list
+            {
+                display: block;
+                width: 95%;
+                overflow-y: scroll;
+                flex: 2;
+                margin-right: 0dp;
+            }
+
+            #sort-container
+            {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 95%;
+                margin: 3dp 0 6dp 0;
+                z-index: 3;
+            }
+
+            #sort-container select
+            {
+                flex: 1;
+                width: auto;
+            }
+
+            #sort-container span
+            {
+                margin-right: 8dp;
+                color: rgb(36, 58, 98);
+                font-weight: 820;
+            }
+
+            #button-container
+            {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 180dp;
+                margin: 6dp 0 2dp 0;
+                gap: 4dp;
+            }
+
+            .enter-btn
+            {
+                position: absolute;
+                width: 240dp;
+                bottom: 2%;
+                left: 50%;
+                margin-left: -120dp;
+            }
+
+            /* ===== ice theme ===== */
+
+            /* window frame + title */
+            #avatar-selection-window.window-fixed-size {
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                padding: 6dp;
+                padding-top: 40dp;
+            }
+            #avatar-selection-window .window-title {
+                position: absolute;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 40dp;
+                padding-left: 60dp;
+                color: white;
+                font-size: 20dp;
+                font-weight: 820;
+                font-effect: outline(1.5dp rgb(28, 78, 138));
+                text-align: left;
+                line-height: 40dp;
+            }
+            #avatar-selection-window #window-content {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                padding: 10dp 8dp;
+                color: rgb(36, 58, 98);
+            }
+
+            /* light ice-blue content box, same as the Game Arena's .content-box */
+            .cs-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                flex: 2;
+                min-height: 0;
+                box-sizing: border-box;
+                padding: 8dp 6dp 6dp 6dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+            .cs-box #sort-container, .cs-box #avatar-list { width: 100%; }
+
+            /* corner flourishes */
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #cs-corner-tl { left: -1dp; top: -23dp; width: 81dp; height: 70dp; decorator: image(ice-corner-tl); }
+            #cs-corner-br { right: -2dp; bottom: -16dp; width: 77dp; height: 67dp; decorator: image(ice-corner-br); }
+
+            /* character cards */
+            #avatar-list listbox-item.avatar-item {
+                width: 100%;
+                height: 58dp;
+                box-sizing: border-box;
+                padding: 7dp 10dp 6dp 14dp;
+                margin-bottom: 6dp;
+                line-height: 14dp;
+                decorator: tiled-box(
+                    ice-card-tl, ice-card-t, ice-card-tr,
+                    ice-card-l,  ice-card-c, ice-card-r,
+                    ice-card-bl, ice-card-b, ice-card-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                color: rgb(36, 58, 98);
+            }
+            #avatar-list listbox-item.avatar-item:not([selected]):hover {
+                decorator: tiled-box(
+                    ice-card-hover-tl, ice-card-hover-t, ice-card-hover-tr,
+                    ice-card-hover-l,  ice-card-hover-c, ice-card-hover-r,
+                    ice-card-hover-bl, ice-card-hover-b, ice-card-hover-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                color: rgb(36, 58, 98);
+            }
+            #avatar-list listbox-item.avatar-item[selected] {
+                decorator: tiled-box(
+                    ice-card-sel-tl, ice-card-sel-t, ice-card-sel-tr,
+                    ice-card-sel-l,  ice-card-sel-c, ice-card-sel-r,
+                    ice-card-sel-bl, ice-card-sel-b, ice-card-sel-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                color: rgb(36, 58, 98);
+            }
+            /* selected card: inner gold glow (slow breathe) + a gold pulse travelling right -> left along the edges */
+            #avatar-list listbox-item.avatar-item { position: relative; overflow: hidden; }
+            .cs-fx { display: none; position: absolute; pointer-events: none; z-index: 1; }
+            #avatar-list listbox-item.avatar-item[selected] .cs-fx { display: block; }
+            .cs-glow {
+                left: 0dp; top: 0dp; width: 100%; height: 100%;
+                decorator: tiled-box(
+                    ice-cglow-tl, ice-cglow-t, ice-cglow-tr,
+                    ice-cglow-l,  ice-cglow-c, ice-cglow-r,
+                    ice-cglow-bl, ice-cglow-b, ice-cglow-br
+                );
+            }
+            #avatar-list listbox-item.avatar-item[selected] .cs-glow { animation: 2.4s sine-in-out infinite alternate cs-breathe; }
+            @keyframes cs-breathe { from { opacity: 0.55; } to { opacity: 1; } }
+            .cs-pulse { width: 32%; height: 10dp; left: 68%; opacity: 0; }
+            .cs-pulse.top { top: 0dp; decorator: image(ice-pulse-t); }
+            .cs-pulse.bot { bottom: 0dp; decorator: image(ice-pulse-b); }
+            #avatar-list listbox-item.avatar-item[selected] .cs-pulse { animation: 4.5s sine-in-out infinite cs-pulse; }
+            /* stays inside the card (the engine doesn't clip to it): fade in at the right edge, out at the gold bar */
+            @keyframes cs-pulse {
+                0% { left: 68%; opacity: 0; }
+                12% { opacity: 1; }
+                52% { opacity: 1; }
+                64% { left: 0%; opacity: 0; }
+                100% { left: 0%; opacity: 0; }
+            }
+
+            .avatar-name
+            {
+                line-height: 17dp;
+                font-size: 15dp;
+                font-weight: 820;
+                color: rgb(30, 62, 112);
+            }
+            .avatar-lv
+            {
+                font-size: 12dp;
+                font-weight: 820;
+                color: rgb(170, 100, 20);
+                margin-right: 5dp;
+            }
+            .avatar-job
+            {
+                font-size: 12dp;
+                color: rgb(36, 58, 98);
+            }
+            .avatar-map
+            {
+                font-size: 11dp;
+                color: rgb(98, 124, 156);
+            }
+            .delete, .delete b
+            {
+                font-size: 11dp;
+                font-weight: 820;
+                color: rgb(200, 70, 30);
+                font-effect: none;
+            }
+
+            /* buttons */
+            #external-avatar-selection button.default {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                height: 30dp;
+                line-height: 30dp;
+                padding: 0dp 8dp;
+                color: rgb(30, 62, 112);
+                font-effect: none;
+            }
+            #external-avatar-selection button.default:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            #external-avatar-selection button.default:disabled,
+            #external-avatar-selection button.default[disabled] {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                opacity: 0.45;
+            }
+            #external-avatar-selection #up,
+            #external-avatar-selection #down {
+                width: 100%;
+                height: 20dp;
+                line-height: 20dp;
+                margin: 2dp 0 6dp 0;
+            }
+            #external-avatar-selection #down { margin: 2dp 0 2dp 0; }
+            #external-avatar-selection #delete-avatar { color: rgb(170, 40, 40); }
+
+            /* Enter World: big gold button with its own little flourishes */
+            #external-avatar-selection button.enter-btn {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+                height: 46dp;
+                line-height: 46dp;
+                font-size: 20dp;
+                color: rgb(92, 50, 8);
+                overflow: visible;
+            }
+            #external-avatar-selection button.enter-btn:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            .enter-fx { position: absolute; pointer-events: none; }
+            #enter-fx-tl { left: -14dp; top: -18dp; width: 52dp; height: 45dp; decorator: image(ice-corner-tl); }
+            #enter-fx-br { right: -14dp; bottom: -14dp; width: 50dp; height: 43dp; decorator: image(ice-corner-br); }
+
+            /* sort dropdown arrow = blue ice dropdown button (same as the chat) */
+            #external-avatar-selection select selectarrow {
+                width: 18dp; height: 18dp; margin-top: 2dp; margin-right: 2dp;
+                decorator: image(ice-dd-n);
+            }
+            #external-avatar-selection select:hover selectarrow { decorator: image(ice-dd-h); }
+            #external-avatar-selection select selectarrow:active { decorator: image(ice-dd-a); }
+
+            /* sort dropdown */
+            #external-avatar-selection select {
+                decorator: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 5dp;
+                color: rgb(30, 62, 112);
+                font-size: 13dp;
+            }
+            #external-avatar-selection select selectvalue:hover { color: rgb(170, 100, 20); }
+            #external-avatar-selection select selectbox {
+                background-color: rgb(255, 255, 255);
+                border-bottom: 1dp rgb(150, 190, 225);
+                border-left: 1dp rgb(150, 190, 225);
+                border-right: 1dp rgb(150, 190, 225);
+            }
+            #external-avatar-selection select option {
+                color: rgb(30, 62, 112);
+                border-top: 1dp rgb(220, 232, 244);
+            }
+            #external-avatar-selection select option:hover {
+                background-color: rgb(222, 238, 252);
+                color: rgb(170, 100, 20);
+            }
+            #external-avatar-selection select selectbox option[selected] { color: rgb(170, 100, 20); }
+        </style>
+    </head>
+
+    <body id="external-avatar-selection" onkeyup="navigate">
+        <div id="avatar-selection-window" class="window-fixed-size">
+            <handle class="window-title" style="cursor: default">Characters</handle>
+
+            <div id="window-content" data-model="uiavtselection-data">
+                <div class="cs-box">
+                <div id="sort-container">
+                    <span>Sort</span>
+                    <select data-value="sort_order" data-event-change="sort_changed()">
+                        <option value="0" selected>Last Login</option>
+                        <option value="1">Name</option>
+                        <option value="2">Level</option>
+                        <option value="3">Job</option>
+                    </select>
+                </div>
+
+                <button id="up" onclick="up" class="default" disabled>
+                    <icon class="arrow-up"></icon>
+                </button>
+
+                <listbox id="avatar-list" button_up="up" button_down="down">
+                    <listbox-item
+                        data-for="avatar, avatar_index : avatars"
+                        data-attr-id="avatar.name"
+                        data-event-click="select_avatar(avatar_index)"
+                        data-event-dblclick="enter_avatar(avatar_index)"
+                        class="avatar-item"
+                    >
+                        <span class="avatar-name">{{avatar.name}}</span><br />
+                        <span class="avatar-lv">Lv {{avatar.level}}</span><span class="avatar-job">{{avatar.job}}</span><br />
+                        <span class="avatar-map" data-if="avatar.delete_time == 0">{{avatar.map}}</span>
+                        <span data-if="avatar.delete_time > 0" class="delete">
+                            <b>{{format_time(avatar.delete_time)}}</b>
+                        </span>
+                        <div class="cs-fx cs-glow"></div>
+                        <div class="cs-fx cs-pulse top"></div><div class="cs-fx cs-pulse bot"></div>
+                    </listbox-item>
+                </listbox>
+
+                <button id="down" onclick="down" class="default" disabled>
+                    <icon class="arrow-down"></icon>
+                </button>
+                </div>
+
+                <div id="button-container">
+                    <button class="default" onclick="create-avt">
+                        <b>Create Character</b>
+                    </button>
+                    <button class="default" id="delete-avatar" onclick="delete-avt">
+                        <b>Delete Character</b>
+                    </button>
+                    <button class="default" onclick="back"><b>Back</b></button>
+                </div>
+            </div>
+
+            <div class="ice-fx" id="cs-corner-tl"></div>
+            <div class="ice-fx" id="cs-corner-br"></div>
+        </div>
+
+        <button id="enter-avatar" onclick="enter-avt" class="default enter-btn">
+            <b>Enter World</b>
+            <div class="enter-fx" id="enter-fx-tl"></div>
+            <div class="enter-fx" id="enter-fx-br"></div>
+        </button>
+    </body>
+</rml>

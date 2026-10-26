@@ -1,0 +1,101 @@
+<rml>
+<head>
+    <title>Group Manager</title>
+    <link type="text/template" href="../templates/window-fixed-size.html" />
+    <link type="text/rcss" href="../styles/components.css" />
+    <link type="text/rcss" href="../styles/ice_sprites.css" />
+    <link type="text/rcss" href="../styles/ice_window.css" />
+    <style>
+        body { width: 740dp; max-width: 94vw; }
+        .group-columns { display: flex; gap: 10dp; height: 480dp; max-height: 70vh; min-height: 280dp; }
+        .group-roster { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .group-directory { width: 270dp; flex: 0 0 37%; min-width: 215dp; display: flex; flex-direction: column; }
+        .group-heading { display: flex; justify-content: space-between; padding: 8dp; flex-shrink: 0; }
+        .group-heading .ui-section-title { margin: 0; }
+        .group-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+        .group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .group-job { width: 78dp; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .group-level { width: 32dp; text-align: right; flex-shrink: 0; }
+        .group-leader { width: 12dp; color: yellow; flex-shrink: 0; }
+        .group-row { cursor: hand; }
+        .group-empty { padding: 24dp 8dp; }
+        .group-actions { display: flex; flex-wrap: wrap; gap: 6dp; padding: 8dp; flex-shrink: 0; }
+        .group-actions button { flex: 1 0 46%; min-width: 150dp; font-size: 13dp; padding: 4dp 8dp; white-space: nowrap; }
+        .group-invite-entry { display: flex; gap: 6dp; padding: 0 8dp 8dp; flex-shrink: 0; }
+        .group-invite-entry input { flex: 1; width: 100dp; min-width: 0; }
+        .group-invite-entry button, .group-directory-row button { min-width: 58dp; font-size: 12dp; }
+        .group-directory-row { display: flex; align-items: center; gap: 6dp; padding: 6dp 8dp; font-size: 13dp; }
+        .group-directory-label { padding: 8dp; margin-bottom: 0; }
+        .group-help { padding: 8dp; }
+
+        /* ===== ice theme ===== */
+        #group-manager #window-content { overflow: visible; }
+        #group-manager .group-roster, #group-manager .group-directory { padding: 6dp; }
+        #group-manager .gm-count { color: rgb(170, 100, 20); font-weight: 820; }
+        #group-manager .ui-status { color: rgb(110, 130, 160); font-effect: none; }
+        #group-manager .gm-columns { min-height: 22dp; padding: 0 9dp; font-size: 12dp; font-weight: 820; color: rgb(90, 115, 150); }
+        #group-manager .gm-columns:hover { background-color: rgba(0, 0, 0, 0); }
+        /* member + invite rows as white cards (Arena style) */
+        #group-manager .group-row, #group-manager .group-directory-row {
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(206, 224, 242);
+            border-radius: 6dp;
+            margin: 3dp 0;
+            padding: 0 8dp;
+            color: rgb(36, 58, 98);
+        }
+        #group-manager .group-directory-row { padding: 5dp 8dp; }
+        #group-manager .group-row:hover, #group-manager .group-directory-row:hover {
+            background-color: rgb(240, 247, 255);
+            border-color: rgb(120, 175, 225);
+        }
+        #group-manager .group-row.selected {
+            background-color: rgb(255, 246, 214);
+            border-color: rgb(214, 166, 60);
+            color: rgb(36, 58, 98);
+        }
+        #group-manager .group-leader { color: rgb(214, 150, 30); }
+        #group-manager .group-level, #group-manager .group-directory-row span { color: rgb(90, 115, 150); }
+        #group-manager .group-directory-row .group-name { color: rgb(36, 58, 98); font-weight: 820; }
+        #group-manager .group-directory-label { color: rgb(30, 62, 112); font-size: 13dp; padding: 8dp 2dp 4dp; }
+        #group-manager .group-empty { color: rgb(110, 130, 160); }
+        #group-manager button.gm-danger { color: rgb(170, 40, 40); }
+        #group-manager button.gm-danger[disabled] { color: rgb(170, 140, 140); }
+    </style>
+</head>
+<body template="window-fixed-size" id="group-manager">
+    <div data-model="game-arena" class="group-columns">
+        <div class="group-roster content-box">
+            <div class="group-heading"><span class="ui-section-title"><str string-id="990">Members</str></span><span class="gm-count">{{members.size}} in group</span></div>
+            <div class="ui-list-row gm-columns"><span class="group-leader" /><span class="group-name"><str string-id="992">Name</str></span><span class="group-job"><str string-id="993">Class</str></span><span class="group-level">Lv</span></div>
+            <div id="arena-member-list" class="group-scroll">
+                <div class="group-empty ui-status" data-if="!has_group"><str string-id="1063">Not in a group</str><br/>Invite a player to start a group.</div>
+                <div class="ui-list-row group-row" data-for="member : members" data-attr-id="'arena-member-' + member.tag" data-attr-onclick="'member:' + member.tag" data-class-selected="selected_member == member.tag">
+                    <span class="group-leader"><span data-if="member.leader">&#9733;</span></span><span class="group-name">{{member.name}}</span><span class="group-job">{{member.job}}</span><span class="group-level">{{member.level}}</span>
+                </div>
+            </div>
+            <div class="group-actions ui-footer">
+                <button id="arena-promote" class="default" onclick="promote" data-attrif-disabled="!can_promote"><str string-id="997">Promote</str></button>
+                <button id="arena-kick" class="default" onclick="kick" data-attrif-disabled="!can_kick">{{kick_text}}</button>
+                <button id="arena-leave" class="default" onclick="leave" data-attrif-disabled="!can_leave">{{leave_text}}</button>
+                <button id="arena-disband" class="default gm-danger" onclick="disband" data-attrif-disabled="!can_disband"><str string-id="998">Disband</str></button>
+            </div>
+        </div>
+        <div class="group-directory content-box">
+            <div class="group-heading ui-section-title"><str string-id="991">Invite</str></div>
+            <div class="group-invite-entry"><input id="arena-invite-name" type="text" maxlength="32" placeholder="Player name..." data-value="invite_name" /><button id="arena-send-invite" class="default ui-compact ice-primary" onclick="invite" data-attrif-disabled="!can_invite || invite_name == ''"><str string-id="1000">Invite</str></button></div>
+            <div class="group-help ui-status" data-if="!can_invite">Invites are available while solo or leading a group, outside a game.</div>
+            <div class="group-scroll" id="arena-directory-list">
+                <div class="group-directory-label ui-section-title">Friends online</div>
+                <div class="group-help ui-status" data-if="friends.size == 0">No friends online</div>
+                <div class="group-directory-row" data-for="person : friends"><span class="group-name">{{person.name}}</span><span data-if="person.level > 0">Lv {{person.level}}</span><button class="default ui-compact" data-attr-id="'arena-friend-' + person.tag" data-attr-onclick="'friend:' + person.tag" data-attrif-disabled="!can_invite">Invite</button></div>
+                <div class="group-directory-label ui-section-title">Clan members online</div>
+                <div class="group-help ui-status" data-if="clan.size == 0">No clan members online</div>
+                <div class="group-directory-row" data-for="person : clan"><span class="group-name">{{person.name}}</span><span data-if="person.level > 0">Lv {{person.level}}</span><button class="default ui-compact" data-attr-id="'arena-clan-' + person.tag" data-attr-onclick="'clan-member:' + person.tag" data-attrif-disabled="!can_invite">Invite</button></div>
+            </div>
+        </div>
+    </div>
+    <div class="ice-fx ice-tl"></div>
+    <div class="ice-fx ice-br"></div>
+</body>
+</rml>

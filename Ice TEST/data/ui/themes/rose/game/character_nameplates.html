@@ -1,0 +1,22 @@
+<rml>
+    <head>
+        <title>Character names</title>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/spritesheet_world_ui.css" />
+        <link type="text/rcss" href="../styles/spritesheet_overlayicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_clanback.css" />
+        <link type="text/rcss" href="../styles/spritesheet_clancenter.css" />
+        <link type="text/rcss" href="../styles/ice_nameplate_gauges.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <style>
+            #character-nameplates-root, character-nameplates { display: block; width: 100%; height: 100%; }
+            character-nameplates { line-height: 1.4; }
+        </style>
+    </head>
+    <body id="character-nameplates">
+        <!-- One styled layer; character text and sprites are cached native RmlUi geometry. -->
+        <div id="character-nameplates-root" data-model="character-nameplates" data-style-font-size="font_size + 'dp'">
+            <character-nameplates id="character-nameplates-layer"/>
+        </div>
+    </body>
+</rml>

@@ -1,0 +1,55 @@
+<rml>
+    <head>
+        <title>Party Options</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <style>
+            body { width: 340dp; max-width: 92vw; }
+            .option-section { margin-bottom: 8dp; }
+            .ui-section-title { display: block; }
+
+            /* ===== ice theme ===== */
+            #party-options #window-content { padding: 10dp 10dp 8dp 10dp; }
+            #party-options .ui-section-title { font-weight: 820; margin-bottom: 4dp; }
+            #party-options .ui-choice-row { color: rgb(36, 58, 98); }
+            #party-options input[disabled] { opacity: 0.5; }
+            #party-options .ui-detail-value { color: rgb(170, 100, 20); font-weight: 820; font-effect: none; }
+            #party-options .ui-range-setting label { color: rgb(36, 58, 98); }
+            #party-options .ui-range-setting { margin-top: 6dp; }
+            #party-options .ui-actions { padding-top: 8dp; }
+            #party-options #cancel { color: rgb(170, 40, 40); }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="party-options" data-model="party-options">
+        <div class="content-box ui-section option-section">
+            <str class="ui-section-title" string-id="612">Experience Distribution</str>
+            <label class="ui-choice-row"><input type="radio" id="exp-equal" name="exp-mode" value="0" data-checked="exp_mode" onchange="exp-mode" data-attrif-disabled="!can_edit_rules" /><str string-id="493">Equal</str></label>
+            <label class="ui-choice-row"><input type="radio" id="exp-level" name="exp-mode" value="1" data-checked="exp_mode" onchange="exp-mode" data-attrif-disabled="!can_edit_rules" /><str string-id="492">Level-based</str></label>
+        </div>
+        <div class="content-box ui-section option-section">
+            <str class="ui-section-title" string-id="489">Item Pickup Rights</str>
+            <label class="ui-choice-row"><input type="radio" id="item-free" name="item-mode" value="0" data-checked="item_mode" onchange="item-mode" data-attrif-disabled="!can_edit_rules" /><str string-id="491">Free for all</str></label>
+            <label class="ui-choice-row"><input type="radio" id="item-order" name="item-mode" value="1" data-checked="item_mode" onchange="item-mode" data-attrif-disabled="!can_edit_rules" /><str string-id="490">In order</str></label>
+        </div>
+        <div class="content-box ui-section option-section">
+            <span class="ui-section-title">Display</span>
+            <label class="ui-choice-row"><input type="checkbox" id="show-member-hp" data-checked="show_member_hp" onchange="show-member-hp" /><str string-id="610">Show party member HP gauges</str></label>
+            <div class="ui-range-setting">
+                <label for="background-opacity"><span>Background opacity</span><span class="ui-detail-value">{{background_opacity}}%</span></label>
+                <input id="background-opacity" type="range" min="0" max="100" step="5" data-value="background_opacity" onchange="appearance" />
+            </div>
+            <div class="ui-range-setting">
+                <label for="party-scale"><span>Scale</span><span class="ui-detail-value">{{scale_percent}}%</span></label>
+                <input id="party-scale" type="range" min="55" max="160" step="5" data-value="scale_percent" onchange="appearance" />
+            </div>
+        </div>
+        <div class="ui-actions ui-footer">
+            <button class="default ice-primary" id="confirm" onclick="confirm"><str string-id="858">Confirm</str></button>
+            <button class="default" id="cancel" onclick="close"><str string-id="859">Cancel</str></button>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

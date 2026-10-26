@@ -1,0 +1,203 @@
+<rml>
+    <head>
+        <title>Quest List</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            #game-quest-list
+            {
+                width: 430dp;
+                height: 480dp;
+                min-width: 340dp;
+                min-height: 457dp;
+            }
+
+            /* ===== ice theme (Game Arena composition) ===== */
+            #game-quest-list .ql-root { width: 100%; height: 100%; display: flex; flex-direction: column; row-gap: 6dp; }
+
+            /* header: two counters as chips */
+            .ql-head.content-box { display: flex; flex-direction: row; align-items: center; column-gap: 8dp; padding: 6dp 8dp; }
+            .ql-chip {
+                display: flex; flex-direction: row; align-items: center; column-gap: 6dp;
+                padding: 2dp 10dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 10dp;
+                font-size: 13dp;
+                color: rgb(90, 115, 150);
+                font-weight: 820;
+            }
+            .ql-chip .num-quests { color: rgb(190, 130, 20); }
+            .ql-chip .num-daily { color: rgb(40, 140, 60); }
+
+            /* quest list: white cards, selected = gold */
+            .ql-list.content-box { padding: 4dp; }
+            .ql-scroll { overflow: hidden auto; height: 128dp; }
+            #game-quest-list listbox-item {
+                display: block;
+                padding: 3dp 6dp;
+                margin: 0 0 3dp 0;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+                color: rgb(36, 58, 98);
+                font-size: 13dp;
+            }
+            #game-quest-list listbox-item:hover {
+                background-color: rgb(240, 247, 255);
+                border-color: rgb(120, 175, 225);
+            }
+            #game-quest-list listbox-item[selected] {
+                background-color: rgb(255, 246, 214);
+                border-color: rgb(214, 166, 60);
+                color: rgb(36, 58, 98);
+            }
+            .ql-row { display: flex; flex-direction: row; align-items: center; column-gap: 6dp; width: 100%; height: 20dp; }
+            .ql-name { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 700; }
+
+            /* "show in tracker" toggle: same ice checkbox as everywhere else */
+            #game-quest-list button.checkbox {
+                width: 14dp; height: 14dp; min-width: 14dp;
+                decorator: image(ice-check-off);
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+            }
+            #game-quest-list button.checkbox:hover { decorator: image(ice-check-off-hover); }
+            #game-quest-list button.checkbox[checked] { decorator: image(ice-check-on); }
+            #game-quest-list button.checkbox[checked]:hover { decorator: image(ice-check-on-hover); }
+
+            .tooltip .tooltiptext
+            {
+                position: absolute;
+                left: -180dp;
+            }
+
+            /* details: reward slots column + white card */
+            .ql-detail { flex: 1; display: flex; flex-direction: row; column-gap: 6dp; min-height: 0; }
+            .ql-slots.content-box { display: flex; flex-direction: column; row-gap: 4dp; padding: 5dp; }
+            .ql-info { flex: 1; display: flex; flex-direction: column; row-gap: 6dp; min-width: 0; }
+            .ql-text.content-box { flex: 1; overflow: hidden auto; padding: 6dp; }
+            .ql-card {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+                padding: 8dp 10dp;
+                color: rgb(36, 58, 98);
+                line-height: 19dp;
+            }
+            .ql-title { display: block; color: rgb(30, 62, 112); font-size: 15dp; font-weight: 820; padding-bottom: 4dp; margin-bottom: 6dp; border-bottom: 1dp rgb(226, 236, 246); }
+            .ql-label { display: block; color: rgb(190, 130, 20); font-weight: 820; margin-top: 8dp; margin-bottom: 2dp; }
+            .ql-label.reward { color: rgb(40, 140, 60); }
+
+            .ql-foot { display: flex; flex-direction: row; align-items: center; height: 34dp; }
+            .ql-timer { display: flex; flex-direction: row; align-items: center; padding: 2dp 10dp; background-color: rgb(255, 255, 255); border: 1dp rgb(206, 224, 242); border-radius: 10dp; }
+            .time-remaining { color: rgb(20, 120, 170); font-weight: 820; }
+            .time-expired { color: rgb(190, 40, 40); font-weight: 820; }
+            #game-quest-list button.ql-danger { color: rgb(170, 40, 40); }
+
+            /* resizeable window: taller bottom edge (grip) */
+            #game-quest-list .ice-fx.ice-br { bottom: -32dp; }
+        </style>
+    </head>
+
+    <body id="game-quest-list" template="window-resizeable">
+        <div data-model="quest-list" class="ql-root">
+            <div class="ql-head content-box">
+                <span class="ql-chip">Quests <span class="num-quests">{{num_active_quests}} / {{max_active_quests}}</span></span>
+                <span style="flex: 1">&nbsp;</span>
+                <span class="ql-chip">Daily <span class="num-daily">{{num_daily_quests}} / {{max_daily_quests}}</span></span>
+            </div>
+            <div class="ql-list content-box">
+                <div class="ql-scroll">
+                    <listbox id="quest-list" data-event-change="selected_quest_index = ev.value != '' ? ev.value : 0">
+                        <listbox-item
+                            data-for="quest, quest_index : quest_list"
+                            data-value="quest_index"
+                            data-if="quest.id != 0"
+                        >
+                            <div class="ql-row">
+                                <img data-attr-sprite="'stateicon-' + quest_icon(quest.id)" />
+                                <span class="ql-name"><str data-attr-quest-name="quest.id" /></span>
+                                <div class="tooltip">
+                                    <button
+                                        class="checkbox"
+                                        data-attrif-checked="quest.show_in_tracker"
+                                        data-event-click="toggle_show_in_tracker(quest_index)"></button>
+                                    <span class="tooltiptext" data-if="quest.show_in_tracker == true">Hide from Quest Tracker</span>
+                                    <span class="tooltiptext" data-if="quest.show_in_tracker == false">Show in Quest Tracker</span>
+                                </div>
+                            </div>
+                        </listbox-item>
+                    </listbox>
+                </div>
+            </div>
+            <div class="ql-detail" data-alias-selected_quest="quest_list[selected_quest_index]">
+                <div class="ql-slots content-box">
+                    <item-slot id="quest-item-0" item-actions
+                        data-attr-item-id="selected_quest.items[0].id"
+                        data-attr-item-type="selected_quest.items[0].type"
+                        data-attr-item-quantity="selected_quest.items[0].quantity"
+                        ondblclick="open_item" />
+                    <item-slot id="quest-item-1" item-actions
+                        data-attr-item-id="selected_quest.items[1].id"
+                        data-attr-item-type="selected_quest.items[1].type"
+                        data-attr-item-quantity="selected_quest.items[1].quantity"
+                        ondblclick="open_item" />
+                    <item-slot id="quest-item-2" item-actions
+                        data-attr-item-id="selected_quest.items[2].id"
+                        data-attr-item-type="selected_quest.items[2].type"
+                        data-attr-item-quantity="selected_quest.items[2].quantity"
+                        ondblclick="open_item" />
+                    <item-slot id="quest-item-3" item-actions
+                        data-attr-item-id="selected_quest.items[3].id"
+                        data-attr-item-type="selected_quest.items[3].type"
+                        data-attr-item-quantity="selected_quest.items[3].quantity"
+                        ondblclick="open_item" />
+                    <item-slot id="quest-item-4" item-actions
+                        data-attr-item-id="selected_quest.items[4].id"
+                        data-attr-item-type="selected_quest.items[4].type"
+                        data-attr-item-quantity="selected_quest.items[4].quantity"
+                        ondblclick="open_item" />
+                    <item-slot id="quest-item-5" item-actions
+                        data-attr-item-id="selected_quest.items[5].id"
+                        data-attr-item-type="selected_quest.items[5].type"
+                        data-attr-item-quantity="selected_quest.items[5].quantity"
+                        ondblclick="open_item" />
+                </div>
+                <div class="ql-info">
+                    <div class="ql-text content-box">
+                        <div class="ql-card">
+                            <span class="ql-title"><str data-attr-quest-name="selected_quest.id" /></span>
+                            <str data-attr-quest-description="selected_quest.id" style="display: block" />
+                            <div data-if="quest_has_start_message(selected_quest.id)">
+                                <span class="ql-label">Objective</span>
+                                <str data-attr-quest-start-message="selected_quest.id" />
+                            </div>
+                            <div data-if="quest_has_end_message(selected_quest.id)">
+                                <span class="ql-label reward">Reward</span>
+                                <str data-attr-quest-end-message="selected_quest.id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ql-foot">
+                        <span class="ql-timer" data-if="selected_quest.expiration_time != 0">
+                            <img sprite="GEN_DECO39" />
+                            <span style="padding-left: 4dp" class="time-remaining" data-if="selected_quest.expiration_time > world_time">{{format_world_time_duration(selected_quest.expiration_time - world_time)}}</span>
+                            <span style="padding-left: 4dp;" class="time-expired" data-if="selected_quest.expiration_time <= world_time"><str string-id="14" /></span>
+                        </span>
+                        <span style="flex: 1">&nbsp;</span>
+                        <button class="default ql-danger" onclick="abandon_quest">Abandon Quest</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ice-fx ice-tl"></div>
+            <div class="ice-fx ice-br"></div>
+        </div>
+    </body>
+</rml>

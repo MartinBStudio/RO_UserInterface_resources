@@ -1,0 +1,100 @@
+/* Status glow: a frame around a party/group member card while they have a
+ * crowd-control or damage-over-time debuff. The frame lives inside the status
+ * icon loop and is absolutely positioned against the member card
+ * (.ui-roster-member is position: relative), so it outlines the whole card.
+ * Higher z-index wins when several effects are active at once.
+ *
+ * Icons (verified against the live list_status.stb):
+ *   22 sleep / stun / daze / charm   23 silence   62 burn (all fire DoTs)
+ *    6 poison (all poisons)          76 acid / bleed   10 slow
+ */
+.cc-frame {
+    position: absolute;
+    top: -2dp;
+    left: -2dp;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    border: 2dp rgb(0, 0, 0);
+    border-radius: 5dp;
+    pointer-events: none;
+    display: none; /* shown only for the crowd-control icons below (one attribute, no per-frame checks) */
+}
+.cc-frame[cc="22"], .cc-frame[cc="23"], .cc-frame[cc="62"],
+.cc-frame[cc="6"], .cc-frame[cc="76"], .cc-frame[cc="10"] { display: block; }
+.cc-frame > .cc-inner {
+    position: absolute;
+    top: 0dp;
+    left: 0dp;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 2dp rgb(255, 255, 255);
+    border-radius: 3dp;
+    pointer-events: none;
+}
+
+/* priority (user): flame > sleep/stun (disable) > taunt > silence > poison > acid > slow */
+.cc-frame[cc="22"] { z-index: 17; border-color: rgb(110, 50, 170); }
+.cc-frame[cc="22"] > .cc-inner { border-color: rgb(200, 115, 255); }
+.cc-frame[cc="23"] { z-index: 15; border-color: rgb(160, 40, 120); }
+.cc-frame[cc="23"] > .cc-inner { border-color: rgb(255, 105, 205); }
+.cc-frame[cc="62"] { z-index: 18; border-color: rgb(170, 80, 10); }
+.cc-frame[cc="62"] > .cc-inner { border-color: rgb(255, 155, 45); }
+.cc-frame[cc="6"] { z-index: 13; border-color: rgb(100, 150, 20); }
+.cc-frame[cc="6"] > .cc-inner { border-color: rgb(205, 255, 55); }
+.cc-frame[cc="76"] { z-index: 12; border-color: rgb(150, 25, 25); }
+.cc-frame[cc="76"] > .cc-inner { border-color: rgb(255, 75, 75); }
+.cc-frame[cc="10"] { z-index: 11; border-color: rgb(20, 120, 160); }
+.cc-frame[cc="10"] > .cc-inner { border-color: rgb(95, 235, 255); }
+
+/* On/off toggle in the hover toolbar row: close-button style "FX" (atlas2, needs ice_sprites2.css).
+   Purple = effect frames shown, grey = hidden (checked). */
+#cc-toggle {
+    position: absolute;
+    top: -24dp;
+    width: 20dp;
+    height: 20dp;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0dp;
+    decorator: image(ice-fxon-n);
+    cursor: hand;
+    visibility: hidden;
+    z-index: 30;
+}
+#cc-toggle:hover { decorator: image(ice-fxon-h); }
+#cc-toggle:active { decorator: image(ice-fxon-a); }
+#cc-toggle:checked { decorator: image(ice-fxoff-n); }
+#cc-toggle:checked:hover { decorator: image(ice-fxoff-h); }
+/* 2dp left of the toolbar (20dp buttons, 2dp gaps). Party: leave + options = 44dp,
+   + entrust + kick when leader = 88dp. Arena group: collapse + settings + leave = 66dp. */
+#party #cc-toggle { right: 42dp; } /* user-tuned: 2dp closer than the math */
+#party #cc-toggle.leader { right: 86dp; }
+#arena-group #cc-toggle { right: 66dp; }
+#party:hover #cc-toggle,
+#arena-group:hover #cc-toggle,
+#arena-group.collapsed #cc-toggle { visibility: visible; }
+#cc-toggle:checked ~ #party-members .cc-frame,
+#cc-toggle:checked ~ #arena-group-members .cc-frame { display: none; }
+
+/* Status WORDS (2026-10-25): a coloured pill with the effect name on the left of the member's HP bar,
+ * same colours as the frames; highest priority on top (Flame, Sleep/Stun, Taunt, then the rest). Icon 22 is shared by Sleep/Stun/Daze/Charm, so the
+ * status id picks the word (assumed in-game ids 31 Sleep, 32 Stun, 140 Daze, 141 Charm; fallback "Stun"). */
+.cc-word { position: absolute; top: 0.12em; left: 0.2em; height: 1.05em; pointer-events: none; display: none; }
+.cc-word[cc="22"] { display: block; width: 2.21em; decorator: image(ice-w-stun); z-index: 27; }
+.cc-word[cc="23"] { display: block; width: 2.96em; decorator: image(ice-w-silence); z-index: 25; }
+.cc-word[cc="62"] { display: block; width: 2.62em; decorator: image(ice-w-flame); z-index: 28; }
+.cc-word[cc="6"] { display: block; width: 2.85em; decorator: image(ice-w-poison); z-index: 23; }
+.cc-word[cc="76"] { display: block; width: 2.51em; decorator: image(ice-w-bleed); z-index: 22; }
+.cc-word[cc="10"] { display: block; width: 2.29em; decorator: image(ice-w-slow); z-index: 21; }
+.cc-word[cc="89"] { display: block; width: 2.59em; decorator: image(ice-w-taunt); z-index: 26; }
+.cc-word[cc="22"][k="31"] { width: 2.48em; decorator: image(ice-w-sleep); }
+.cc-word[cc="22"][k="32"] { width: 2.21em; decorator: image(ice-w-stun); }
+.cc-word[cc="22"][k="140"] { width: 2.29em; decorator: image(ice-w-daze); }
+.cc-word[cc="22"][k="141"] { width: 2.81em; decorator: image(ice-w-charm); }
+/* taunt (icon 89) frame: gold */
+.cc-frame[cc="89"] { display: block; z-index: 16; border-color: rgb(160, 110, 10); }
+.cc-frame[cc="89"] > .cc-inner { border-color: rgb(255, 214, 90); }
+#cc-toggle:checked ~ #party-members .cc-word,
+#cc-toggle:checked ~ #arena-group-members .cc-word { display: none; }

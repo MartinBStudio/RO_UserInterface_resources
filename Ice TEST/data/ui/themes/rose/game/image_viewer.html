@@ -1,0 +1,43 @@
+<rml>
+    <head>
+        <title>Image Viewer</title>
+
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            /* ===== ice theme: thin ice frame, picture on a cream mat ===== */
+            body#game-image-viewer {
+                decorator: tiled-box(
+                    ice-tray-tl, ice-tray-t, ice-tray-tr,
+                    ice-tray-l,  ice-tray-c, ice-tray-r,
+                    ice-tray-bl, ice-tray-b, ice-tray-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                padding: 8dp;
+            }
+            #game-image-viewer handle {
+                display: block;
+                padding: 6dp;
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+            }
+            #game-image-viewer #image { display: block; border: 1dp rgb(176, 206, 232); }
+            #game-image-viewer button.window-title-close { z-index: 20; }
+        </style>
+    </head>
+
+    <body id="game-image-viewer">
+        <handle move_target="#document" data-model="image-viewer">
+            <img id="image" data-attr-src="src" />
+        </handle>
+
+        <button style="position: absolute; top: -4dp; right: 0dp;" class="window-title-close" onclick="close"></button>
+        <div class="ice-fx ice-tl small"></div>
+        <div class="ice-fx ice-br small"></div>
+    </body>
+</rml>

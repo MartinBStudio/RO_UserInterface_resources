@@ -1,0 +1,126 @@
+<rml>
+    <head>
+        <title>Personal Store</title>
+
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            body
+            {
+                width: 240dp;
+                height: 140dp;
+                font-effect: outline(1dp black);
+            }
+
+            label.item-name
+            {
+                width: 160dp;
+                font-size: 14dp;
+                color: yellow;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            label.item-price
+            {
+                width: 180dp;
+                white-space: nowrap;
+                cursor: hand;
+            }
+
+            label.item-quantity
+            {
+                width: 50dp;
+                font-size: 14dp;
+                color: yellow;
+                cursor: hand;
+            }
+
+            tr > td:nth-child(1) {
+                width: 50dp;
+            }
+
+            tr > td:nth-child(2) {
+                width: 160dp;
+            }
+
+            tr {
+                min-height: 15dp;
+            }
+
+            td {
+                vertical-align: top;
+            }
+
+            td.item-name
+            {
+                vertical-align: top;
+            }
+
+            button.default {
+                min-width: 100dp;
+                width: 100dp;
+            }
+
+            .item-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin: 4dp;
+                gap: 10dp;
+            }
+
+            .item-container > label {
+                flex: 1;
+            }
+
+            .tooltip {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* ===== ice theme ===== */
+            #game-personal-store-price label.item-name { color: rgb(30, 62, 112); font-weight: 820; font-effect: none; }
+            #game-personal-store-price label.item-quantity { color: rgb(170, 100, 20); font-effect: none; }
+            #game-personal-store-price label.item-price { color: rgb(170, 100, 20); font-weight: 820; font-effect: none; }
+            #game-personal-store-price label { color: rgb(36, 58, 98); font-effect: none; }
+        
+            /* zulie: close-button style Z icon (atlas2) */
+            body img[sprite="ice-zulie-n"] { width: 20dp; min-width: 20dp; height: 20dp; }
+            body button.zulie { width: 20dp; min-width: 20dp; height: 20dp; decorator: image(ice-zulie-n); background-color: rgba(0, 0, 0, 0); border-width: 0dp; }
+            body button.zulie:hover { decorator: image(ice-zulie-h); }
+            body button.zulie:active { decorator: image(ice-zulie-a); }
+            body button.zulie:disabled, body button.zulie[disabled] { decorator: image(ice-zulie-n); }
+        </style>
+    </head>
+
+    <body id="game-personal-store-price" onkeyup="key" data-model="personalstore-price-data" template="window-fixed-size">
+        <div class="item-container">
+            <item-slot item-actions id="item-slot" class="slot" sprite="slot-icon" />
+            <label id="item-name" class="custom-2 item-name">{{data.name}}</label>
+        </div>
+
+        <div class="tooltip">
+            <label>Quantity</label>
+            <label id="quantity" class="custom item-quantity" onclick="quantity"><b>x{{data.quantity}}</b></label>
+            <span class="tooltiptext">Quantity</span>
+        </div>
+
+        <div class="tooltip">
+            <button id="price" class="zulie" onclick="price"></button>
+            <label id="price-value" class="custom item-price" onclick="price">{{format_money(data.price)}}</label>
+            <span class="tooltiptext">Set unit price</span>
+        </div>
+
+        <button id="confirm" class="default ice-primary" onclick="confirm" style="margin: 10dp auto;">Confirm</button>
+	    <div class="ice-fx ice-tl small"></div>
+	    <div class="ice-fx ice-br small"></div>
+	</body>
+</rml>

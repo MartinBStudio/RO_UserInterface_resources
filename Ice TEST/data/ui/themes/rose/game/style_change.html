@@ -1,0 +1,164 @@
+<rml>
+    <head>
+        <title>Style Change</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            #game-style-change {
+                width: 640dp;
+                height: 480dp;
+                min-width: 500dp;
+                min-height: 450dp;
+            }
+
+            #style-panel {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            character-preview {
+                display: inline-block;
+                height: 100%;
+                flex: 1;
+            }
+
+            h3 {
+                margin: 2dp;
+            }
+
+            .button-container > .textarea {
+                display: inline-block;
+                width: 140dp;
+                text-align: center;
+            }
+
+            .no-need-coupon, .missing-coupon { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; }
+
+            .no-need-coupon {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                background: rgba(20, 20, 20, 180);
+            }
+
+            .missing-coupon {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 0, 0, 180);
+            }
+
+            /* ===== ice theme (matches character create) ===== */
+            #game-style-change #window-content { padding: 6dp; }
+            #game-style-change #style-panel { padding: 6dp 10dp; }
+            #game-style-change h3 { margin: 6dp 0dp 3dp 0dp; font-size: 13dp; font-weight: 820; color: rgb(30, 62, 112); font-effect: none; }
+            #game-style-change .button-container { display: flex; flex-direction: row; align-items: center; justify-content: center; }
+            #game-style-change .button-container > .textarea {
+                display: block;
+                width: 140dp; height: 24dp; line-height: 16dp;
+                margin: 0dp 6dp;
+                box-sizing: border-box;
+                padding: 3dp 4dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 6dp;
+                color: rgb(36, 58, 98);
+                font-weight: 820;
+                decorator: none;
+            }
+            #game-style-change button.left-sm,
+            #game-style-change button.right-sm { margin: 0dp; width: 22dp; min-width: 22dp; height: 22dp; }
+            #game-style-change button.left-sm { decorator: image(ice-left-n); }
+            #game-style-change button.left-sm:hover { decorator: image(ice-left-h); }
+            #game-style-change button.left-sm:active { decorator: image(ice-left-a); }
+            #game-style-change button.right-sm { decorator: image(ice-right-n); }
+            #game-style-change button.right-sm:hover { decorator: image(ice-right-h); }
+            #game-style-change button.right-sm:active { decorator: image(ice-right-a); }
+            /* bottom buttons stacked, same width */
+            #game-style-change .ice-actions { flex-direction: column; margin-top: 8dp; }
+            #game-style-change .ice-actions br { display: none; }
+            #game-style-change .ice-actions button.default { width: 140dp; margin: 2dp 0dp; }
+            #game-style-change #close { color: rgb(170, 40, 40); }
+            #game-style-change .missing-coupon { background: rgba(200, 40, 40, 150); }
+            /* invisible resize grip; BR flourish in the corner (as Character Preview) */
+            #game-style-change .window-resize-handle,
+            #game-style-change .window-resize-handle:hover { decorator: none; z-index: 20; }
+            #game-style-change .ice-fx.ice-br { right: -7dp; bottom: -30dp; }
+        </style>
+    </head>
+
+    <body id="game-style-change" template="window-resizeable">
+        <div style="display: flex; flex-direction: row; column-gap: 4dp;" data-model="style-change">
+            <div class="window-pane" id="style-panel">
+                <h3>Gender</h3>
+                <div class="button-container">
+                    <button class="left-sm" id="gender-prev" onclick="gender-prev" /><label class="textarea">{{gender_label}}</label><button class="right-sm" id="gender-next" onclick="gender-next" />
+                </div>
+
+                <h3>Face</h3>
+                <div class="button-container">
+                    <button class="left-sm" id="face-prev" onclick="face-prev" /><label class="textarea">{{face_label}}</label><button class="right-sm" id="face-next" onclick="face-next" />
+                </div>
+
+                <h3>Hair</h3>
+                <div class="button-container">
+                    <button class="left-sm" id="hair-prev" onclick="hair-prev" /><label class="textarea">{{hair_label}}</label><button class="right-sm" id="hair-next" onclick="hair-next" />
+                </div>
+
+                <h3>Hair Color</h3>
+                <div class="button-container">
+                    <button class="left-sm" id="hair-color-prev" onclick="hair-color-prev" /><label class="textarea">{{hair_color_label}}</label><button class="right-sm" id="hair-color-next" onclick="hair-color-next" />
+                </div>
+
+                <div style="flex: 1" />
+
+                <h3>Coupons</h3>
+                <div>
+                    <item-slot item-actions id="coupon-slot-gender">
+                        <div class="no-need-coupon" data-if="gender_coupons_required == 0" />
+                        <div class="missing-coupon" data-if="gender_coupons_required > gender_coupons_available" />
+                    </item-slot>
+                    <item-slot item-actions id="coupon-slot-face">
+                        <div class="no-need-coupon" data-if="face_coupons_required == 0" />
+                        <div class="missing-coupon" data-if="face_coupons_required > face_coupons_available" />
+                    </item-slot>
+                    <item-slot item-actions id="coupon-slot-hair">
+                        <div class="no-need-coupon" data-if="hair_coupons_required == 0" />
+                        <div class="missing-coupon" data-if="hair_coupons_required > hair_coupons_available" />
+                    </item-slot>
+                    <item-slot item-actions id="coupon-slot-hair-color">
+                        <div class="no-need-coupon" data-if="hair_color_coupons_required == 0" />
+                        <div class="missing-coupon" data-if="hair_color_coupons_required > hair_color_coupons_available" />
+                    </item-slot>
+                </div>
+
+                <div class="button-container ice-actions">
+                    <button class="default ice-primary" data-attrif-disabled="(gender_coupons_required > gender_coupons_available || face_coupons_required > face_coupons_available || hair_coupons_required > hair_coupons_available || hair_color_coupons_required > hair_color_coupons_available) || (gender_coupons_required == 0 && face_coupons_required == 0 && hair_coupons_required == 0 && hair_color_coupons_required == 0)" id="use-coupons" onclick="use-coupons">Use coupons</button>
+                    <br />
+                    <button class="default" id="reset" onclick="reset">Reset</button>
+                    <br/>
+                    <button class="default" id="close" onclick="close">Cancel</button>
+                </div>
+            </div>
+
+            <character-preview
+                yaw="20" pitch="-15" distance="1.1" offset-z="1.5"
+                data-attr-gender="gender_value"
+                data-attr-face="face_value"
+                data-attr-hair-style="hair_value"
+                data-attr-hair-color="hair_color_value"
+                />
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

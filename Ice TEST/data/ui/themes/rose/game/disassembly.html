@@ -1,0 +1,72 @@
+<rml>
+    <head>
+        <title>Disassembly</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <style>
+            body { width: 340dp; max-width: 92vw; }
+            .disassembly-heading { display: block; margin-top: 12dp; }
+            #disassembly-outputs { max-height: 300dp; overflow-y: auto; min-height: 58dp; }
+
+            /* ===== ice theme (refine composition) ===== */
+            #disassembly .ui-item-row.content-box {
+                display: flex; flex-direction: row; align-items: center; column-gap: 8dp;
+                margin: 0dp 0dp 5dp 0dp;
+                padding: 5dp 8dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+            }
+            #disassembly .ice-target.ui-item-row.content-box {
+                background-color: rgb(255, 250, 232);
+                border-color: rgb(214, 166, 60);
+                padding: 7dp 8dp;
+            }
+            #disassembly .ui-item-caption { color: rgb(120, 140, 170); font-size: 12dp; margin-bottom: 2dp; }
+            #disassembly .ui-section-title { color: rgb(30, 62, 112); font-weight: 820; }
+            #disassembly .ice-target .ui-section-title { color: rgb(150, 92, 20); font-size: 15dp; }
+            #disassembly .ui-item-amount { color: rgb(30, 62, 112); font-weight: 820; font-size: 14dp; }
+            #disassembly .ui-footer.content-box { border-top-width: 0dp; padding: 8dp 10dp; margin-bottom: 5dp; }
+            #disassembly .ui-detail-row { margin: 2dp 0; font-size: 13dp; color: rgb(90, 115, 150); font-weight: 820; }
+            #disassembly .ui-detail-value { color: rgb(190, 130, 20); font-size: 20dp; font-weight: 820; }
+            #disassembly .ui-currency {
+                padding: 2dp 10dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 10dp;
+                color: rgb(36, 58, 98);
+            }
+            #disassembly .ui-status { color: rgb(150, 92, 20); font-weight: 820; text-align: center; margin: 2dp 0; }
+            #disassembly .ui-actions { margin-top: 2dp; }
+            #disassembly .ice-fx.ice-br.small { right: -7dp; }
+            #disassembly .disassembly-heading { margin: 8dp 0dp 4dp 2dp; }
+            #disassembly #disassembly-outputs {
+                padding: 6dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+                margin-bottom: 5dp;
+            }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="disassembly">
+        <div data-model="disassembly">
+            <div class="content-box ui-section ui-item-row ice-target">
+                <item-slot id="disassembly-target" class="default" />
+                <div class="ui-item-details"><str string-id="788" class="ui-item-caption" /><span class="ui-section-title">{{target_name}}</span></div>
+            </div>
+            <span class="disassembly-heading ui-section-title">{{output_heading}}</span>
+            <div id="disassembly-outputs" />
+            <span id="disassembly-status" class="ui-status ui-operation-status" data-if="status != ''">{{status}}</span>
+            <div class="ui-actions ui-operation-actions"><button id="disassembly-begin" class="default accept ice-primary" onclick="begin" data-attrif-disabled="busy"><str string-id="893" /></button></div>
+        </div>
+        <div class="ice-fx ice-tl small"></div>
+        <div class="ice-fx ice-br small"></div>
+    </body>
+</rml>

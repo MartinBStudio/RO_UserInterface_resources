@@ -1,0 +1,33 @@
+<rml>
+    <head>
+        <title>System message</title>
+        <link type="text/template" href="../templates/window-box.html" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <style>
+            body {
+                top: 30dp;
+                width: 512dp;
+                box-sizing: border-box;
+                background: rgba(20, 20, 20, 200);
+                pointer-events: none;
+            }
+            #game-system-message #window-content { padding: 8dp; }
+            #message.notice { font-weight: 820; }
+
+            /* ===== ice theme: navy bar (as the tooltips) ===== */
+            body#game-system-message {
+                background-color: rgba(14, 32, 62, 215);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 6dp;
+                decorator: none;
+            }
+            #game-system-message #window-content { decorator: none; background-color: rgba(0, 0, 0, 0); }
+            #game-system-message #message { font-effect: outline(1dp rgb(8, 18, 36)); }
+        </style>
+    </head>
+    <body id="game-system-message" template="window-box">
+        <div data-model="system-message">
+            <div id="message" class="ui-banner-text" data-style-color="color" data-class-notice="bold">{{ message }}</div>
+        </div>
+    </body>
+</rml>

@@ -1,0 +1,218 @@
+/* Shared components for the newly migrated windows that opt in to this sheet.
+ * Window frames, button artwork, hover/disabled states and slot artwork come
+ * from the existing ROSE theme. Keep these rules out of the shared templates.
+ */
+body #window-content {
+    height: auto;
+    padding: 12dp;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+/* Compact navigation; action buttons retain the theme's standard 34dp size. */
+.ui-tabs {
+    display: flex;
+    gap: 4dp;
+    margin-bottom: 8dp;
+}
+.ui-tabs > button.default, button.default.ui-compact {
+    flex: 1;
+    min-width: 0;
+    height: 28dp;
+    padding: 2dp 6dp;
+    line-height: 24dp;
+    font-size: 13dp;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ui-tabs > button.active, .ui-tabs > button.selected {
+    color: white;
+    font-effect: outline(1dp black), glow(1.5dp white);
+    decorator: tiled-horizontal(button-active-l, button-active-c, button-active-r);
+}
+
+.ui-slot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4dp;
+    margin: 0 auto;
+}
+.ui-slot-grid item-slot, .ui-slot-grid > .bag-cell {
+    width: 40dp;
+    height: 40dp;
+    flex: 0 0 40dp;
+}
+
+.ui-section.content-box { padding: 8dp; }
+.ui-section-title {
+    margin-bottom: 8dp;
+    font-weight: 820;
+    color: rgb(255, 247, 191);
+    word-break: break-word;
+}
+.ui-currency {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4dp;
+    min-height: 21dp;
+    font-size: 13dp;
+    color: rgb(0, 210, 255);
+    font-effect: outline(1dp black), glow(1.5dp rgb(0, 210, 255));
+}
+.ui-currency > img, .ui-currency > button.zulie {
+    width: 21dp;
+    min-width: 21dp;
+    height: 21dp;
+    flex-shrink: 0;
+}
+.ui-currency > span { min-width: 0; word-break: break-word; }
+.ui-footer {
+    margin-top: 8dp;
+    padding-top: 8dp;
+    border-top: 1dp rgba(134, 134, 134, 100);
+}
+.ui-status {
+    color: #bbbbbb;
+    text-align: center;
+    font-size: 12dp;
+}
+.ui-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8dp;
+}
+.ui-actions > button.default { min-width: 150dp; }
+
+/* Offset the border so selection keeps the 40dp icon and 4dp grid spacing. */
+.ui-selectable-slots item-slot { border: 1dp transparent; margin: -1dp; }
+.ui-selectable-slots item-slot:hover { border-color: #c73636; }
+.ui-selectable-slots item-slot.selected { border-color: yellow; }
+
+.ui-pages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8dp;
+    margin-top: 8dp;
+}
+.ui-pages button { margin: 0; }
+.ui-page { min-width: 60dp; text-align: center; font-size: 13dp; }
+
+/* Item and material rows share the same frame, icon size and quantity column. */
+.ui-item-row.content-box {
+    display: flex;
+    align-items: center;
+    gap: 8dp;
+    min-height: 58dp;
+    margin-bottom: 8dp;
+}
+.ui-item-row > item-slot { flex: 0 0 40dp; width: 40dp; height: 40dp; }
+.ui-item-details { flex: 1; min-width: 0; }
+.ui-item-details > .ui-section-title { display: block; margin-bottom: 0; }
+.ui-item-caption { display: block; font-size: 12dp; color: #bbbbbb; margin-bottom: 4dp; }
+.ui-item-amount { flex: 0 0 56dp; width: 56dp; text-align: right; font-size: 13dp; word-break: break-word; }
+.ui-detail-row { display: flex; align-items: center; justify-content: space-between; gap: 8dp; margin-bottom: 8dp; font-size: 13dp; }
+.ui-detail-value { color: rgb(255, 247, 191); text-align: right; }
+.ui-currency.mana { color: rgb(0, 210, 255); }
+.ui-operation-status { display: block; margin: 8dp 0; word-break: break-word; }
+.ui-operation-actions { margin-top: 12dp; }
+
+/* Section headings and form controls for character and social windows. */
+.ui-section-heading { padding-bottom: 8dp; border-bottom: 1dp rgba(134, 134, 134, 100); }
+.ui-form-row { display: flex; align-items: center; gap: 8dp; margin-bottom: 8dp; font-size: 13dp; }
+.ui-form-row > label { width: 85dp; flex-shrink: 0; }
+.ui-form-row > input, .ui-form-row > textarea { flex: 1; min-width: 0; }
+
+/* Icon-only choices use the same footprint and selection colors as item slots. */
+button.ui-icon-choice {
+    flex: 0 0 40dp;
+    width: 40dp;
+    height: 40dp;
+    padding: 9dp;
+    border: 1dp rgba(134, 134, 134, 191);
+    border-radius: 4dp;
+    background-color: rgba(33, 33, 33, 80);
+}
+button.ui-icon-choice:hover { border-color: #c73636; }
+button.ui-icon-choice.selected { border-color: yellow; }
+
+/* Selection lists and settings rows used by social windows. */
+.ui-list-row, .ui-list > listbox-item {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 28dp;
+    padding: 4dp 8dp;
+    gap: 8dp;
+    font-size: 13dp;
+}
+.ui-list-row:hover, .ui-list > listbox-item:not([disabled]):not([selected]):hover { background: rgba(255, 255, 255, 20); }
+.ui-list-row.selected, .ui-list > listbox-item:not([disabled])[selected] { background: rgba(255, 225, 120, 35); color: yellow; }
+.ui-choice-row { display: flex; align-items: center; gap: 8dp; margin-top: 8dp; font-size: 13dp; }
+.ui-choice-row input { flex-shrink: 0; margin: 0; }
+.ui-choice-row str { flex: 1; }
+.ui-range-setting { margin-top: 12dp; font-size: 13dp; }
+.ui-range-setting > label { display: flex; align-items: center; justify-content: space-between; gap: 8dp; }
+.ui-range-setting > input { display: block; width: 100%; margin-top: 8dp; }
+
+/* Passive party/group overlays keep transparent chrome and hover-only tools. */
+#party, #arena-group { decorator: none; background-color: rgba(0, 0, 0, 64); border-radius: 3dp; font-effect: outline(1dp black), shadow(2dp 2dp black); }
+#party #window-content, #arena-group #window-content { height: auto; max-height: none; overflow: visible; padding: 8dp; decorator: none; }
+#party > .window-title, #party > .window-title-close, #party .ui-hud-toolbar,
+#arena-group > .window-title, #arena-group > .window-title-close, #arena-group .ui-hud-toolbar { visibility: hidden; }
+#party:hover > .window-title, #party:hover > .window-title-close, #party:hover .ui-hud-toolbar,
+#arena-group:hover > .window-title, #arena-group:hover > .window-title-close, #arena-group:hover .ui-hud-toolbar { visibility: visible; }
+.ui-hud-toolbar { position: absolute; top: -25dp; right: 26dp; display: flex; align-items: center; gap: 4dp; }
+button.ui-hud-action { width: 24dp; min-width: 24dp; height: 24dp; padding: 2dp; }
+.ui-hud-action img { display: block; width: 19dp; height: 19dp; pointer-events: none; }
+.ui-hud-action:disabled { opacity: 0.4; }
+.ui-roster-member { display: block; position: relative; padding: 4dp; margin-bottom: 4dp; cursor: hand; }
+.ui-roster-name { display: block; height: 1.4em; line-height: 1.4em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ui-roster-member.leader .ui-roster-name { color: rgb(255, 247, 191); font-weight: 820; }
+
+/* Vitals scale with roster text; status artwork keeps its native 20dp size. */
+gauge.ui-vitals { display: block; width: 100%; height: 1.2em; margin-top: 4dp; font-size: 1em; text-align: center; }
+gauge.ui-vitals > span { font-size: 0.8em; line-height: 1.5em; margin-top: 0; }
+.ui-status-icons { display: flex; flex-wrap: wrap; gap: 4dp; margin-top: 4dp; }
+.ui-status-icons > span, .ui-status-icons > span > img { display: block; width: 20dp; height: 20dp; flex-shrink: 0; }
+.ui-status-icons > span > img { pointer-events: none; }
+
+/* Passive notices use one readable body-text style, with existing theme frames. */
+.ui-banner-text, .dropped-item, .bubble-text, .sign-title, .sign-owner { font-size: 14dp; line-height: 20dp; white-space: pre-wrap; word-break: break-word; font-effect: outline(1dp black); }
+
+/* World nameplates share text bounds, selection spacing and compact vitals. */
+#character-nameplates, #npc-nameplates, #monster-nameplates {
+    position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+    z-index: -45; pointer-events: none; font-effect: outline(1dp black);
+}
+.character-nameplate, .npc-nameplate, .monster-nameplate {
+    position: absolute; width: 320dp; margin-left: -160dp;
+    text-align: center; pointer-events: none; line-height: 1.4;
+}
+.character-name-line, .npc-name-line, .monster-name-line {
+    display: inline-block; position: relative; max-width: 256dp; word-break: break-word;
+}
+.character-selected, .npc-selected, .monster-marker.generic {
+    position: absolute; width: 16dp; height: 14dp; top: 50%; margin-top: -7dp;
+}
+.character-selected.left, .npc-selected.left, .monster-marker.left { right: 100%; margin-right: 4dp; }
+.character-selected.right, .npc-selected.right, .monster-marker.right { left: 100%; margin-left: 4dp; }
+.character-selected.right, .npc-selected.right, .monster-marker.mirrored { transform: scale(-1, 1); }
+/* Block gauges: an inline gauge sits on the baseline of a full line box, which
+   drops the mana bar a line-height below the health bar. */
+gauge.character-health, gauge.npc-health, gauge.monster-health {
+    display: block; width: 120dp; height: 12dp; margin: 4dp auto 0;
+}
+gauge.character-mana, gauge.character-shield { display: block; width: 120dp; height: 4dp; }
+
+/* Small world labels share passive positioning; shop signs use their legacy artwork. */
+body.ui-world-layer { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.dropped-item { background: rgba(24, 24, 24, 225); border-radius: 3dp; }
+
+/* Native icon strips and descriptive popups use the shared spacing and type scale. */
+.ui-icon-strip { gap: 4dp; }
+.ui-tooltip-surface { padding: 8dp; background: rgba(24, 24, 24, 240); border: 1dp rgba(134, 134, 134, 191); border-radius: 3dp; font-size: 14dp; line-height: 20dp; font-effect: outline(1dp black); white-space: pre-wrap; word-break: break-word; }
+.tooltip-line .heading, .skill-tooltip-name { font-size: 16dp; line-height: 24dp; font-weight: 820; }

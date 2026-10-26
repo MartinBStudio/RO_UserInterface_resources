@@ -1,0 +1,35 @@
+/* Ice theme HP/MP bars: glossy green HP, glossy blue MP, dark inset track.
+ * Sprites come from ice_sprites.css (imgs/iceinv.dds). Ids/parent ids keep these
+ * above the shared gauge.css color rules. */
+
+/* HP */
+gauge#health,
+gauge#stats-health,
+#party gauge.member-health,
+#arena-group gauge.group-health,
+#character-nameplates gauge.character-health {
+    decorator: image(ice-gauge-bg);
+    fill-image: ice-hp-fill;
+}
+
+/* EXP (HUD) */
+gauge#exp {
+    decorator: image(ice-gauge-bg);
+    fill-image: ice-exp-fill;
+}
+
+/* MP */
+gauge#mana,
+gauge#stats-mana,
+#arena-group gauge.group-mana,
+#character-nameplates gauge.character-mana {
+    decorator: image(ice-gauge-bg);
+    fill-image: ice-mp-fill;
+}
+
+/* Enemy HP: target frame + overhead monster bars (close-button red) */
+gauge#target-health,
+#monster-nameplates gauge.monster-health {
+    decorator: image(ice-gauge-bg);
+    fill-image: ice-enemy-fill;
+}

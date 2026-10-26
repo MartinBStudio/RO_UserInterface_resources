@@ -1,0 +1,146 @@
+<rml>
+    <head>
+        <link type="text/template" href="../templates/window-fixed.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+
+        <title>Create Character</title>
+
+        <style>
+            #external-character-create { width: 290dp; }
+            #external-character-create #window-content { padding: 10dp 8dp; }
+
+            /* light ice-blue box holding the name + pickers */
+            .cc-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 6dp 8dp 10dp 8dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+            .cc-box h3 {
+                margin: 6dp 0dp 3dp 0dp;
+                font-size: 13dp;
+                font-weight: 820;
+                color: rgb(30, 62, 112);
+            }
+
+            .button-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+            }
+            /* value pill between the arrows */
+            .button-container > .textarea {
+                display: block;
+                width: 150dp;
+                height: 24dp;
+                line-height: 16dp; /* user-tuned: text sat low at 22dp */
+                margin: 0dp 6dp;
+                box-sizing: border-box;
+                text-align: center;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 6dp;
+                color: rgb(36, 58, 98);
+                font-weight: 820;
+            }
+
+            /* name input: white ice field, red when invalid */
+            #external-character-create #character_name {
+                width: 100%;
+                height: 26dp;
+                box-sizing: border-box;
+                padding: 3dp 6dp;
+                text-align: center;
+                font-weight: 820;
+            }
+            #external-character-create #character_name.invalid {
+                color: rgb(190, 50, 40);
+                border-color: rgb(225, 120, 110);
+            }
+            .cc-name { width: 100%; padding: 0dp 4dp; box-sizing: border-box; }
+
+            /* picker arrows = blue ice buttons */
+            #external-character-create button.left-sm,
+            #external-character-create button.right-sm {
+                margin: 0dp;
+                width: 22dp; min-width: 22dp; height: 22dp; line-height: 22dp;
+            }
+            #external-character-create button.left-sm { decorator: image(ice-left-n); }
+            #external-character-create button.left-sm:hover { decorator: image(ice-left-h); }
+            #external-character-create button.left-sm:active { decorator: image(ice-left-a); }
+            #external-character-create button.right-sm { decorator: image(ice-right-n); }
+            #external-character-create button.right-sm:hover { decorator: image(ice-right-h); }
+            #external-character-create button.right-sm:active { decorator: image(ice-right-a); }
+
+            /* Create (gold) / Cancel (red text) */
+            .cc-actions { margin-top: 10dp; text-align: center; }
+            .cc-actions button.default {
+                width: 110dp;
+                height: 30dp;
+                line-height: 30dp;
+                margin: 0dp 4dp;
+                padding: 0dp;
+            }
+            #external-character-create .cc-cancel { color: rgb(170, 40, 40); }
+            .cc-actions .tooltip { display: inline-block; }
+        </style>
+    </head>
+
+    <body id="external-character-create" template="window-fixed">
+        <div style="display: flex; flex-direction: column; align-items: center;" data-model="character-create">
+            <div class="cc-box">
+                <h3>Name</h3>
+                <div class="cc-name">
+                    <input type="text" id="character_name" maxlength="20" data-value="name" data-class-invalid="!is_valid_name(name)" />
+                </div>
+
+                <h3>Gender</h3>
+                <div class="button-container">
+                    <button class="left-sm" data-event-click="gender_index = (gender_index == 0) ? (gender.size - 1) : (gender_index - 1); set_model_gender(gender[gender_index].value)" />
+                    <label class="textarea">{{gender[gender_index].name}}</label>
+                    <button class="right-sm" data-event-click="gender_index = (gender_index + 1 == gender.size) ? 0 : (gender_index + 1); set_model_gender(gender[gender_index].value)" />
+                </div>
+
+                <h3>Face</h3>
+                <div class="button-container">
+                    <button class="left-sm" data-event-click="face_index = (face_index == 0) ? (face.size - 1) : (face_index - 1); set_model_face(face[face_index].value)" />
+                    <label class="textarea">{{face[face_index].name}}</label>
+                    <button class="right-sm" data-event-click="face_index = (face_index + 1 == face.size) ? 0 : (face_index + 1); set_model_face(face[face_index].value)" />
+                </div>
+
+                <h3>Hair</h3>
+                <div class="button-container">
+                    <button class="left-sm" data-event-click="hair_index = (hair_index == 0) ? (hair.size - 1) : (hair_index - 1); set_model_hair(hair[hair_index].value)" />
+                    <label class="textarea">{{hair[hair_index].name}}</label>
+                    <button class="right-sm" data-event-click="hair_index = (hair_index + 1 == hair.size) ? 0 : (hair_index + 1); set_model_hair(hair[hair_index].value)" />
+                </div>
+
+                <h3>Hair Color</h3>
+                <div class="button-container">
+                    <button class="left-sm" data-event-click="hair_color_index = (hair_color_index == 0) ? (hair_color.size - 1) : (hair_color_index - 1); set_model_hair_color(hair_color[hair_color_index].value)" />
+                    <label class="textarea">{{hair_color[hair_color_index].name}}</label>
+                    <button class="right-sm" data-event-click="hair_color_index = (hair_color_index + 1 == hair_color.size) ? 0 : (hair_color_index + 1); set_model_hair_color(hair_color[hair_color_index].value)" />
+                </div>
+            </div>
+
+            <div class="cc-actions">
+                <div class="tooltip">
+                    <button class="default ice-primary" data-attrif-disabled="!is_valid_name(name)" data-event-click="create_character(name, gender[gender_index].value, face[face_index].value, hair[hair_index].value, hair_color[hair_color_index].value)">Create</button>
+                    <span class="tooltiptext" data-visible="!is_valid_name(name)"><str string-id="1175" /></span>
+                </div>
+                <button class="default cc-cancel" onclick="close">Cancel</button>
+            </div>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

@@ -1,0 +1,505 @@
+<rml>
+
+    <head>
+        <title></title>
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+
+        <style>
+            /* Ice theme minimap, layout "A": map on top, button dock below.
+             * Width = 5 frame + 8 panel + 194 map (190 + 2x2 border) + 8 panel + 5 frame. */
+            body {
+                width: 220dp;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            #minimap-root {
+                position: relative;
+                width: 220dp;
+            }
+
+            /* ── Shared ice frame ── */
+            #minimap-minimized,
+            #minimap-normal {
+                position: relative;
+                width: 220dp;
+                box-sizing: border-box;
+                decorator: tiled-box(
+                    ice-mini-tl, ice-mini-t, ice-mini-tr,
+                    ice-mini-l,  ice-mini-c, ice-mini-r,
+                    ice-mini-bl, ice-mini-b, ice-mini-br
+                );
+            }
+
+            .title {
+                position: absolute;
+                display: block;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 24dp;
+            }
+
+            .zone-name {
+                position: absolute;
+                left: 10dp;
+                top: 0dp;
+                width: 140dp;
+                height: 24dp;
+                line-height: 24dp;
+                font-size: 12dp;
+                font-weight: 820;
+                color: white;
+                font-effect: outline(1dp rgb(28, 78, 138));
+                text-align: left;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            /* Minimize / restore: the small square game buttons in the title band */
+            /* orange minus / green plus: twins of the window close button */
+            .btn-minimize,
+            #minimap-minimized .btn-restore {
+                position: absolute;
+                right: 7dp;
+                top: 3dp;
+                width: 17dp;
+                height: 17dp;
+            }
+            .btn-minimize { decorator: image(ice-min-n); }
+            .btn-minimize:hover { decorator: image(ice-min-h); }
+            .btn-minimize:active { decorator: image(ice-min-a); }
+            #minimap-minimized .btn-restore { decorator: image(ice-learn-n); }
+            #minimap-minimized .btn-restore:hover { decorator: image(ice-learn-h); }
+            #minimap-minimized .btn-restore:active { decorator: image(ice-learn-a); }
+
+            /* Day/Night sits in the title band next to minimize */
+            .day-night-icon {
+                position: absolute;
+                right: 32dp;
+                top: 2dp;
+                width: 20dp;
+                height: 20dp;
+            }
+
+            /* ── Minimized state ── */
+            #minimap-minimized {
+                height: 44dp;
+            }
+            #minimap-minimized #time-min {
+                position: absolute;
+                left: 10dp;
+                top: 25dp;
+                width: 150dp;
+                height: 14dp;
+                line-height: 14dp;
+                font-size: 12dp;
+                font-weight: 820;
+                color: white;
+                font-effect: outline(1dp rgb(28, 78, 138));
+            }
+
+            /* ── Normal state ── */
+            #minimap-normal {
+                padding: 25dp 5dp 5dp 5dp;
+            }
+
+            .mm-panel {
+                display: block;
+                padding: 8dp;
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+            }
+
+            /* Minimap viewport: unchanged size so the game's centering stays right */
+            #minimap-viewport {
+                display: block;
+                position: relative;
+                width: 190dp;
+                height: 190dp;
+                overflow: hidden;
+                clip: always;
+                background-color: rgba(20, 14, 28, 220);
+                border-width: 2dp;
+                border-color: rgb(236, 206, 128);
+                border-radius: 10dp;
+            }
+
+            #minimap-map {
+                position: relative;
+            }
+
+            #minimap-map img.map-image {
+                position: absolute;
+            }
+
+            #minimap-map img.npc-icon,
+            #minimap-map img.party-icon,
+            #minimap-map img.coord-indicator,
+            #minimap-map img.avatar-icon {
+                position: absolute;
+                transform: translate(-50%, -50%);
+            }
+
+            #minimap-map img.player-arrow {
+                position: absolute;
+            }
+
+            /* ── Button dock ── */
+            .mm-dock {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 4dp;
+                margin-top: 8dp;
+                height: 28dp;
+            }
+            .mm-spacer {
+                flex: 1;
+            }
+            .mm-btn {
+                position: relative;
+                display: block;
+                flex: 0 0 28dp;
+                width: 28dp;
+                height: 28dp;
+                padding: 0dp;
+                decorator: image(ice-equip);
+                cursor: hand;
+            }
+            .mm-btn:hover {
+                decorator: image(ice-equip-gold);
+            }
+            .mm-btn:active {
+                opacity: 0.8;
+            }
+            .mm-ico {
+                position: absolute;
+                left: 3dp;
+                top: 3dp;
+                width: 22dp;
+                height: 22dp;
+                pointer-events: none;
+            }
+            .mm-ico.small {
+                left: 7dp;
+                top: 7dp;
+                width: 14dp;
+                height: 14dp;
+            }
+
+            .btn-worldmap .mm-ico { decorator: image(GEN_DECO55); }
+            .btn-gamearena .mm-ico { decorator: image(button-scoreboard-n); }
+            .btn-itemmall .mm-ico { decorator: image(GEN_BTN82); }
+            .btn-itemmall:hover .mm-ico { decorator: image(GEN_BTN83); }
+            .btn-giftbox .mm-ico { decorator: image(GEN_BTN106); }
+            .btn-giftbox:hover .mm-ico { decorator: image(GEN_BTN107); }
+            /* zoom: the orange minus / green plus buttons themselves (no tile behind) */
+            .mm-btn.btn-zoomout, .mm-btn.btn-zoomin { flex: 0 0 24dp; width: 24dp; height: 24dp; margin: 0 2dp; }
+            .btn-zoomin .mm-ico, .btn-zoomout .mm-ico { display: none; }
+            .mm-btn.btn-zoomout { decorator: image(ice-min-n); }
+            .mm-btn.btn-zoomout:hover { decorator: image(ice-min-h); }
+            .mm-btn.btn-zoomout:active { decorator: image(ice-min-a); opacity: 1; }
+            .mm-btn.btn-zoomin { decorator: image(ice-learn-n); }
+            .mm-btn.btn-zoomin:hover { decorator: image(ice-learn-h); }
+            .mm-btn.btn-zoomin:active { decorator: image(ice-learn-a); opacity: 1; }
+
+            /* dock buttons in close-button style (blue face, white icon), same size as the zoom buttons */
+            .mm-btn.btn-worldmap, .mm-btn.btn-gamearena, .mm-btn.btn-itemmall, .mm-btn.btn-giftbox {
+                flex: 0 0 24dp; width: 24dp; height: 24dp; margin: 2dp 4dp 0dp 0dp;
+            }
+            .btn-worldmap .mm-ico, .btn-gamearena .mm-ico, .btn-itemmall .mm-ico, .btn-giftbox .mm-ico { display: none; }
+            .mm-btn.btn-worldmap { decorator: image(ice-globe-n); }
+            .mm-btn.btn-worldmap:hover { decorator: image(ice-globe-h); }
+            .mm-btn.btn-worldmap:active { decorator: image(ice-globe-a); opacity: 1; }
+            .mm-btn.btn-gamearena { decorator: image(ice-trophy-n); }
+            .mm-btn.btn-gamearena:hover { decorator: image(ice-trophy-h); }
+            .mm-btn.btn-gamearena:active { decorator: image(ice-trophy-a); opacity: 1; }
+            .mm-btn.btn-itemmall { decorator: image(ice-bag-n); }
+            .mm-btn.btn-itemmall:hover { decorator: image(ice-bag-h); }
+            .mm-btn.btn-itemmall:active { decorator: image(ice-bag-a); opacity: 1; }
+            .mm-btn.btn-giftbox { decorator: image(ice-gift-n); }
+            .mm-btn.btn-giftbox:hover { decorator: image(ice-gift-h); }
+            .mm-btn.btn-giftbox:active { decorator: image(ice-gift-a); opacity: 1; }
+            /* gift waiting: blink between the blue and orange face */
+            @keyframes ice-gift-blink {
+                0% { decorator: image(ice-gift-n); }
+                50% { decorator: image(ice-gift-o); }
+                100% { decorator: image(ice-gift-n); }
+            }
+            .mm-btn.btn-giftbox.blink { animation: ice-gift-blink 1s infinite; }
+            /* tooltips sit above the smaller buttons */
+            .mm-btn > .minimap-tooltip-up { bottom: 28dp; }
+
+            @keyframes giftbox-blink {
+                0% { decorator: image(GEN_BTN106); }
+                50% { decorator: image(GEN_BTN109); }
+                100% { decorator: image(GEN_BTN106); }
+            }
+            .btn-giftbox.blink .mm-ico {
+                animation: giftbox-blink 1s infinite;
+            }
+
+            /* Giftbox tooltip (points at the dock, left of the window) */
+            #giftbox-tooltip {
+                position: absolute;
+                left: -177dp;
+                bottom: 30dp;
+                width: 182dp;
+                height: 29dp;
+            }
+            #giftbox-tooltip-bg {
+                width: 182dp;
+                height: 29dp;
+                decorator: image(GEN_DECO65);
+            }
+            #giftbox-tooltip-text {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 178dp;
+                height: 29dp;
+                font-size: 12dp;
+                font-weight: 800;
+                color: white;
+                text-align: center;
+                vertical-align: middle;
+                line-height: 29dp;
+            }
+
+            /* ── Info row: coordinates left, time right ── */
+            .mm-info {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 6dp;
+                height: 16dp;
+            }
+            #coordinates-text,
+            #time-text {
+                font-size: 12dp;
+                font-weight: 820;
+                color: rgb(36, 58, 98);
+                font-effect: none;
+                white-space: nowrap;
+            }
+            #time-area {
+                position: relative;
+            }
+
+            /* ── Tooltips ── */
+            .minimap-tooltip {
+                display: none;
+                position: absolute;
+                background-color: rgba(14, 32, 62, 235);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 5dp;
+                padding: 3dp 6dp;
+                color: white;
+                white-space: nowrap;
+                font-size: 12dp;
+                font-effect: none;
+                z-index: 50;
+            }
+
+            .btn-worldmap:hover > .minimap-tooltip,
+            .btn-itemmall:hover > .minimap-tooltip,
+            #time-area:hover > .minimap-tooltip {
+                display: block;
+            }
+
+            /* fixed width: an absolute box inside the small button shrank to the button's width */
+            .minimap-tooltip-up {
+                bottom: 32dp;
+                left: 0dp;
+                width: 74dp;
+                text-align: center;
+            }
+
+            #time-tooltip {
+                width: 200dp;
+                right: 0dp;
+                top: 18dp;
+                font-size: 13dp;
+                text-align: left;
+            }
+
+            .time-tooltip-label {
+                color: rgb(150, 210, 255);
+            }
+
+            /* ── Corner flourishes (same art as Inventory / Arena, ~80% size) ── */
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #ice-corner-tl { left: 0dp; top: -18dp; width: 65dp; height: 56dp; decorator: image(ice-corner-tl); }
+            #ice-corner-br { right: -2dp; bottom: -12dp; width: 62dp; height: 54dp; decorator: image(ice-corner-br); }
+            #minimap-normal .zone-name { left: 42dp; width: 124dp; font-size: 11dp; text-overflow: ellipsis; }
+            /* coordinates + time sit on the map itself (user): small navy pills */
+            #mm-map-wrap { position: relative; }
+            #mm-map-wrap .mm-overlay {
+                position: absolute;
+                z-index: 5;
+                padding: 1dp 6dp;
+                background-color: rgba(14, 32, 62, 170);
+                border-radius: 5dp;
+            }
+            #mm-map-wrap #coordinates-text, #mm-map-wrap #time-text {
+                font-size: 11dp;
+                color: rgb(255, 255, 255);
+                font-effect: outline(1dp rgb(8, 18, 36));
+            }
+            #mm-coords { left: 6dp; bottom: 6dp; pointer-events: none; }
+            #mm-map-wrap #time-area { right: 6dp; top: 6dp; }
+            #mm-map-wrap #time-tooltip { top: 20dp; }
+            .btn-minimize, .day-night-icon { z-index: 20; }
+
+        </style>
+    </head>
+
+    <body id="game-minimap">
+        <div id="minimap-root" data-model="minimap">
+            <!-- ─── Minimized state ─── -->
+            <div id="minimap-minimized" data-class-hidden="!is_minimized">
+                <handle move_target="#document" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;"></handle>
+                <span class="zone-name" id="zone-name-min">{{zone_name}}</span>
+                <span id="time-min">{{server_time}}</span>
+                <img data-if="!is_day" sprite="GEN_DECO09" class="day-night-icon"/>
+                <img data-if="is_day" sprite="GEN_DECO10" class="day-night-icon"/>
+                <button class="btn-restore" data-event-click="toggle_minimize"></button>
+            </div>
+
+            <!-- ─── Normal state ─── -->
+            <div id="minimap-normal" data-class-hidden="is_minimized">
+                <handle class="title" move_target="#document">
+                    <span class="zone-name" id="zone-name">{{zone_name}}</span>
+                </handle>
+
+                <!-- Day/Night -->
+                <img data-if="!is_day" sprite="GEN_DECO09" class="day-night-icon"/>
+                <img data-if="is_day" sprite="GEN_DECO10" class="day-night-icon"/>
+
+                <!-- Minimize button -->
+                <button class="btn-minimize" data-event-click="toggle_minimize"></button>
+
+                <div class="mm-panel">
+                    <!-- Map Viewport -->
+                    <div id="mm-map-wrap">
+                    <masked id="minimap-viewport" mask-radius="10dp">
+                        <div id="minimap-map" data-style-width="map_width + 'dp'" data-style-height="map_height + 'dp'"
+                             data-style-left="map_left + 'px'" data-style-top="map_top + 'px'">
+                            <img id="minimap-map-image"
+                                 class="map-image"
+                                 data-attr-src="map_texture_source"
+                                 data-style-width="map_width + 'dp'" data-style-height="map_height + 'dp'"
+                            ></img>
+
+                            <img
+                                 id="npc-icon"
+                                 class="npc-icon"
+                                 data-for="npc : npc_indicators"
+                                 data-attr-sprite="npc.icon_sprite"
+                                 data-attr-npc_id="npc.npc_id"
+                                 data-attr-quest_signal="npc.quest_signal"
+                                 data-style-left="round(zoom_level * npc.map_position.x) + 'dp'"
+                                 data-style-top="round(zoom_level * npc.map_position.y) + 'dp'"
+                                 style="position: absolute; transform: translate(-50%, -50%);"
+                            ></img>
+
+                            <img
+                                 id="party-member"
+                                 class="party-icon"
+                                 data-for="member : party_members"
+                                 data-if="member.is_visible"
+                                 data-attr-name="member.name"
+                                 sprite="map-party-member"
+                                 data-style-left="round(zoom_level * member.map_position.x) + 'dp'"
+                                 data-style-top="round(zoom_level * member.map_position.y) + 'dp'"
+                                 style="position: absolute; transform: translate(-50%, -50%);"
+                            ></img>
+
+                            <img class="coord-indicator"
+                                 data-for="coord : coordinate_indicators"
+                                 sprite="map-highlight"
+                                 data-style-left="round(zoom_level * coord.map_position.x) + 'dp'"
+                                 data-style-top="round(zoom_level * coord.map_position.y) + 'dp'"
+                                 style="position: absolute; transform: translate(-50%, -50%);"
+                            ></img>
+
+                            <img class="avatar-icon"
+                                 data-for="avatar : avatars"
+                                 data-attr-sprite="avatar.icon_sprite"
+                                 data-style-left="round(zoom_level * avatar.map_position.x) + 'dp'"
+                                 data-style-top="round(zoom_level * avatar.map_position.y) + 'dp'"
+                                 style="position: absolute; transform: translate(-50%, -50%);"
+                            ></img>
+
+                            <img class="player-arrow"
+                                 src="/3DData/Control/Res/MiniMap_Arrow.tga"
+                                 data-style-left="round(zoom_level * player.map_position.x) + 'dp'"
+                                 data-style-top="round(zoom_level * player.map_position.y) + 'dp'"
+                                 data-style-transform="'translate(-50%, -50%) rotate(' + player.direction + ' rad)'"
+                            ></img>
+                        </div>
+                    </masked>
+                    <!-- Coordinates (bottom-left) + time (top-right), on the map -->
+                    <div id="mm-coords" class="mm-overlay"><span id="coordinates-text">{{player_coordinates}}</span></div>
+                    <div id="time-area" class="mm-overlay">
+                        <span id="time-text">{{server_time}}</span>
+                        <div id="time-tooltip" class="minimap-tooltip">
+                            <span class="time-tooltip-label">Local Time: </span><span>{{local_time}}</span><br/>
+                            <span class="time-tooltip-label">Server Time: </span><span>{{server_time}} {{server_time_gap_text}}</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Button dock -->
+                    <div class="mm-dock">
+                        <button class="mm-btn btn-worldmap" onclick="open_worldmap">
+                            <span class="mm-ico"></span>
+                            <span class="minimap-tooltip minimap-tooltip-up">World Map</span>
+                        </button>
+                        <button id="game-arena" class="mm-btn btn-gamearena" data-if="show_game_arena" onclick="open_gamearena">
+                            <span class="mm-ico"></span>
+                        </button>
+                        <button class="mm-btn btn-itemmall" onclick="open_itemmall">
+                            <span class="mm-ico"></span>
+                            <div class="minimap-tooltip minimap-tooltip-up">
+                                <span style="color: rgb(255, 214, 80)"><b><str string-id="795">Item Mall</str></b></span><br/>
+                                <span>Alt + B</span>
+                            </div>
+                        </button>
+                        <button class="mm-btn btn-giftbox blink" data-if="show_giftbox" onclick="open_giftbox">
+                            <span class="mm-ico"></span>
+                        </button>
+                        <div class="mm-spacer"></div>
+                        <button class="mm-btn btn-zoomout" data-event-click="zoom_out">
+                            <span class="mm-ico small"></span>
+                        </button>
+                        <button class="mm-btn btn-zoomin" data-event-click="zoom_in" onmouseup="update_map_position">
+                            <span class="mm-ico small"></span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Corner flourishes -->
+                <div class="ice-fx" id="ice-corner-tl"></div>
+                <div class="ice-fx" id="ice-corner-br"></div>
+
+                <!-- Giftbox tooltip -->
+                <div id="giftbox-tooltip" data-if="show_giftbox_tooltip">
+                    <div id="giftbox-tooltip-bg"></div>
+                    <span id="giftbox-tooltip-text"><str string-id="1253"></str></span>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</rml>

@@ -1,0 +1,470 @@
+<rml>
+    <head>
+        <title>Character Info</title>
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/spritesheet_currencyicon.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <link type="text/rcss" href="../styles/ice_gauges.css" />
+
+        <style>
+            #character-stats {
+                width: 900dp;
+                height: 670dp;
+                min-width: 800dp;
+                min-height: 450dp;
+            }
+
+            #stats-scroll.avatar-dead { display: none; }
+
+            #character-stats #window-content { height: 100%; max-height: none; overflow: hidden; }
+
+            #stats-scroll {
+                flex: 1;
+                min-width: 0dp;
+                height: 100%;
+                overflow: hidden auto;
+            }
+
+            .stats-columns {
+                display: flex;
+                align-items: flex-start;
+                gap: 8dp;
+                padding-right: 4dp;
+            }
+
+            .stats-column {
+                flex: 1;
+                min-width: 0dp;
+            }
+
+            .stats-section {
+                margin-bottom: 8dp;
+            }
+
+            .stats-section:last-child { margin-bottom: 0dp; }
+
+            /* Compact headings so the whole currency list fits without scrolling. */
+            #character-stats .ui-section-heading {
+                margin-bottom: 4dp;
+                padding-bottom: 3dp;
+                font-size: 14dp;
+            }
+
+            .identity-row,
+            .resource-heading,
+            .primary-row,
+            .derived-row,
+            .stat-points-row,
+            .currency-row {
+                display: flex;
+                align-items: center;
+                gap: 8dp;
+                min-height: 24dp;
+                font-size: 13dp;
+            }
+
+            .identity-row > .stat-label { flex: 0 0 48dp; }
+
+            .identity-row > .stat-value {
+                flex: 1;
+                min-width: 0dp;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            .character-name { font-weight: 800; }
+
+            .stat-label {
+                flex: 1;
+                min-width: 0dp;
+                color: #bbbbbb;
+            }
+
+            .stat-value {
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .resources { margin-top: 8dp; }
+
+            .resource-heading {
+                justify-content: space-between;
+                font-size: 13dp;
+            }
+
+            .resource-gauge {
+                display: block;
+                box-sizing: border-box;
+                width: 100%;
+                margin-bottom: 3dp;
+            }
+
+            gauge.resource-gauge.horizontal-lg-lg {
+                width: 100%;
+                height: 26dp;
+            }
+
+            gauge.resource-gauge.horizontal-lg-lg > span {
+                height: 26dp;
+                line-height: 26dp;
+                font-size: 13dp;
+            }
+
+            gauge.resource-gauge.horizontal-sm-lg {
+                width: 100%;
+                margin: 4dp 0dp 7dp;
+            }
+
+            .experience-value {
+                display: block;
+                text-align: right;
+                font-size: 12dp;
+                white-space: nowrap;
+            }
+
+            .experience-lock {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4dp;
+                min-height: 23dp;
+                font-size: 13dp;
+            }
+
+            .experience-lock input { margin: 0dp; }
+
+            .primary-row {
+                min-height: 26dp;
+                padding: 0dp 2dp;
+            }
+
+            .primary-row > .stat-label { flex: 1; }
+            .primary-row > .stat-value { min-width: 63dp; }
+
+            .stat-cost {
+                width: 30dp;
+                flex-shrink: 0;
+                text-align: right;
+                color: rgb(255, 247, 191);
+                font-size: 12dp;
+            }
+
+            .primary-row button.plus {
+                margin: 0dp 0dp 0dp 2dp;
+                flex-shrink: 0;
+            }
+
+            .primary-heading {
+                display: flex;
+                align-items: baseline;
+                flex-wrap: wrap;
+                gap: 4dp;
+                position: relative;
+                padding-right: 58dp;
+            }
+
+            .primary-heading > str { flex-shrink: 0; }
+            .bulk-hint { white-space: nowrap; font-size: 10dp; font-weight: 600; color: #bbbbbb; }
+
+            #tooltip-cost {
+                position: absolute;
+                right: 28dp;
+                top: 0dp;
+                font-weight: 600;
+            }
+
+            .stat-points-row .stat-value {
+                color: rgb(255, 247, 191);
+                font-weight: 800;
+            }
+
+            .derived-row {
+                min-height: 22dp;
+                padding: 1dp 2dp;
+                font-size: 13dp;
+            }
+
+            .derived-row .stat-value { flex-shrink: 0; }
+
+            .primary-row:hover,
+            .derived-row:hover {
+                background-color: rgba(180, 195, 225, 22);
+                border-radius: 3dp;
+            }
+
+            #currencies { width: 100%; }
+            .currency-row { min-height: 25dp; color: #bbbbbb; }
+            .currency-row img { width: 21dp; height: 21dp; flex-shrink: 0; }
+            .currency-row { font-size: 13dp; }
+            .currency-value { color: yellow; flex: 1; text-align: right; white-space: nowrap; }
+
+            /* ===== ice theme ===== */
+            #character-stats .ice-fx.ice-br { bottom: -32dp; }
+            #character-stats .ui-section-heading { color: rgb(30, 62, 112); border-bottom: 1dp rgb(214, 226, 238); }
+            #character-stats .stat-label, #character-stats .bulk-hint { color: rgb(90, 115, 150); }
+            #character-stats .stat-value { color: rgb(36, 58, 98); font-weight: 700; }
+            #character-stats .character-name { color: rgb(30, 62, 112); font-weight: 820; }
+            #character-stats .stat-cost, #character-stats #tooltip-cost { color: rgb(170, 100, 20); font-weight: 700; }
+            #character-stats .stat-cost.short { color: rgb(190, 120, 120); font-weight: 400; }
+            /* HP/MP text on the bars: white with a dark outline (the panel makes text navy) */
+            #character-stats gauge.resource-gauge > span { color: rgb(255, 255, 255); font-effect: outline(1.5dp rgb(16, 28, 52)); }
+            #character-stats .experience-value { color: rgb(36, 58, 98); }
+            #character-stats .exp-pct { color: rgb(170, 100, 20); font-weight: 820; }
+            #character-stats .experience-lock label { color: rgb(90, 115, 150); }
+            #character-stats .stat-points-row .stat-value { color: rgb(110, 130, 160); }
+            #character-stats .stat-points-row.has-points {
+                background-color: rgb(236, 250, 232);
+                border: 1dp rgb(150, 210, 140);
+                border-radius: 6dp;
+                padding: 0 6dp;
+            }
+            #character-stats .stat-points-row.has-points .stat-label { color: rgb(40, 120, 50); font-weight: 820; }
+            #character-stats .stat-points-row.has-points .stat-value { color: rgb(30, 130, 50); font-size: 15dp; }
+            #character-stats .primary-row:hover, #character-stats .derived-row:hover { background-color: rgb(222, 236, 250); }
+            #character-stats .currency-row { color: rgb(90, 115, 150); }
+            #character-stats .currency-value { color: rgb(170, 100, 20); font-weight: 820; }
+            /* currency icons: close-button style badges (atlas2); the stock image is drawn at 0 size, the decorator fills the padding */
+            #character-stats .currency-row img[sprite="currencyicon-0"], #character-stats .currency-row img[sprite="currencyicon-1"], #character-stats .currency-row img[sprite="currencyicon-2"], #character-stats .currency-row img[sprite="currencyicon-3"], #character-stats .currency-row img[sprite="currencyicon-4"], #character-stats .currency-row img[sprite="currencyicon-5"], #character-stats .currency-row img[sprite="currencyicon-6"] { width: 0dp; height: 0dp; padding: 10.5dp; }
+            #character-stats .currency-row img[sprite="currencyicon-0"] { decorator: image(ice-zulie-n); }
+            #character-stats .currency-row img[sprite="currencyicon-1"] { decorator: image(ice-cur-1); }
+            #character-stats .currency-row img[sprite="currencyicon-2"] { decorator: image(ice-cur-2); }
+            #character-stats .currency-row img[sprite="currencyicon-3"] { decorator: image(ice-cur-3); }
+            #character-stats .currency-row img[sprite="currencyicon-4"] { decorator: image(ice-cur-4); }
+            #character-stats .currency-row img[sprite="currencyicon-5"] { decorator: image(ice-cur-5); }
+            #character-stats .currency-row img[sprite="currencyicon-6"] { decorator: image(ice-cur-6); }
+            /* stat + buttons: the green learn button from the skills window */
+            #character-stats .primary-row button.plus { width: 24dp; min-width: 24dp; height: 24dp; decorator: image(ice-learn-n); }
+            #character-stats .primary-row button.plus:hover { decorator: image(ice-learn-h); }
+            #character-stats .primary-row button.plus:active { decorator: image(ice-learn-a); }
+            #character-stats .primary-row button.plus:disabled,
+            #character-stats .primary-row button.plus[disabled] { decorator: image(ice-learn-d); }
+
+            /* 3D character preview beside the stats */
+            #character-stats .cs-layout { display: flex; flex-direction: row; gap: 8dp; width: 100%; height: 100%; }
+            #character-stats .cp-panel { width: 230dp; flex: 0 0 230dp; height: 100%; box-sizing: border-box; padding: 4dp; margin: 0; }
+            #character-stats character-preview { display: block; width: 100%; height: 100%; }
+        </style>
+    </head>
+
+    <body template="window-resizeable" id="character-stats">
+        <div class="cs-layout">
+        <!-- 3D character preview: the element shows your own avatar and gear by default -->
+        <div class="cp-panel content-box">
+            <character-preview id="cs-preview-model" yaw="20" pitch="10" distance="3.4" offset-z="0.9" />
+        </div>
+        <div id="stats-scroll" data-model="character" data-class-avatar-dead="health <= 0">
+            <div class="stats-columns">
+                <div class="stats-column">
+                    <div class="content-box ui-section stats-section">
+                        <div class="ui-section-title ui-section-heading"><str string-id="835">Basic Info</str></div>
+                        <div class="identity-row">
+                            <span class="stat-label"><str string-id="755">Name</str></span>
+                            <span class="stat-value character-name">{{name}}</span>
+                        </div>
+                        <div class="identity-row">
+                            <span class="stat-label"><str string-id="313">LVL</str></span>
+                            <span class="stat-value">{{format_number(level)}}</span>
+                        </div>
+                        <div class="identity-row">
+                            <span class="stat-label"><str string-id="813">Job</str></span>
+                            <span class="stat-value">{{stats_job_name(job)}}</span>
+                        </div>
+                        <div class="identity-row">
+                            <span class="stat-label"><str string-id="44">Clan</str></span>
+                            <span class="stat-value">{{clan_name}}</span>
+                        </div>
+
+                        <div class="resources">
+                            
+                            <gauge id="stats-health" class="resource-gauge horizontal-lg-lg red"
+                                data-attr-gvalue="health" data-attr-gmax="max_health">
+                                <span><str string-id="833">HP</str> {{format_number(health)}} / {{format_number(max_health)}}</span>
+                            </gauge>
+                            
+                            <gauge id="stats-mana" class="resource-gauge horizontal-lg-lg blue"
+                                data-attr-gvalue="mana" data-attr-gmax="max_mana">
+                                <span><str string-id="834">MP</str> {{format_number(mana)}} / {{format_number(max_mana)}}</span>
+                            </gauge>
+
+                            <div class="resource-heading">
+                                <str string-id="814">EXP</str>
+                                <span class="experience-lock" stat-tooltip="31">
+                                    <input id="lock-exp" type="checkbox" data-checked="experience_gain_disabled"
+                                        onclick="toggle-exp" />
+                                    <label for="lock-exp"><str string-id="1443">Lock EXP</str></label>
+                                </span>
+                            </div>
+                            <span class="experience-value">{{format_number(experience)}} / {{format_number(max_experience)}}<span class="exp-pct" data-if="max_experience > 0"> &#183; {{stats_decimal(experience * 100 / max_experience, 2)}}%</span></span>
+                            <gauge id="stats-experience" class="resource-gauge horizontal-sm-lg yellow"
+                                data-attr-gvalue="experience" data-attr-gmax="max_experience" />
+
+
+                        </div>
+                    </div>
+
+                    <div class="content-box ui-section stats-section">
+                        <div class="ui-section-title ui-section-heading primary-heading">
+                            <str string-id="836">Avatar Stats</str>
+                            <span class="bulk-hint">(shift click for bulk)</span>
+                            <span id="tooltip-cost" class="stat-cost" stat-tooltip="30">
+                                <str string-id="574">Cost</str>
+                            </span>
+                        </div>
+                        <div class="primary-row" stat-tooltip="0">
+                            <span class="stat-label"><str string-id="744">STR</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_strength, strength)}}</span>
+                            <span class="stat-cost" data-class-short="add_strength_cost > stat_points">{{format_number(add_strength_cost)}}</span>
+                            <button id="add-strength" class="plus" data-attrif-disabled="!can_add_strength" onclick="add-stat:0" />
+                        </div>
+                        <div class="primary-row" stat-tooltip="1">
+                            <span class="stat-label"><str string-id="745">DEX</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_dexterity, dexterity)}}</span>
+                            <span class="stat-cost" data-class-short="add_dexterity_cost > stat_points">{{format_number(add_dexterity_cost)}}</span>
+                            <button id="add-dexterity" class="plus" data-attrif-disabled="!can_add_dexterity" onclick="add-stat:1" />
+                        </div>
+                        <div class="primary-row" stat-tooltip="2">
+                            <span class="stat-label"><str string-id="746">INT</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_intelligence, intelligence)}}</span>
+                            <span class="stat-cost" data-class-short="add_intelligence_cost > stat_points">{{format_number(add_intelligence_cost)}}</span>
+                            <button id="add-intelligence" class="plus" data-attrif-disabled="!can_add_intelligence" onclick="add-stat:2" />
+                        </div>
+                        <div class="primary-row" stat-tooltip="3">
+                            <span class="stat-label"><str string-id="747">CON</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_concentration, concentration)}}</span>
+                            <span class="stat-cost" data-class-short="add_concentration_cost > stat_points">{{format_number(add_concentration_cost)}}</span>
+                            <button id="add-concentration" class="plus" data-attrif-disabled="!can_add_concentration" onclick="add-stat:3" />
+                        </div>
+                        <div class="primary-row" stat-tooltip="4">
+                            <span class="stat-label"><str string-id="748">CHA</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_charm, charm)}}</span>
+                            <span class="stat-cost" data-class-short="add_charm_cost > stat_points">{{format_number(add_charm_cost)}}</span>
+                            <button id="add-charm" class="plus" data-attrif-disabled="!can_add_charm" onclick="add-stat:4" />
+                        </div>
+                        <div class="primary-row" stat-tooltip="5">
+                            <span class="stat-label"><str string-id="749">SEN</str></span>
+                            <span class="stat-value">{{stats_base_bonus(base_sense, sense)}}</span>
+                            <span class="stat-cost" data-class-short="add_sense_cost > stat_points">{{format_number(add_sense_cost)}}</span>
+                            <button id="add-sense" class="plus" data-attrif-disabled="!can_add_sense" onclick="add-stat:5" />
+                        </div>
+                        <div class="stat-points-row ui-footer" data-class-has-points="stat_points > 0">
+                            <span class="stat-label"><str string-id="750">Stat Points</str></span>
+                            <span class="stat-value">{{format_number(stat_points)}}</span>
+                        </div>
+                    </div>
+
+                    <div class="content-box ui-section stats-section">
+                        <div class="ui-section-title ui-section-heading"><str string-id="944">Currency</str></div>
+                        <!-- Filled from the currency STB, including localized names, icons and limits. -->
+                        <div id="currencies" />
+                    </div>
+                </div>
+
+                <div class="stats-column content-box ui-section stats-section">
+                    <div class="ui-section-title ui-section-heading"><str string-id="836">Avatar Stats</str></div>
+                    <div class="derived-row" stat-tooltip="6">
+                        <span class="stat-label"><str string-id="735">Attack</str></span>
+                        <span class="stat-value">{{stats_base_bonus(attack, attack + attack_bonus)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="7">
+                        <span class="stat-label"><str string-id="736">Defense</str></span>
+                        <span class="stat-value">{{format_number(defence)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="8">
+                        <span class="stat-label"><str string-id="737">Magic Defense</str></span>
+                        <span class="stat-value">{{format_number(resistance)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="9">
+                        <span class="stat-label"><str string-id="743">Accuracy</str></span>
+                        <span class="stat-value">{{format_number(accuracy)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="10">
+                        <span class="stat-label"><str string-id="741">Critical</str></span>
+                        <span class="stat-value">{{stats_decimal(critical_chance, 2)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="11">
+                        <span class="stat-label"><str string-id="742">Dodge</str></span>
+                        <span class="stat-value">{{format_number(dodge)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="12">
+                        <span class="stat-label"><str string-id="435">Attacks/Second</str></span>
+                        <span class="stat-value">{{stats_decimal(attacks_per_second, 2)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="13">
+                        <span class="stat-label"><str string-id="740">MSPD</str></span>
+                        <span class="stat-value">{{format_number(move_speed)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="14">
+                        <span class="stat-label"><str string-id="1150">Critical Damage</str></span>
+                        <span class="stat-value">{{stats_combined(critical_damage_rate, critical_damage_amount)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="15">
+                        <span class="stat-label"><str string-id="1151">Pierce Physical</str></span>
+                        <span class="stat-value">{{stats_combined(pierce_defence_rate, pierce_defence_amount)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="16">
+                        <span class="stat-label"><str string-id="1152">Pierce Magical</str></span>
+                        <span class="stat-value">{{stats_combined(pierce_resistance_rate, pierce_resistance_amount)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="17">
+                        <span class="stat-label"><str string-id="1161">Block Rate</str></span>
+                        <span class="stat-value">{{stats_decimal(block_rate, 1)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="18">
+                        <span class="stat-label"><str string-id="1158">Block Physical</str></span>
+                        <span class="stat-value">{{format_number(block_physical)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="19">
+                        <span class="stat-label"><str string-id="1159">Block Magical</str></span>
+                        <span class="stat-value">{{format_number(block_magical)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="20">
+                        <span class="stat-label"><str string-id="1153">HP Recovery</str></span>
+                        <span class="stat-value">{{format_number(health_recovery)}} / <str string-id="315">Seconds</str></span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="21">
+                        <span class="stat-label"><str string-id="1154">MP Recovery</str></span>
+                        <span class="stat-value">{{format_number(mana_recovery)}} / <str string-id="315">Seconds</str></span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="22">
+                        <span class="stat-label"><str string-id="1160">Summon Gauge</str></span>
+                        <span class="stat-value">{{format_number(summon_guage)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="23">
+                        <span class="stat-label"><str string-id="1155">MP Cost</str></span>
+                        <span class="stat-value">{{stats_combined(mana_cost_reduction_rate, mana_cost_reduction_amount)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="24">
+                        <span class="stat-label"><str string-id="1162">PVP Offense</str></span>
+                        <span class="stat-value">{{format_number(pvp_offence)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="25">
+                        <span class="stat-label"><str string-id="1163">PVP Defense</str></span>
+                        <span class="stat-value">{{format_number(pvp_defence)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="26">
+                        <span class="stat-label"><str string-id="1164">PVM Offense</str></span>
+                        <span class="stat-value">{{format_number(pvm_offence)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="27">
+                        <span class="stat-label"><str string-id="1165">PVM Defense</str></span>
+                        <span class="stat-value">{{format_number(pvm_defence)}}%</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="28">
+                        <span class="stat-label"><str ability-name="38">Max HP</str></span>
+                        <span class="stat-value">{{format_number(max_health)}}</span>
+                    </div>
+                    <div class="derived-row" stat-tooltip="29">
+                        <span class="stat-label"><str ability-name="39">Max MP</str></span>
+                        <span class="stat-value">{{format_number(max_mana)}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

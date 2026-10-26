@@ -1,0 +1,9 @@
+item-slot { display: inline-block; position: relative; width: 40dp; height: 40dp; }
+item-slot .item-image, item-slot .item-cooldown, item-slot .item-socket, item-slot .item-element, item-slot .item-quantity { position: absolute; pointer-events: none; }
+item-slot .item-image, item-slot .item-cooldown { left: 0; top: 0; width: 100%; height: 100%; }
+item-slot .item-cooldown { image-color: rgba(0, 0, 0, 110); }
+item-slot .item-socket { left: 0; top: 0; width: 32dp; height: 32dp; }
+item-slot .item-socket.gem { width: 19dp; height: 19dp; }
+item-slot .item-element { left: 20dp; top: 0; width: 20dp; height: 20dp; }
+item-slot .item-quantity { left: 0; top: 2dp; padding: 0 2dp; line-height: 15dp; font-size: 13dp; color: white; background: rgba(0, 0, 0, 128); white-space: nowrap; }
+item-slot[empty="1"] { decorator: image(slot-icon); }

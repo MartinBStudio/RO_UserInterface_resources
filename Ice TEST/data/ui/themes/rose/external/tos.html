@@ -1,0 +1,122 @@
+<rml>
+    <head>
+        <title>Terms of Service</title>
+
+        <link type="text/template" href="../templates/window-fixed.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            body
+            {
+                width: 600dp;
+                height: 70%;
+            }
+
+            #tos-container
+            {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            #tos-text
+            {
+                flex: 1;
+                overflow-y: scroll;
+                text-align: left;
+                font-size: 16dp;
+                line-height: 1.2;
+                margin-left: 10dp;
+                margin-top: 10dp;
+                margin-right: 20dp;
+            }
+
+            #checkbox-container
+            {
+                font-effect: outline(1dp black);
+                line-height: 40dp;
+            }
+
+            #button-container
+            {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 5dp;
+            }
+
+            #button-container > button
+            {
+                width: 350dp;
+            }
+
+            /* ===== ice theme ===== */
+            #external-tos #window-content { height: 100%; box-sizing: border-box; padding: 8dp; }
+            /* rules on a white page inside a light ice box, ice scrollbar */
+            #external-tos #tos-text {
+                margin: 0dp;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10dp 8dp 10dp 12dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+                color: rgb(36, 58, 98);
+                font-size: 15dp;
+                line-height: 1.3;
+                font-effect: none;
+            }
+            #external-tos #tos-text b { color: rgb(150, 92, 20); font-size: 18dp; }
+            #external-tos #tos-text i { color: rgb(120, 140, 170); font-size: 13dp; }
+            #external-tos #checkbox-container {
+                display: flex; flex-direction: row; align-items: center; justify-content: center;
+                line-height: 20dp; margin-top: 8dp; font-effect: none; color: rgb(30, 62, 112);
+            }
+            #external-tos #checkbox-container input { margin-right: 6dp; }
+            #external-tos #checkbox-container b { font-weight: 820; }
+            /* Decline / Accept side by side */
+            #external-tos #button-container { flex-direction: row; justify-content: center; padding: 8dp 0dp 2dp 0dp; }
+            #external-tos #button-container > button { width: 170dp; margin: 0dp 5dp; }
+            #external-tos fc_lightred { color: rgb(170, 40, 40); font-effect: none; }
+        </style>
+    </head>
+
+    <body id="external-tos" data-model="tos_data" template="window-fixed">
+        <div id="tos-container">
+            <div id="tos-text">
+                <span><b>ROSE Online Game Rules</b></span><br/>
+                <span><i>Last updated September 11, 2026</i></span><br/><br/>
+
+                <span>1. Follow the game's terms of service and rules at all times: These outline the behaviour that is expected of players and may include things like not engaging in harassment, cheating, or scamming other players.</span><br/>
+                <br/><span>2. No harassment or hate speech: This includes any behaviour that is intended to offend, intimidate, or discriminate against others based on their race, ethnicity, religion, sexual orientation, gender identity, or any other characteristic.</span><br/>
+                <br/><span>3. No sharing personal information: This includes sharing your own personal information or the personal information of others without their consent.</span><br/>
+                <br/><span>4. No sharing inappropriate content: This includes sharing explicit text, or sharing content that is not suitable for all audiences.</span><br/>
+                <br/><span>5. Respect other players: This includes not using offensive language, not engaging in harassment or bullying, and not stealing from or griefing other players.</span><br/>
+                <br/><span>6. Participate in the economy: You as players can buy, sell, and trade items and resources. Respect the value of these items and do not engage in activities that could disrupt the economy, such as scamming users for example.</span><br/>
+                <br/><span>7. Follow the instructions of the ROSE Online Team: The ROSE Online Team have the final say on any issues that may arise in the server. It is important to follow their instructions.</span><br/>
+                <br/><span>8. Discussing past ROSE projects: (e.g. Ruff, Shin, Titan) is fine, but discussing projects, which are currently active and violating copyright is strictly forbidden across any of our platforms.</span><br/>
+                <br/><span>9. No evading moderation: This includes using alt accounts to circumvent bans/timeouts and using alternate spelling to circumvent the profanity auto-moderation.</span><br/>
+                <br/><span>10. Don't cheat/exploit to gain an advantage: This includes using third-party tools(macroing/scripting/any automation tools), exploiting game bugs, or otherwise breaking the game's rules in order to gain an unfair advantage.</span><br/>
+                <br/><span>11. A maximum of two clients per person: You are allowed to connect two clients to ROSE Online at one time, whether this is from the same PC or two different PC's.</span><br/>
+                <br/><span>12. RMT is prohibited. RMT (Real Money Transaction) is the buying or selling of ingame items, zulie or game accounts for real money and it is strictly forbidden.</span><br/>
+                <br/><span>Not following the rules could result in a temporary and/or permanent suspension of your account</span><br/>
+            </div>
+
+            <div id="checkbox-container">
+                <input id="remember-rules" type="checkbox" data-value="remember_rules" data-checked="remember_rules"/>
+                <label id="remember-rules-label" for="remember-rules" string-id="1094"><b>I know all the rules, please do not show them again</b></label>
+            </div>
+
+            <div id="button-container">
+                <button class="default" onclick="decline"><b><fc_lightred>Decline</fc_lightred></b></button>
+                <button class="default ice-primary" onclick="accept"><b>Accept</b></button>
+            </div>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

@@ -1,0 +1,46 @@
+<rml>
+    <head>
+        <title>Notifications</title>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/spritesheet_icons.css" />
+        <link type="text/rcss" href="../styles/spritesheet_glassui.css" />
+        <link type="text/rcss" href="../styles/scrollbar.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <style>
+            body { position: absolute; top: auto; width: 396dp; pointer-events: none; }
+            #notification-viewport { overflow-y: auto; pointer-events: none; }
+            #notification-viewport scrollbarvertical { pointer-events: auto; }
+            #notifications { display: flex; flex-wrap: wrap-reverse; pointer-events: none; }
+            .notification-bell {
+                width: 36dp; height: 36dp; min-width: 36dp; flex-shrink: 0;
+                padding: 0dp; margin: 0dp; border-width: 0dp;
+                pointer-events: auto; cursor: pointer;
+                decorator: image(notification-normal);
+            }
+            .notification-bell.blink { decorator: image(notification-blink); }
+            .notification-bell:hover { decorator: image(notification-hover); }
+            .notification-bell:active { decorator: image(notification-pressed); }
+
+            /* ===== ice theme: close-button style bell, orange + gentle pulse when new ===== */
+            #notification-buttons .notification-bell { margin: 1dp; decorator: image(ice-bell-n); }
+            #notification-buttons .notification-bell:hover { decorator: image(ice-bell-h); }
+            #notification-buttons .notification-bell:active { decorator: image(ice-bell-a); }
+            #notification-buttons .notification-bell.blink { decorator: image(ice-bell-o); animation: 0.7s sine-in-out infinite alternate ice-bell-pulse; }
+            #notification-buttons .notification-bell.blink:hover { decorator: image(ice-bell-h); animation: none; }
+            @keyframes ice-bell-pulse {
+                from { image-color: rgb(255, 255, 255); }
+                to { image-color: rgb(255, 225, 170); }
+            }
+        </style>
+    </head>
+    <body id="notification-buttons">
+        <div id="notification-viewport" data-model="notification-buttons">
+            <div id="notifications" class="ui-icon-strip">
+                <button data-for="bell : bells" data-attr-id="'bell-' + bell.token" data-attr-event-id="bell.event_id"
+                    class="notification-bell" data-class-blink="bell.blink" data-class-acknowledged="bell.acknowledged"
+                    data-event-click="activate(bell.token)" data-event-mouseover="acknowledge(bell.token)"></button>
+            </div>
+        </div>
+    </body>
+</rml>

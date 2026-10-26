@@ -1,0 +1,290 @@
+<rml>
+    <head>
+        <title>Selected target</title>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/spritesheet_gauge.css" />
+        <link type="text/rcss" href="../styles/gauge.css" />
+        <link type="text/rcss" href="../styles/spritesheet_stateicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_elementicon.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_gauges.css" />
+        <style>
+            body { position: absolute; top: 50dp; left: 50%; width: 240dp; margin-left: -120dp; z-index: -20; pointer-events: none; }
+            #focused-target-root.duel { margin-top: 50dp; }
+            #target-name { font-size: 14dp; font-weight: 820; line-height: 20dp; max-height: 40dp; overflow: hidden; word-break: break-word; text-align: center; font-effect: outline(1dp black); }
+            #target-statuses { width: 100%; }
+            .target-status-icon { pointer-events: auto; }
+
+            /* ---- element | counter elements (read from the target's nameplate by the script) ---- */
+            /* name line: name + (element | counters) side by side */
+            #target-name-row { text-align: center; }
+            #target-name-row #target-name { display: inline-block; vertical-align: middle; max-width: 170dp; }
+            #target-element { display: none; vertical-align: middle; margin-left: 6dp; }
+            #target-element.on { display: inline-block; }
+            #focused-target.ta-el-off #target-element { display: none; }
+            #target-element .te-pill {
+                display: inline-block;
+                /* bare icons like the nameplate (no pill) */
+                padding: 0dp;
+            }
+            #target-element img { display: inline-block; width: 18dp; height: 18dp; vertical-align: middle; margin: 0dp 1dp; }
+            #target-element img.te-off { display: none; }
+            #target-element .te-sep { display: inline-block; width: 2dp; height: 12dp; margin: 0dp 4dp; vertical-align: middle; background-color: rgb(214, 166, 60); border: 0.5dp rgb(14, 32, 62); }
+            .tick-el { position: absolute; left: 0; top: 0; width: 1dp; height: 1dp; opacity: 0; pointer-events: none; }
+            @keyframes te-tick-a { from { opacity: 0; } to { opacity: 0.01; } }
+            @keyframes te-tick-b { from { opacity: 0; } to { opacity: 0.01; } }
+
+            /* ---- DPS meter (add-on by a friend; ice pill styling) ----
+               The numbers are read-only text boxes that redraw their own text, so updating
+               them every second never creates new text elements (avoids font warnings). */
+            #sp-dps { display: none; margin: 3dp auto 0 auto; width: 228dp; height: 18dp; box-sizing: border-box;
+                      flex-direction: row; justify-content: center; align-items: center;
+                      background-color: rgba(14, 32, 62, 190); border: 1dp rgba(150, 190, 225, 200); border-radius: 9dp;
+                      font-family: Nunito; font-weight: 800; font-size: 12dp; font-effect: outline(1dp rgb(8, 18, 36)); }
+            #sp-dps.active { display: flex; }
+            #focused-target.sp-dps-off #sp-dps { display: none; }
+            .sp-dps-lbl { color: rgb(255, 214, 120); margin-right: 3dp; font-effect: outline(1dp rgb(8, 18, 36)); }
+            .sp-dps-dot { color: rgb(150, 190, 225); margin: 0 5dp; font-effect: outline(1dp rgb(8, 18, 36)); }
+            .sp-dps-num {
+                display: block; height: 16dp; padding: 0; margin: 0;
+                decorator: none; background: transparent; border: 0;
+                font-family: Nunito; font-weight: 800; font-size: 12dp; line-height: 16dp;
+                color: white; font-effect: outline(1dp rgb(8, 18, 36)); text-align: left;
+                pointer-events: none; tab-index: none; image-color: rgb(255, 255, 255);
+            }
+            #sp-dps.done .sp-dps-num { color: rgb(150, 220, 110); }
+            #sp-dps.paused .sp-dps-num { color: rgb(180, 190, 205); }
+            #sp-dps-source { display: none; }
+            /* repeating 1 second timer: two identical animations swapped each time one ends */
+            @keyframes sp-dps-tick-a { from { opacity: 0; } to { opacity: 0; } }
+            @keyframes sp-dps-tick-b { from { opacity: 0; } to { opacity: 0; } }
+            #sp-dps-timer { position: absolute; width: 1dp; height: 1dp; opacity: 0; animation: 1s sp-dps-tick-a; }
+        </style>
+        <script>
+-- On/off switches (Options > Interface > Target Bar), saved in sp_addons.txt as key=1/0
+-- (same file + keys as the friend's add-on switch). Everything is on by default.
+local doc = document
+SP_ADDON_ON = function(key)
+    local on = true
+    pcall(function()
+        local f = io.open('sp_addons.txt', 'r')
+        if not f then return end
+        for line in f:lines() do
+            local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d)')
+            if k == key then on = (v == '1') end
+        end
+        f:close()
+    end)
+    return on
+end
+local function apply_switches()
+    local body = doc:GetElementById('focused-target') or doc
+    body:SetClass('sp-dps-off', not SP_ADDON_ON('dps_meter'))
+    body:SetClass('ta-el-off', not SP_ADDON_ON('target_element'))
+end
+-- Options calls this right after a switch changes
+TA_APPLY = function() pcall(apply_switches) end
+pcall(apply_switches)
+doc:AddEventListener('show', function() pcall(apply_switches) end)
+
+-- Element | counter elements on the target bar.
+-- The target bar gets no element from the game, but the nameplates do (right-hand icon,
+-- elementicon-N). A few times a second: find the nameplate with the target's name and read it.
+-- Icons: 1 Sorcery, 2 Fire, 3 Water, 4 Earth, 5 Wind, 6 Holy, 7 Poison, 8 Ghost.
+-- Counters = the element's "Weak against" list, as in the Monster Inspector.
+local COUNTERS = {
+    [1] = { 3, 8 },
+    [2] = { 3, 6, 7 },
+    [3] = { 5, 7, 8 },
+    [4] = { 1, 2, 8 },
+    [5] = { 1, 4, 6 },
+    [6] = { 4, 7 },
+    [7] = { 1, 5 },
+    [8] = { 2, 6 },
+}
+local shown = nil
+
+local function hidden(e)
+    local ok, d = pcall(function() return e.style.display end)
+    return ok and tostring(d) == 'none'
+end
+
+local function child_with_class(e, cls)
+    local c = e and e.first_child
+    while c do
+        if c:IsClassSet(cls) then return c end
+        c = c.next_sibling
+    end
+    return nil
+end
+
+local function find_element(name)
+    local np = doc.context.documents['monster-nameplates']
+    local root = np and np:GetElementById('monster-nameplates-root')
+    local plate = root and root.first_child
+    while plate do
+        if not hidden(plate) then
+            local line = child_with_class(plate, 'monster-name-line')
+            local nm = child_with_class(line, 'monster-name')
+            if nm and nm.inner_rml == name then
+                local img = child_with_class(line, 'right')
+                if img and not hidden(img) then
+                    local n = tonumber((img:GetAttribute('sprite') or ''):match('^elementicon%-(%d+)$'))
+                    if n then return n end
+                end
+            end
+        end
+        plate = plate.next_sibling
+    end
+    return 0
+end
+
+local function update()
+    local body = doc:GetElementById('focused-target') or doc
+    if body:IsClassSet('ta-el-off') then return end   -- switched off: no lookups at all
+    local box = doc:GetElementById('target-element')
+    local tn = doc:GetElementById('target-name')
+    if not box or not tn then return end
+    local el = 0
+    local name = tn.inner_rml
+    if name and name ~= '' then el = find_element(name) end
+    if el == shown then return end
+    shown = el
+    local ctr = COUNTERS[el]
+    box:SetClass('on', ctr ~= nil)
+    if not ctr then return end
+    doc:GetElementById('te-self'):SetAttribute('sprite', 'elementicon-' .. el)
+    for i = 1, 3 do
+        local img = doc:GetElementById('te-c' .. i)
+        if ctr[i] then img:SetAttribute('sprite', 'elementicon-' .. ctr[i]) end
+        img:SetClass('te-off', ctr[i] == nil)
+    end
+end
+
+-- heartbeat (same trick as the loot filter): a short animation whose end runs update()
+local tick = doc:AppendChild(doc:CreateElement('div'))
+tick:SetClass('tick-el', true)
+local flip = false
+local function arm()
+    flip = not flip
+    tick.style.animation = '0.2s linear 1 ' .. (flip and 'te-tick-a' or 'te-tick-b')
+end
+tick:AddEventListener('animationend', function()
+    pcall(update)
+    arm()
+end)
+arm()
+        </script>
+        <script>
+-- DPS meter (add-on by a friend). The game gives the UI no damage numbers, so
+-- this watches the target's HP once a second: HP lost = damage per second.
+-- It measures damage TAKEN by your target, so in a party it includes your
+-- party's hits too. It resets when you change target; when the target dies or
+-- nobody has hit it for 8 seconds, the fight's totals stay on screen for as
+-- long as the target window does.
+pcall(function()
+    local function el(id) return document:GetElementById(id) end
+    local function num(n)
+        local t = string.format('%.0f', n)
+        local r = t:reverse():gsub('(%d%d%d)', '%1,'):reverse():gsub('^,', '')
+        return r
+    end
+    local key, last_hp = nil, nil
+    local fight = nil          -- {total, seconds, recent = {...}, idle, done}
+    local flip = false
+    -- each number sits in its own read-only text box, sized to its text
+    local function put(id, text)
+        local e = el(id)
+        if not e or e:GetAttribute('sp-shown') == text then return end
+        e:SetAttribute('value', text)
+        e:SetAttribute('sp-shown', text)
+        e.style.width = (#text * 7 + 2) .. 'dp'
+    end
+    -- time left until the kill: the target's HP now / damage per second so far
+    local function left()
+        if fight.done then return '0s' end
+        if fight.idle >= 8 then return '-' end
+        local avg = fight.total / math.max(1, fight.seconds)
+        if not last_hp or 0 >= avg then return '-' end
+        local secs = math.ceil(last_hp / avg)
+        if secs >= 3600 then return '1h+' end
+        if secs >= 60 then return math.floor(secs / 60) .. 'm ' .. (secs % 60) .. 's' end
+        return secs .. 's'
+    end
+    local function render()
+        local box = el('sp-dps')
+        if not box then return end
+        if not fight or 0 >= fight.total then box:SetClass('active', false); return end
+        local recent = 0
+        for _, d in ipairs(fight.recent) do recent = recent + d end
+        local now = #fight.recent > 0 and recent / #fight.recent or 0
+        local avg = fight.total / math.max(1, fight.seconds)
+        put('sp-dps-now', num(now))
+        put('sp-dps-avg', num(avg))
+        put('sp-dps-time', left())
+        box:SetClass('done', fight.done == true)              -- green: target defeated
+        box:SetClass('paused', not fight.done and fight.idle >= 8)   -- grey: nobody has hit it for 8s
+        box:SetClass('active', true)
+    end
+    local function tick()
+        local src = el('sp-dps-values')
+        if not src then return end
+        local visible = src:GetAttribute('sp-visible') == '1'
+        local hp, max = tonumber(src:GetAttribute('sp-hp')), tonumber(src:GetAttribute('sp-max'))
+        local name = src:GetAttribute('sp-name') or ''
+        if not visible or not hp or not max or 0 >= max then
+            key, last_hp, fight = nil, nil, nil
+            render(); return
+        end
+        local k = name .. '|' .. max
+        if k ~= key then
+            -- new target: start fresh
+            key, last_hp, fight = k, hp, nil
+            render(); return
+        end
+        local dealt = (last_hp or hp) - hp
+        last_hp = hp
+        if dealt > 0 then
+            if not fight or fight.done then fight = {total = 0, seconds = 0, recent = {}, idle = 0} end
+            fight.total = fight.total + dealt
+            fight.idle = 0
+        elseif fight then
+            fight.idle = fight.idle + 1
+        end
+        if fight and not fight.done and 8 > fight.idle then
+            fight.seconds = fight.seconds + 1
+            table.insert(fight.recent, math.max(0, dealt))
+            if #fight.recent > 3 then table.remove(fight.recent, 1) end   -- "DPS" = last 3 seconds
+            if 0 >= hp then fight.done = true end
+        end
+        render()
+    end
+    local timer = el('sp-dps-timer')
+    if timer then
+        timer:AddEventListener('animationend', function()
+            pcall(tick)
+            flip = not flip
+            timer.style.animation = '1s ' .. (flip and 'sp-dps-tick-b' or 'sp-dps-tick-a')
+        end)
+    end
+end)
+        </script>
+    </head>
+    <body id="focused-target" onclick="ignore">
+        <!-- The model binds on a child: a body-level model attaches after parsing, too late for data-for templates. -->
+        <div id="focused-target-root" data-model="focused-target" data-if="visible" data-class-duel="duel">
+            <div id="target-name-row"><div id="target-name" data-style-color="color">{{name}}</div><div id="target-element"><div class="te-pill"><img id="te-self" sprite="elementicon-0" /><span class="te-sep"></span><img id="te-c1" sprite="elementicon-0" /><img id="te-c2" sprite="elementicon-0" /><img id="te-c3" sprite="elementicon-0" /></div></div></div>
+            <gauge id="target-health" class="ui-vitals horizontal-sm-md red" animation-enabled="false" data-if="show_health" data-attr-gmax="max_hp" data-attr-gvalue="hp">
+                <span><label id="value" /> / <label id="max" /></span>
+            </gauge>
+            <div id="sp-dps"><span class="sp-dps-lbl">DPS</span><input id="sp-dps-now" class="sp-dps-num" type="text" readonly="" value="" /><span class="sp-dps-dot">·</span><span class="sp-dps-lbl">Avg</span><input id="sp-dps-avg" class="sp-dps-num" type="text" readonly="" value="" /><span class="sp-dps-dot">·</span><span class="sp-dps-lbl">Kill in</span><input id="sp-dps-time" class="sp-dps-num" type="text" readonly="" value="" /></div>
+            <div id="target-statuses" class="ui-status-icons">
+                <span class="target-status-icon" data-for="status, index : statuses" data-attr-status-index="index"><img data-attr-sprite="status.sprite"/></span>
+            </div>
+        </div>
+        <!-- DPS meter: hidden copy of the target's data for the script, plus its timer -->
+        <div id="sp-dps-source" data-model="focused-target"><span id="sp-dps-values" data-attr-sp-visible="visible ? 1 : 0" data-attr-sp-name="name" data-attr-sp-hp="hp" data-attr-sp-max="max_hp"></span></div>
+        <div id="sp-dps-timer"></div>
+    </body>
+</rml>

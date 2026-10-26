@@ -1,0 +1,233 @@
+<rml>
+<head>
+    <title>Item Mall</title>
+    <link type="text/template" href="../templates/window-fixed-size.html" />
+    <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+    <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+    <link type="text/rcss" href="../styles/item_slot.css" />
+    <link type="text/rcss" href="../styles/spritesheet_overlayicon.css" />
+    <link type="text/rcss" href="../styles/components.css" />
+    <link type="text/rcss" href="item_mall.css" />
+    <link type="text/rcss" href="../styles/ice_sprites.css" />
+    <link type="text/rcss" href="../styles/ice_window.css" />
+    <style>
+        /* ===== ice theme ===== */
+        body#item-mall { padding-top: 40dp; }
+        body#item-mall #window-content { padding: 8dp; }
+
+        /* points badge in the title band: white pill, gold edge */
+        #mall-balance {
+            top: -36dp; right: 42dp;
+            padding: 2dp 10dp;
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(214, 166, 60);
+            border-radius: 12dp;
+        }
+        #mall-balance b { color: rgb(170, 100, 20); }
+        #mall-balance span { color: rgb(30, 62, 112); font-weight: 820; }
+
+        /* toolbar: active segment = gold */
+        #mall-toolbar button.active,
+        body[id] #mall-toolbar button.default.active:not([disabled]):hover {
+            decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+            color: rgb(92, 50, 8);
+        }
+        .mall-grid-glyph i, .mall-list-glyph i { background-color: rgb(30, 62, 112); }
+        #mall-toolbar button.active .mall-grid-glyph i,
+        #mall-toolbar button.active .mall-list-glyph i { background-color: rgb(92, 50, 8); }
+
+        /* sidebar categories = Options-style tab column */
+        #mall-nav { padding: 0dp 2dp 0dp 0dp; }
+        .mall-nav-row {
+            height: 28dp; min-height: 28dp;
+            margin-bottom: 4dp;
+            padding: 0dp 10dp 0dp 12dp;
+            border-left: 0dp;
+            decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+            color: rgb(30, 62, 112); font-weight: 820; font-effect: none;
+        }
+        .mall-nav-row.sub {
+            height: 24dp; min-height: 24dp;
+            width: auto; margin-left: 14dp;
+            padding-left: 10dp; font-weight: 820;
+        }
+        .mall-nav-row:hover {
+            background-color: rgba(0, 0, 0, 0);
+            decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            color: rgb(30, 62, 112);
+        }
+        .mall-nav-row.active, .mall-nav-row.active:hover {
+            background-color: rgba(0, 0, 0, 0);
+            decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+            color: rgb(92, 50, 8);
+        }
+        .mall-nav-row small { color: rgb(98, 124, 156); font-weight: 400; }
+        .mall-nav-row.active small { color: rgb(120, 76, 20); }
+
+        #mall-purchases-side.active,
+        body[id] button.default#mall-purchases-side.active:not([disabled]):hover {
+            decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+            color: rgb(92, 50, 8);
+        }
+
+        /* premium card / banner / page: gold accents */
+        #mall-premium-card {
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(196, 218, 238);
+            border-top: 2dp rgb(214, 166, 60);
+            border-radius: 6dp;
+        }
+        #mall-premium-banner {
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(196, 218, 238);
+            border-left: 2dp rgb(214, 166, 60);
+            border-radius: 6dp;
+        }
+        #mall-premium-title, #mall-premium-banner > b { color: rgb(170, 100, 20); font-weight: 820; }
+        #mall-premium-copy, #mall-premium-banner > div { color: rgb(70, 92, 128); }
+        #mall-premium-info h1 { color: rgb(170, 100, 20); font-effect: none; }
+        .premium-intro { color: rgb(30, 62, 112); }
+        .premium-benefit { border-left: 2dp rgb(214, 166, 60); }
+        .premium-benefit b { color: rgb(170, 100, 20); }
+        .premium-benefit div { color: rgb(36, 58, 98); }
+        .premium-terms { color: rgb(70, 92, 128); }
+        .premium-terms b { color: rgb(30, 62, 112); }
+
+        /* catalog heading */
+        #mall-path { color: rgb(30, 62, 112); font-size: 16dp; }
+        #mall-count { color: rgb(120, 140, 170); }
+
+        /* catalog = light ice panel (like the Options right side), items in a white group box */
+        #mall-catalog {
+            padding: 4dp 6dp 6dp 6dp;
+            background-color: rgb(236, 244, 251);
+            border: 1dp rgb(176, 206, 232);
+            border-radius: 8dp;
+        }
+        #mall-heading { padding-left: 2dp; }
+        #mall-items-area {
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(196, 218, 238);
+            border-radius: 6dp;
+        }
+        #mall-items { top: 6dp; right: 2dp; bottom: 6dp; left: 6dp; }
+        .mall-card {
+            background-color: rgb(255, 255, 255);
+            border: 1dp rgb(196, 218, 238);
+            border-radius: 6dp;
+        }
+        .mall-card:hover { background-color: rgb(240, 247, 253); border-color: rgb(120, 175, 225); }
+        .mall-card.selected, .mall-card.selected:hover { background-color: rgb(255, 248, 228); border-color: rgb(214, 166, 60); }
+        .mall-name { color: rgb(30, 62, 112); font-effect: none; }
+        .mall-price { color: rgb(170, 100, 20); font-weight: 820; font-effect: none; }
+        .mall-empty { color: rgb(120, 140, 170); }
+
+        /* detail panel */
+        .mall-detail-name { color: rgb(30, 62, 112); font-weight: 820; }
+        .mall-detail-path { color: rgb(120, 140, 170); }
+        .mall-description { color: rgb(36, 58, 98); }
+        .mall-detail-price { background-color: rgb(255, 255, 255); border: 1dp rgb(196, 218, 238); border-radius: 6dp; }
+        #mall-detail-buy { decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r); }
+        body[id] button.default#mall-detail-buy { color: rgb(92, 50, 8); }
+        #mall-set-pieces { border-top: 1dp rgb(214, 226, 238); color: rgb(30, 62, 112); }
+        .mall-set-piece { color: rgb(70, 92, 128); }
+        .mall-set-piece:hover { color: rgb(170, 100, 20); }
+        .mall-after, #mall-result { color: rgb(70, 92, 128); }
+        .mall-placeholder { border: 1dp rgb(176, 206, 232); border-radius: 8dp; background-color: rgb(255, 255, 255); }
+        #mall-total { color: rgb(30, 62, 112); }
+
+    </style>
+    <script src="item_mall.lua" />
+    <script>
+-- ice theme add-on (runs next to the stock item_mall.lua): clicking an item card presses "Try on"
+document:AddEventListener('click', function(event)
+    pcall(function()
+        local t = event.target_element
+        while t and t ~= document do
+            if t:HasAttribute('data-action') then return end
+            if t:HasAttribute('listing') then
+                local try = document:GetElementById('mall-try')
+                if try and not try:HasAttribute('disabled') then try:Click() end
+                return
+            end
+            t = t.parent_node
+        end
+    end)
+end)
+    </script>
+</head>
+<body id="item-mall" template="window-fixed-size">
+    <div id="mall-balance" class="ui-currency content-box"><img sprite="mall-points" /><b id="mall-points">0</b><span>PTS</span></div>
+    <div id="mall-shell">
+        <div id="mall-toolbar">
+            <input id="mall-search" type="text" maxlength="100" placeholder="Search the mall..." />
+            <div class="mall-segments">
+                <button id="mall-sort-featured" class="default ui-compact active" data-sort="featured" mall-tooltip="Seasonal first, then curated order">Recommended</button>
+                <button id="mall-sort-name" class="default ui-compact" data-sort="name" mall-tooltip="Sort Alphabetically">A–Z</button>
+            </div>
+            <div class="mall-segments mall-layout">
+                <button id="mall-grid" class="default ui-compact active" data-layout="grid" mall-tooltip="Grid View"><span class="mall-grid-glyph"><i/><i/><i/><i/></span></button>
+                <button id="mall-list" class="default ui-compact" data-layout="list" mall-tooltip="List View"><span class="mall-list-glyph"><i/><i/><i/></span></button>
+            </div>
+        </div>
+        <div id="mall-body">
+            <div id="mall-sidebar">
+                <div id="mall-nav" />
+                <button id="mall-purchases-side" class="default" onclick="purchases" aria-expanded="false" mall-tooltip="Open or close your purchased items"><span>Purchases</span></button>
+                <div id="mall-premium-card" class="content-box">
+                    <b id="mall-premium-title">ROSE Premium</b>
+                    <div id="mall-premium-copy">More character slots. Extra storage. Storage access anywhere.</div>
+                    <button id="mall-premium-link" class="default ui-compact" data-premium="open">View benefits</button>
+                </div>
+            </div>
+            <div id="mall-catalog">
+                <div id="mall-heading"><b id="mall-path">Monthly</b><span id="mall-count" /></div>
+                <div id="mall-premium-banner" class="content-box">
+                    <b>More to explore with ROSE Premium</b>
+                    <div>5 extra character slots, Premium Storage, and Remote Storage for every character on your account.</div>
+                    <button class="default ui-compact" data-premium="open">Explore Premium</button>
+                </div>
+                <div id="mall-state" class="ui-status" />
+                <div id="mall-items-area">
+                    <div id="mall-items" />
+                    <button id="mall-more" class="default ui-compact" mall-tooltip="Scroll down to see more items">&#9660; More items below</button>
+                </div>
+            </div>
+            <div id="mall-detail" class="content-box" />
+        </div>
+        <div id="mall-footer" class="ui-footer">
+            <span id="mall-total" class="ui-status" />
+            <button id="mall-purchases" class="default ui-compact" onclick="purchases">View purchases</button>
+            <button id="mall-refresh" class="default ui-compact" onclick="refresh">Refresh</button>
+            <button id="mall-buy-points" class="default ui-compact ice-primary" onclick="buy-points">Buy Points</button>
+        </div>
+    </div>
+    <!-- Keep these terms aligned with the shop's Early Access Premium offering. -->
+    <div id="mall-premium-info">
+        <button id="mall-premium-back" class="default ui-compact" data-premium="close">Back to Item Mall</button>
+        <h1>ROSE Premium</h1>
+        <div class="premium-intro">More room for your adventures. All benefits apply to every character on your account.</div>
+        <div class="premium-benefit content-box">
+            <b>5 additional character slots</b>
+            <div>Create up to 10 characters on your account instead of 5. Try more classes and keep your existing characters.</div>
+        </div>
+        <div class="premium-benefit content-box">
+            <b>Premium Storage</b>
+            <div>Running out of room for loot? Unlock the Premium Storage tab for extra space to store your items.</div>
+        </div>
+        <div class="premium-benefit content-box">
+            <b>Remote Storage</b>
+            <div>Access your storage from anywhere. Put away loot or pick up another equipment set without returning to a storage NPC.</div>
+        </div>
+        <div class="premium-terms">
+            <b>If your subscription expires</b>
+            <div>You can still play your additional characters, but characters deleted from Premium slots cannot be replaced without Premium.</div>
+            <div>You can still withdraw items from Premium Storage, but cannot deposit new items. Remote Storage requires active Premium.</div>
+        </div>
+        <div class="premium-terms">Benefits activate the next time you log in. These are the Early Access Premium benefits; offerings may evolve. See the shop for current plans and pricing.</div>
+        <button id="mall-premium-shop" class="default ice-primary" onclick="buy-points">View plans in shop</button>
+    </div>
+    <div class="ice-fx ice-tl"></div>
+    <div class="ice-fx ice-br"></div>
+</body>
+</rml>

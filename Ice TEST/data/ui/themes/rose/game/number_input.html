@@ -1,0 +1,125 @@
+<rml>
+    <head>
+        <title>Number Input</title>
+
+        <link type="text/template" href="../templates/window-small.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            body
+            {
+                width: 196dp;
+                text-align: center;
+            }
+
+            /* ===== ice theme: thin ice frame + cream panel ===== */
+            body#game-number-input.window-small {
+                decorator: tiled-box(
+                    ice-tray-tl, ice-tray-t, ice-tray-tr,
+                    ice-tray-l,  ice-tray-c, ice-tray-r,
+                    ice-tray-bl, ice-tray-b, ice-tray-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                padding: 8dp;
+                padding-top: 14dp;
+            }
+            #game-number-input .window-title { height: 14dp; }
+            #game-number-input #window-content-small {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                padding: 8dp;
+                color: rgb(36, 58, 98);
+            }
+
+            /* number display */
+            .input-container
+            {
+                width: 100%;
+                margin-bottom: 6dp;
+            }
+            #number-input
+            {
+                display: block;
+                width: auto;
+                height: 30dp;
+                line-height: 30dp;
+                margin: 0;
+                padding: 0 10dp;
+                text-align: right;
+                font-size: 18dp;
+                font-weight: 820;
+                color: rgb(30, 62, 112);
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 6dp;
+                decorator: none;
+            }
+
+            /* keypad */
+            .button-container
+            {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                column-gap: 4dp;
+                margin-bottom: 4dp;
+            }
+            button.default
+            {
+                flex: 1;
+                min-width: 22dp;
+                height: 28dp;
+                /* no top padding (the stock 4dp pushed the labels down), so the text is centred */
+                padding: 0dp 4dp;
+                line-height: 28dp;
+                font-size: 15dp;
+                font-weight: 820;
+            }
+            #game-number-input button.del { color: rgb(190, 100, 20); font-size: 13dp; }
+            #game-number-input button.max { color: rgb(150, 92, 20); font-size: 13dp; }
+            #game-number-input button.cancel { color: rgb(170, 40, 40); font-size: 13dp; }
+            #game-number-input .button-container.actions { margin-top: 4dp; margin-bottom: 0; }
+
+            /* small leaf flourishes; positioned against the cream panel (8dp in, 14dp down) */
+            #game-number-input #window-content-small { position: relative; overflow: visible; }
+            #game-number-input .ice-fx.ice-tl.small { left: -8dp; top: -32dp; }
+            #game-number-input .ice-fx.ice-br.small { right: -10dp; bottom: -20dp; }
+        </style>
+    </head>
+
+    <body id="game-number-input" data-model="number-input" template="window-small" onkeyup="input">
+        <div class="input-container">
+            <label id="number-input" class="textarea">{{number}}</label>
+        </div>
+        <div class="button-container">
+            <button class="default" id="1" onclick="1">1</button>
+            <button class="default" id="2" onclick="2">2</button>
+            <button class="default" id="3" onclick="3">3</button>
+        </div>
+        <div class="button-container">
+            <button class="default" id="4" onclick="4">4</button>
+            <button class="default" id="5" onclick="5">5</button>
+            <button class="default" id="6" onclick="6">6</button>
+        </div>
+        <div class="button-container">
+            <button class="default" id="7" onclick="7">7</button>
+            <button class="default" id="8" onclick="8">8</button>
+            <button class="default" id="9" onclick="9">9</button>
+        </div>
+        <div class="button-container">
+            <button class="default" id="0" onclick="0">0</button>
+            <button class="default del" id="del" onclick="del">DEL</button>
+            <button class="default max" id="max" onclick="max">MAX</button>
+        </div>
+        <div class="button-container actions">
+            <button class="default ok ice-primary" id="ok" onclick="ok">OK</button>
+            <button class="default cancel" id="cancel" onclick="cancel">CANCEL</button>
+        </div>
+        <div class="ice-fx ice-tl small"></div>
+        <div class="ice-fx ice-br small"></div>
+    </body>
+</rml>

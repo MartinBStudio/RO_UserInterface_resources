@@ -1,0 +1,398 @@
+<rml>
+    <head>
+        <title>Chat Box</title>
+
+        <link type="text/template" href="../templates/window-box.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+
+        <style>
+            body
+            {
+                width: 405dp;
+                height: 340dp;
+                min-width: 340dp;
+                min-height: 150dp;
+                margin-top: -3dp;
+                margin-left: 3dp;
+                padding-bottom: 64dp;
+            }
+
+            scrollbarvertical
+            {
+                margin-right: -20dp;
+            }
+
+            body scrollbarvertical {
+                display: none;
+            }
+
+            body:hover scrollbarvertical {
+                display: inline-block;
+            }
+
+            body #resizer {
+                display: none;
+            }
+
+            body:hover #resizer {
+                display: inline-block;
+            }
+
+            body #chat-settings,
+            body #mover {
+                display: none;
+            }
+
+            body:hover #chat-settings,
+            body:hover #mover {
+                display: inline-block;
+            }
+
+            #resizer {
+                position: absolute;
+                top: 2dp;
+                right: 2dp;
+            }
+
+            #mover {
+                position: absolute;
+                top: 2dp;
+                right: 27dp;
+            }
+
+            #chat-settings {
+                position: absolute;
+                top: 2dp;
+                right: 52dp;
+            }
+
+            handle {
+                cursor: drag;
+            }
+
+            percentage-handle {
+                position: relative;
+                left: 0dp;
+                top: -8dp;
+                width: 100%;
+                height: 10dp;
+                display: inline-block;
+                cursor: drag;
+            }
+
+            #percentage-handle-icon {
+                display: none;
+                position: absolute;
+                top: -8dp;
+                left: 50%;
+                width: 24dp;
+                height: 20dp;
+                decorator: tiled-vertical(scrollbar-button-t, scrollbar-button-c, scrollbar-button-b);
+            }
+
+            percentage-handle:hover >  #percentage-handle-icon {
+                display: inline-block;
+            }
+
+            #virtual-messages
+            {
+                display: block;
+                word-break: break-word;
+                font-effect: outline(1dp black);
+                overflow: hidden scroll;
+                decorator: horizontal-gradient(rgba(14, 32, 62, 150) rgba(14, 32, 62, 80));
+                padding-left: 15dp;
+                padding-right: 14dp; /* keep text inside the panel edge */
+                height: 65%;
+            }
+
+            #virtual-system
+            {
+                display: block;
+                word-break: break-word;
+                font-effect: outline(1dp black);
+                overflow: hidden scroll;
+                decorator: horizontal-gradient(rgba(14, 32, 62, 150) rgba(14, 32, 62, 80));
+                padding-left: 15dp;
+                padding-right: 14dp; /* keep text inside the panel edge */
+                height: 35%;
+            }
+
+            #chat-separator {
+                width: 100%;
+                height: 1dp;
+                /* same navy as the message areas, so no bright seam shows between them */
+                decorator: horizontal-gradient(rgba(14, 32, 62, 150) rgba(14, 32, 62, 80));
+            }
+
+            select#category
+            {
+                width: 80dp;
+            }
+
+            select#category selectvalue
+            {
+                display: none;
+            }
+
+            select#category selectbox
+            {
+                width: 120dp;
+            }
+
+            span#category-text
+            {
+                position: absolute;
+                left: 10dp;
+                padding-top: 4dp;
+                pointer-events: none;
+            }
+
+            #input-container
+            {
+                decorator: horizontal-gradient(rgba(14, 32, 62, 150) rgba(14, 32, 62, 80));
+                height: 64dp;
+            }
+
+            #input-tab-container
+            {
+                font-effect: outline(1dp black);
+                height: 34dp;
+                overflow: hidden auto;
+            }
+
+            #input-tab-container > button
+            {
+                min-width: 5dp;
+            }
+
+            .window
+            {
+                width: 100%;
+                height: 100%;
+            }
+
+            tab.default
+            {
+                min-width: 5dp;
+            }
+
+            .chat-message
+            {
+                margin: 0dp 0dp;
+            }
+
+            .chat-message-from:hover
+            {
+                text-decoration: underline;
+            }
+
+            .chat-message-link:hover
+            {
+                text-decoration: underline;
+            }
+
+            .timestamp
+            {
+                color: rgb(170, 182, 200);
+            }
+
+            .chat-message-chat
+            {
+                color: #ffffff;
+            }
+
+            .chat-message-shout
+            {
+                color: rgb(255, 120, 120);
+            }
+
+            .chat-message-party
+            {
+                color: rgb(170, 236, 255);
+            }
+
+            .chat-message-clan
+            {
+                color: #ffe47a;
+            }
+
+            .chat-message-clan-notification
+            {
+                color: #ffe47a;
+            }
+
+            .chat-message-trade
+            {
+                color: rgb(110, 225, 130);
+            }
+
+            .chat-message-whisper
+            {
+                color: rgb(255, 160, 225);
+            }
+
+            .chat-message-social-notification
+            {
+                color: #c8a8ff;
+            }
+
+            .chat-message-notice
+            {
+                color: #ffbdac;
+            }
+
+            .chat-message-system
+            {
+                color: #ffe0e5;
+            }
+
+            .chat-message-error
+            {
+                color: rgb(255, 96, 96);
+            }
+
+            .chat-message-quest
+            {
+                color: #97ddf1;
+            }
+
+            .chat-message-quest-reward
+            {
+                color: #e0a2d1;
+            }
+
+            .chat-message-group
+            {
+                color: #9caff3;
+            }
+
+            .chat-message-group-leader
+            {
+                color: #577cdd;
+            }
+
+            .chat-name-gm
+            {
+                color: rgb(172, 145, 255);
+            }
+
+            .chat-name-cm
+            {
+                color: rgb(255, 128, 85);
+            }
+
+            .chat-name-dev
+            {
+                color: rgb(145, 172, 255);
+            }
+
+            .chat-name-mod
+            {
+                color: rgb(255, 159, 65);
+            }
+
+            .chat-name-event
+            {
+                color: rgb(0, 153, 77);
+            }
+            /* ===== ice theme: navy frosted panel (mock A1), ice buttons, channel colours ===== */
+            /* no cream window panel here (window-box template + ice_window.css) */
+            #game-chat-box #window-content { decorator: none; background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); font-effect: outline(1dp black); }
+
+            /* tabs: the same ice buttons as every window, selected = gold */
+            #input-tab-container { padding-top: 4dp; padding-left: 2dp; height: 30dp; }
+            #game-chat-box #input-tab-container > button.default {
+                height: 24dp; line-height: 24dp; padding: 0dp 9dp; margin-right: 3dp;
+                font-size: 13dp; font-weight: 820; min-width: 5dp;
+            }
+            #game-chat-box #input-tab-container > button.default.selected,
+            #game-chat-box #input-tab-container > button.default.selected:hover {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+                color: rgb(92, 50, 8);
+            }
+
+            /* channel picker + input boxes take the channel colour */
+            #game-chat-box select#category { width: 96dp; background-color: rgba(14, 32, 62, 190); border: 2dp rgb(230, 238, 248); height: 26dp; box-sizing: border-box; }
+            #game-chat-box span#category-text { color: rgb(255, 255, 255); font-weight: 820; font-effect: outline(1dp rgb(10, 20, 40)); padding-top: 3dp; }
+            #game-chat-box input[type="text"] { height: 26dp; padding: 2dp 6dp; line-height: 18dp; border: 2dp rgb(230, 238, 248);
+                background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); font-effect: outline(1dp black); }
+            #game-chat-box #input-container.ch-1 select#category, #game-chat-box #input-container.ch-1 input[type="text"] { border-color: rgb(255, 150, 220); }
+            #game-chat-box #input-container.ch-2 select#category, #game-chat-box #input-container.ch-2 input[type="text"] { border-color: rgb(255, 110, 110); }
+            #game-chat-box #input-container.ch-3 select#category, #game-chat-box #input-container.ch-3 input[type="text"] { border-color: rgb(120, 220, 255); }
+            #game-chat-box #input-container.ch-4 select#category, #game-chat-box #input-container.ch-4 input[type="text"] { border-color: rgb(255, 210, 90); }
+            #game-chat-box #input-container.ch-5 select#category, #game-chat-box #input-container.ch-5 input[type="text"] { border-color: rgb(140, 160, 255); }
+            #game-chat-box #input-container.ch-6 select#category, #game-chat-box #input-container.ch-6 input[type="text"] { border-color: rgb(110, 225, 130); }
+            /* blue icon buttons (close-button style): dropdown arrow, settings, move, resize */
+            #game-chat-box select#category selectarrow {
+                width: 18dp; height: 18dp; margin-top: 2dp; margin-right: -2dp;  /* 4dp further right (user) */
+                decorator: image(ice-dd-n);
+            }
+            #game-chat-box select#category:hover selectarrow { decorator: image(ice-dd-h); }
+            #game-chat-box select#category selectarrow:active { decorator: image(ice-dd-a); }
+            #game-chat-box #chat-settings, #game-chat-box #mover, #game-chat-box #resizer {
+                width: 20dp; height: 20dp; top: 3dp;
+                background-color: rgba(0, 0, 0, 0); border-width: 0dp;
+            }
+            #game-chat-box #resizer { right: 3dp; decorator: image(ice-resize-n); }
+            #game-chat-box #resizer:hover { decorator: image(ice-resize-h); }
+            #game-chat-box #resizer:active { decorator: image(ice-resize-a); }
+            #game-chat-box #mover { right: 26dp; decorator: image(ice-move-n); }
+            #game-chat-box #mover:hover { decorator: image(ice-move-h); }
+            #game-chat-box #mover:active { decorator: image(ice-move-a); }
+            #game-chat-box #chat-settings { right: 49dp; decorator: image(ice-gear-n); }
+            #game-chat-box #chat-settings:hover { decorator: image(ice-gear-h); }
+            #game-chat-box #chat-settings:active { decorator: image(ice-gear-a); }
+            #game-chat-box #input-container.ch-1 span#category-text { color: rgb(255, 170, 228); }
+            #game-chat-box #input-container.ch-2 span#category-text { color: rgb(255, 130, 130); }
+            #game-chat-box #input-container.ch-3 span#category-text { color: rgb(160, 232, 255); }
+            #game-chat-box #input-container.ch-4 span#category-text { color: rgb(255, 222, 120); }
+            #game-chat-box #input-container.ch-5 span#category-text { color: rgb(170, 185, 255); }
+            #game-chat-box #input-container.ch-6 span#category-text { color: rgb(130, 232, 150); }
+        </style>
+    </head>
+
+    <body id="game-chat-box">
+        <div style="height: 100%; width:100%;" data-model="chat-box">
+            <virtual-list-box id="virtual-system" data-if="show_system_tab"></virtual-list-box>
+
+            <div id="chat-separator" data-if="show_system_tab">
+                <percentage-handle property="height" primary_target="virtual-system" secondary_target="virtual-messages" min="10" max="90">
+                    <span id="percentage-handle-icon"></span>
+                </percentage-handle>
+            </div>
+
+            <virtual-list-box id="virtual-messages"></virtual-list-box>
+
+            <div id="input-container" data-class-ch-1="chat_input_category == 1" data-class-ch-2="chat_input_category == 2" data-class-ch-3="chat_input_category == 3" data-class-ch-4="chat_input_category == 4" data-class-ch-5="chat_input_category == 5" data-class-ch-6="chat_input_category == 6">
+                <div id="input-tab-container">
+                    <button class="default" data-for="tabs" data-class-selected="tab_index == it_index" data-event-click="tab_index = it_index; current_tab_changed()" onclick="tab_button_clicked">{{it.name}}</button>
+                </div>
+                <div style="height: 30dp; width: 100%; margin-left: 2dp;">
+                    <div style="display: flex; flex-direction: row; height: 28dp; width:100%; align-items: center;">
+                        <div style="flex: none; width: 100dp;">
+                            <span id="category-text">Chat</span>
+                            <select id="category" data-event-change="chat_input_category_changed()" data-value="chat_input_category" style="tab-index: none">
+                                <option value="0" selected  onclick="chat_input_category_clicked">Chat /s</option>
+                                <option value="1">Whisper /w</option>
+                                <option value="2">Shout /sh</option>
+                                <option value="3">Party /p</option>
+                                <option value="4">Clan /c</option>
+                                <option value="5">Group /g</option>
+                                <option value="6">Trade /t</option>
+                            </select>
+                        </div>
+                        <input id="whisper_name" type="text" maxlength="20" data-if="chat_input_category == 1" style="margin-right:3dp; tab-index: auto; width: 110dp;" />
+                        <input id="input_text" type="text" style="flex: 2; margin-right:3dp; tab-index: auto" data-attrif-disabled="chat_blocked" maxlength="250" retains-focus />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="chat-settings" class="settings" onclick="chat_settings" tooltip="Chat settings"></button>
+        <handle id="mover" class="button-move" move_target="#document"></handle>
+        <handle id="resizer" class="button-resize" size_target="#document"></handle>
+    </body>
+</rml>

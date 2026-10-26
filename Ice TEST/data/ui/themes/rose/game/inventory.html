@@ -1,0 +1,394 @@
+<rml>
+    <head>
+        <title>Inventory</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/spritesheet_elementicon.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/spritesheet_inventory.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <style>
+            body { width: 322dp; max-width: 95vw; }
+            .equipment-pane { position: relative; width: 269dp; height: 133dp; margin: 0 auto 12dp; }
+            .equipment-cell { position: absolute; width: 43dp; height: 43dp; }
+            .equipment-cell > img { position: absolute; width: 43dp; height: 43dp; pointer-events: none; }
+            .equipment-cell item-slot { position: absolute; top: 1dp; left: 1dp; width: 41dp; height: 41dp; }
+            .equipment-cell.filled > img { visibility: hidden; }
+            .bag-grid { width: 260dp; }
+            .inventory-footer { display: flex; align-items: center; justify-content: space-between; gap: 8dp; }
+            #inventory-weight { color: rgb(0, 210, 255); font-effect: outline(1dp black), glow(1.5dp rgb(0, 210, 255)); }
+            #inventory-weight.overweight { color: rgb(255, 100, 100); }
+            .vehicle-stats { position: absolute; top: 49dp; left: 0; right: 0; font-size: 12dp; }
+            .vehicle-stat { display: inline-flex; justify-content: space-between; width: 48%; margin-right: 2%; line-height: 19dp; }
+            .vehicle-stat span { color: rgb(255, 247, 191); }
+            #inventory-operation { color: rgb(255, 247, 191); font-size: 12dp; margin-bottom: 8dp; }
+
+            /* --- added: collapse toggle --- */
+            /* in the title band, left of the X and the same size: orange minus = collapse, green plus = expand
+               (positioned against #window-content, which starts 40dp below the top and 6dp in from the right) */
+            body#inventory-window input#inv-collapse {
+                position: absolute; top: -33dp; right: 30dp;
+                width: 24dp; height: 24dp; margin: 0dp;
+                background-color: rgba(0, 0, 0, 0); border: 0dp rgba(0, 0, 0, 0); border-radius: 0dp;
+                decorator: image(ice-min-n); cursor: pointer; z-index: 20;
+            }
+            body#inventory-window input#inv-collapse:hover { decorator: image(ice-min-h); }
+            body#inventory-window input#inv-collapse:active { decorator: image(ice-min-a); }
+            body#inventory-window input#inv-collapse:checked { decorator: image(ice-learn-n); }
+            body#inventory-window input#inv-collapse:checked:hover { decorator: image(ice-learn-h); }
+            body#inventory-window input#inv-collapse:checked:active { decorator: image(ice-learn-a); }
+
+            #inv-collapse:checked ~ div .ui-tabs,
+            #inv-collapse:checked ~ div .equipment-pane,
+            #inv-collapse:checked ~ div #inventory-operation,
+            #inv-collapse:checked ~ div .inventory-footer,
+            #inv-collapse:checked ~ div .eq-box {
+                display: none;
+            }
+            #inv-collapse:checked ~ div .bag-grid .bag-cell:nth-last-child(n+7) {
+                display: none;
+            }
+
+            /* --- ice theme v3: custom art (imgs/iceinv.dds), Inventory only --- */
+
+            /* Outer frame: shaded 9-slice with gold trim and glossy title band */
+            .window-fixed-size {
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+                border-radius: 0dp;
+                padding: 6dp;
+                padding-top: 40dp;
+            }
+            .window-title {
+                position: absolute;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 40dp;
+                padding-left: 60dp;
+                background-color: rgba(0, 0, 0, 0);
+                color: white;
+                font-size: 20dp;
+                font-weight: 820;
+                font-effect: outline(1.5dp rgb(28, 78, 138));
+                text-align: left;
+                line-height: 40dp;
+            }
+            .window-title-text { margin-left: 0dp; }
+            button.window-title-close {
+                top: 7dp;
+                right: 8dp;
+            }
+
+            /* Inner panel: cream 9-slice with soft inset shadow */
+            body#inventory-window #window-content {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+                border-radius: 0dp;
+                overflow: visible;
+                z-index: 0;
+                color: rgb(36, 58, 98);
+            }
+
+            /* Flourishes (pure decoration, never catch the mouse) */
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+
+            #ice-corner-tl { left: -8dp; top: -63dp; width: 81dp; height: 70dp; decorator: image(ice-corner-tl); }
+            #ice-corner-br { right: -8dp; bottom: -21dp; width: 77dp; height: 67dp; decorator: image(ice-corner-br); }
+            /* close button sits on top of the top-right bracket */
+            body#inventory-window button.window-title-close { z-index: 20; }
+            /* footer: weight and zulie stacked on the left, slightly smaller */
+            body#inventory-window .inventory-footer { flex-direction: row; align-items: center; justify-content: space-between; gap: 8dp; }
+            body#inventory-window .inventory-footer .ui-currency { justify-content: flex-start; min-height: 18dp; font-size: 13dp; }
+            body#inventory-window .inventory-footer .ui-currency > img,
+            body#inventory-window .inventory-footer .ui-currency > button.zulie { width: 18dp; min-width: 18dp; height: 18dp; }
+
+            /* zulie button: close-button style Z icon */
+            body#inventory-window #inventory-money { decorator: image(ice-zulie-n); background-color: rgba(0, 0, 0, 0); border-width: 0dp; }
+            body#inventory-window #inventory-money:hover { decorator: image(ice-zulie-h); }
+            body#inventory-window #inventory-money:active { decorator: image(ice-zulie-a); }
+            body#inventory-window #inventory-money:disabled,
+            body#inventory-window #inventory-money[disabled] { decorator: image(ice-zulie-n); opacity: 0.6; }
+            body#inventory-window .inventory-footer .ui-currency > img,
+            body#inventory-window .inventory-footer .ui-currency > button.zulie { margin-right: 5dp; }
+
+            /* Tabs: glossy 3-slice pills, selected = warm gold */
+            body#inventory-window .ui-tabs { gap: 6dp; margin-bottom: 10dp; }
+            body#inventory-window .ui-tabs > button.default {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+                border-radius: 0dp;
+                overflow: visible;
+                text-align: center;
+                padding: 0 6dp;
+                height: 28dp;
+                line-height: 28dp;
+                font-size: 14dp;
+                font-weight: 820;
+            }
+            body#inventory-window .ui-tabs > button.default:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            body#inventory-window .ui-tabs > button.default,
+            body#inventory-window .ui-tabs > button.default str {
+                color: rgb(30, 62, 112);
+                font-effect: none;
+            }
+            body#inventory-window .ui-tabs > button.active,
+            body#inventory-window .ui-tabs > button.selected,
+            body#inventory-window .ui-tabs > button.active:hover,
+            body#inventory-window .ui-tabs > button.selected:hover {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+            }
+            body#inventory-window .ui-tabs > button.active,
+            body#inventory-window .ui-tabs > button.active str,
+            body#inventory-window .ui-tabs > button.selected,
+            body#inventory-window .ui-tabs > button.selected str {
+                color: rgb(92, 50, 8);
+                font-effect: none;
+            }
+
+            /* Slots: shaded tiles; gold tile when equipped */
+            .equipment-cell { decorator: image(ice-equip); }
+            .equipment-cell.filled { decorator: image(ice-equip-gold); }
+            .equipment-cell > img { opacity: 0.55; }
+            .bag-cell { decorator: image(ice-slot); }
+            .bag-grid { margin-top: 2dp; }
+            item-slot[empty="1"] { decorator: none; }
+
+            /* Footer: dark readable text, no neon glow */
+            /* Arena composition: equipment, bag grid and footer each in a light ice-blue box */
+            .inv-box {
+                padding: 8dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+            .eq-box { margin-bottom: 10dp; }
+            .eq-box .equipment-pane { margin: 0 auto; }
+            .bag-box { padding: 8dp 7dp; }
+            body#inventory-window .inventory-footer {
+                margin-top: 10dp;
+                padding: 6dp 40dp 6dp 10dp;
+                border-top: 1dp rgb(176, 206, 232);
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+            .ui-currency, #inventory-weight, #inventory-zulie {
+                color: rgb(36, 58, 98);
+                font-size: 15dp;
+                font-weight: 820;
+                font-effect: none;
+            }
+            #inventory-weight.overweight { color: rgb(200, 50, 50); }
+
+            /* Text that was light-on-dark before */
+            #inventory-operation { color: rgb(150, 92, 20); }
+            .vehicle-stats { color: rgb(36, 58, 98); }
+            .vehicle-stat span { color: rgb(170, 100, 20); }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="inventory-window">
+        <input type="checkbox" id="inv-collapse" />
+        <div data-model="inventory-window">
+            <div class="ui-tabs">
+                <button id="inventory-vehicle" class="default" onclick="mode:2" data-class-selected="mode == 2"><str string-id="930">PAT</str></button>
+                <button id="inventory-gear" class="default" onclick="mode:1" data-class-selected="mode == 1"><str string-id="839">Gear</str></button>
+                <button id="inventory-costume" class="default" onclick="mode:0" data-class-selected="mode == 0"><str string-id="975">Costume</str></button>
+            </div>
+            <div class="inv-box eq-box">
+            <div class="equipment-pane" id="equipment-0" data-if="mode == 0">
+                <div class="equipment-cell" style="left: 69dp; top: 0dp;"><img sprite="GEN_INVSLOT17" /><item-slot id="costume-1" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 0dp;"><img sprite="GEN_INVSLOT18" /><item-slot id="costume-2" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 45dp;"><img sprite="GEN_INVSLOT20" /><item-slot id="costume-3" /></div>
+                <div class="equipment-cell" style="left: 159dp; top: 0dp;"><img sprite="GEN_INVSLOT19" /><item-slot id="costume-4" /></div>
+                <div class="equipment-cell" style="left: 69dp; top: 90dp;"><img sprite="GEN_INVSLOT21" /><item-slot id="costume-5" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 90dp;"><img sprite="GEN_INVSLOT22" /><item-slot id="costume-6" /></div>
+                <div class="equipment-cell" style="left: 69dp; top: 45dp;"><img sprite="GEN_INVSLOT08" /><item-slot id="costume-7" /></div>
+                <div class="equipment-cell" style="left: 159dp; top: 45dp;"><img sprite="GEN_INVSLOT07" /><item-slot id="costume-8" /></div>
+            </div>
+            <div class="equipment-pane" id="equipment-1" data-if="mode == 1">
+                <div class="equipment-cell" style="left: 69dp; top: 0dp;"><img sprite="GEN_INVSLOT17" /><item-slot id="item-1" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 0dp;"><img sprite="GEN_INVSLOT18" /><item-slot id="item-2" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 45dp;"><img sprite="GEN_INVSLOT20" /><item-slot id="item-3" /></div>
+                <div class="equipment-cell" style="left: 159dp; top: 0dp;"><img sprite="GEN_INVSLOT19" /><item-slot id="item-4" /></div>
+                <div class="equipment-cell" style="left: 69dp; top: 90dp;"><img sprite="GEN_INVSLOT21" /><item-slot id="item-5" /></div>
+                <div class="equipment-cell" style="left: 114dp; top: 90dp;"><img sprite="GEN_INVSLOT22" /><item-slot id="item-6" /></div>
+                <div class="equipment-cell" style="left: 69dp; top: 45dp;"><img sprite="GEN_INVSLOT08" /><item-slot id="item-7" /></div>
+                <div class="equipment-cell" style="left: 159dp; top: 45dp;"><img sprite="GEN_INVSLOT07" /><item-slot id="item-8" /></div>
+                <div class="equipment-cell" style="left: 0dp; top: 45dp;"><img sprite="GEN_INVSLOT02" /><item-slot id="item-9" /></div>
+                <div class="equipment-cell" style="left: 0dp; top: 0dp;"><img sprite="GEN_INVSLOT01" /><item-slot id="item-10" /></div>
+                <div class="equipment-cell" style="left: 0dp; top: 90dp;"><img sprite="GEN_INVSLOT03" /><item-slot id="item-11" /></div>
+                <div class="equipment-cell" style="left: 225dp; top: 0dp;"><img sprite="GEN_INVSLOT04" /><item-slot id="item-132" /></div>
+                <div class="equipment-cell" style="left: 225dp; top: 45dp;"><img sprite="GEN_INVSLOT05" /><item-slot id="item-133" /></div>
+                <div class="equipment-cell" style="left: 225dp; top: 90dp;"><img sprite="GEN_INVSLOT06" /><item-slot id="item-134" /></div>
+            </div>
+            <div class="equipment-pane" id="equipment-2" data-if="mode == 2">
+                <div class="equipment-cell" style="left: 14dp; top: 0dp;"><img sprite="GEN_INVSLOT23" /><item-slot id="item-135" /></div>
+                <div class="equipment-cell" style="left: 59dp; top: 0dp;"><img sprite="GEN_INVSLOT24" /><item-slot id="item-136" /></div>
+                <div class="equipment-cell" style="left: 104dp; top: 0dp;"><img sprite="GEN_INVSLOT25" /><item-slot id="item-137" /></div>
+                <div class="equipment-cell" style="left: 164dp; top: 0dp;"><img sprite="GEN_INVSLOT26" /><item-slot id="item-138" /></div>
+                <div class="equipment-cell" style="left: 209dp; top: 0dp;"><img sprite="GEN_INVSLOT27" /><item-slot id="item-139" /></div>
+                <div class="vehicle-stats"><div class="vehicle-stat"><str string-id="732" /><span>{{vehicle[0]}}</span></div><div class="vehicle-stat"><str string-id="735" /><span>{{vehicle[1]}}</span></div><div class="vehicle-stat"><str string-id="736" /><span>{{vehicle[2]}}</span></div><div class="vehicle-stat"><str string-id="1404" /><span>{{vehicle[3]}}</span></div><div class="vehicle-stat"><str string-id="738" /><span>{{vehicle[4]}}</span></div><div class="vehicle-stat"><str string-id="1407" /><span>{{vehicle[5]}}</span></div><div class="vehicle-stat"><str string-id="1408" /><span>{{vehicle[6]}}</span></div></div>
+            </div>
+            </div>
+            <div class="ui-tabs">
+                <button id="inventory-equipment" class="default" onclick="bag:0" data-class-selected="bag == 0 || mode == 2"><str string-id="840">Equipment</str></button>
+                <button id="inventory-consume" class="default" onclick="bag:1" data-class-selected="bag == 1" data-if="mode != 2"><str string-id="841">Consume</str></button>
+                <button id="inventory-material" class="default" onclick="bag:2" data-class-selected="bag == 2" data-if="mode != 2"><str string-id="842">Material</str></button>
+            </div>
+            <div id="inventory-operation" data-if="operation != ''">{{operation}}</div>
+            <div class="inv-box bag-box">
+            <div class="bag-grid ui-slot-grid" id="inventory-bag-0" data-if="mode != 2 &amp;&amp; bag == 0">
+                <div class="bag-cell"><item-slot id="bag-0" /></div>
+                <div class="bag-cell"><item-slot id="bag-1" /></div>
+                <div class="bag-cell"><item-slot id="bag-2" /></div>
+                <div class="bag-cell"><item-slot id="bag-3" /></div>
+                <div class="bag-cell"><item-slot id="bag-4" /></div>
+                <div class="bag-cell"><item-slot id="bag-5" /></div>
+                <div class="bag-cell"><item-slot id="bag-6" /></div>
+                <div class="bag-cell"><item-slot id="bag-7" /></div>
+                <div class="bag-cell"><item-slot id="bag-8" /></div>
+                <div class="bag-cell"><item-slot id="bag-9" /></div>
+                <div class="bag-cell"><item-slot id="bag-10" /></div>
+                <div class="bag-cell"><item-slot id="bag-11" /></div>
+                <div class="bag-cell"><item-slot id="bag-12" /></div>
+                <div class="bag-cell"><item-slot id="bag-13" /></div>
+                <div class="bag-cell"><item-slot id="bag-14" /></div>
+                <div class="bag-cell"><item-slot id="bag-15" /></div>
+                <div class="bag-cell"><item-slot id="bag-16" /></div>
+                <div class="bag-cell"><item-slot id="bag-17" /></div>
+                <div class="bag-cell"><item-slot id="bag-18" /></div>
+                <div class="bag-cell"><item-slot id="bag-19" /></div>
+                <div class="bag-cell"><item-slot id="bag-20" /></div>
+                <div class="bag-cell"><item-slot id="bag-21" /></div>
+                <div class="bag-cell"><item-slot id="bag-22" /></div>
+                <div class="bag-cell"><item-slot id="bag-23" /></div>
+                <div class="bag-cell"><item-slot id="bag-24" /></div>
+                <div class="bag-cell"><item-slot id="bag-25" /></div>
+                <div class="bag-cell"><item-slot id="bag-26" /></div>
+                <div class="bag-cell"><item-slot id="bag-27" /></div>
+                <div class="bag-cell"><item-slot id="bag-28" /></div>
+                <div class="bag-cell"><item-slot id="bag-29" /></div>
+            </div>
+            <div class="bag-grid ui-slot-grid" id="inventory-bag-1" data-if="mode != 2 &amp;&amp; bag == 1">
+                <div class="bag-cell"><item-slot id="bag-30" /></div>
+                <div class="bag-cell"><item-slot id="bag-31" /></div>
+                <div class="bag-cell"><item-slot id="bag-32" /></div>
+                <div class="bag-cell"><item-slot id="bag-33" /></div>
+                <div class="bag-cell"><item-slot id="bag-34" /></div>
+                <div class="bag-cell"><item-slot id="bag-35" /></div>
+                <div class="bag-cell"><item-slot id="bag-36" /></div>
+                <div class="bag-cell"><item-slot id="bag-37" /></div>
+                <div class="bag-cell"><item-slot id="bag-38" /></div>
+                <div class="bag-cell"><item-slot id="bag-39" /></div>
+                <div class="bag-cell"><item-slot id="bag-40" /></div>
+                <div class="bag-cell"><item-slot id="bag-41" /></div>
+                <div class="bag-cell"><item-slot id="bag-42" /></div>
+                <div class="bag-cell"><item-slot id="bag-43" /></div>
+                <div class="bag-cell"><item-slot id="bag-44" /></div>
+                <div class="bag-cell"><item-slot id="bag-45" /></div>
+                <div class="bag-cell"><item-slot id="bag-46" /></div>
+                <div class="bag-cell"><item-slot id="bag-47" /></div>
+                <div class="bag-cell"><item-slot id="bag-48" /></div>
+                <div class="bag-cell"><item-slot id="bag-49" /></div>
+                <div class="bag-cell"><item-slot id="bag-50" /></div>
+                <div class="bag-cell"><item-slot id="bag-51" /></div>
+                <div class="bag-cell"><item-slot id="bag-52" /></div>
+                <div class="bag-cell"><item-slot id="bag-53" /></div>
+                <div class="bag-cell"><item-slot id="bag-54" /></div>
+                <div class="bag-cell"><item-slot id="bag-55" /></div>
+                <div class="bag-cell"><item-slot id="bag-56" /></div>
+                <div class="bag-cell"><item-slot id="bag-57" /></div>
+                <div class="bag-cell"><item-slot id="bag-58" /></div>
+                <div class="bag-cell"><item-slot id="bag-59" /></div>
+            </div>
+            <div class="bag-grid ui-slot-grid" id="inventory-bag-2" data-if="mode != 2 &amp;&amp; bag == 2">
+                <div class="bag-cell"><item-slot id="bag-60" /></div>
+                <div class="bag-cell"><item-slot id="bag-61" /></div>
+                <div class="bag-cell"><item-slot id="bag-62" /></div>
+                <div class="bag-cell"><item-slot id="bag-63" /></div>
+                <div class="bag-cell"><item-slot id="bag-64" /></div>
+                <div class="bag-cell"><item-slot id="bag-65" /></div>
+                <div class="bag-cell"><item-slot id="bag-66" /></div>
+                <div class="bag-cell"><item-slot id="bag-67" /></div>
+                <div class="bag-cell"><item-slot id="bag-68" /></div>
+                <div class="bag-cell"><item-slot id="bag-69" /></div>
+                <div class="bag-cell"><item-slot id="bag-70" /></div>
+                <div class="bag-cell"><item-slot id="bag-71" /></div>
+                <div class="bag-cell"><item-slot id="bag-72" /></div>
+                <div class="bag-cell"><item-slot id="bag-73" /></div>
+                <div class="bag-cell"><item-slot id="bag-74" /></div>
+                <div class="bag-cell"><item-slot id="bag-75" /></div>
+                <div class="bag-cell"><item-slot id="bag-76" /></div>
+                <div class="bag-cell"><item-slot id="bag-77" /></div>
+                <div class="bag-cell"><item-slot id="bag-78" /></div>
+                <div class="bag-cell"><item-slot id="bag-79" /></div>
+                <div class="bag-cell"><item-slot id="bag-80" /></div>
+                <div class="bag-cell"><item-slot id="bag-81" /></div>
+                <div class="bag-cell"><item-slot id="bag-82" /></div>
+                <div class="bag-cell"><item-slot id="bag-83" /></div>
+                <div class="bag-cell"><item-slot id="bag-84" /></div>
+                <div class="bag-cell"><item-slot id="bag-85" /></div>
+                <div class="bag-cell"><item-slot id="bag-86" /></div>
+                <div class="bag-cell"><item-slot id="bag-87" /></div>
+                <div class="bag-cell"><item-slot id="bag-88" /></div>
+                <div class="bag-cell"><item-slot id="bag-89" /></div>
+            </div>
+            <div class="bag-grid ui-slot-grid" id="inventory-bag-3" data-if="mode == 2">
+                <div class="bag-cell"><item-slot id="bag-90" /></div>
+                <div class="bag-cell"><item-slot id="bag-91" /></div>
+                <div class="bag-cell"><item-slot id="bag-92" /></div>
+                <div class="bag-cell"><item-slot id="bag-93" /></div>
+                <div class="bag-cell"><item-slot id="bag-94" /></div>
+                <div class="bag-cell"><item-slot id="bag-95" /></div>
+                <div class="bag-cell"><item-slot id="bag-96" /></div>
+                <div class="bag-cell"><item-slot id="bag-97" /></div>
+                <div class="bag-cell"><item-slot id="bag-98" /></div>
+                <div class="bag-cell"><item-slot id="bag-99" /></div>
+                <div class="bag-cell"><item-slot id="bag-100" /></div>
+                <div class="bag-cell"><item-slot id="bag-101" /></div>
+                <div class="bag-cell"><item-slot id="bag-102" /></div>
+                <div class="bag-cell"><item-slot id="bag-103" /></div>
+                <div class="bag-cell"><item-slot id="bag-104" /></div>
+                <div class="bag-cell"><item-slot id="bag-105" /></div>
+                <div class="bag-cell"><item-slot id="bag-106" /></div>
+                <div class="bag-cell"><item-slot id="bag-107" /></div>
+                <div class="bag-cell"><item-slot id="bag-108" /></div>
+                <div class="bag-cell"><item-slot id="bag-109" /></div>
+                <div class="bag-cell"><item-slot id="bag-110" /></div>
+                <div class="bag-cell"><item-slot id="bag-111" /></div>
+                <div class="bag-cell"><item-slot id="bag-112" /></div>
+                <div class="bag-cell"><item-slot id="bag-113" /></div>
+                <div class="bag-cell"><item-slot id="bag-114" /></div>
+                <div class="bag-cell"><item-slot id="bag-115" /></div>
+                <div class="bag-cell"><item-slot id="bag-116" /></div>
+                <div class="bag-cell"><item-slot id="bag-117" /></div>
+                <div class="bag-cell"><item-slot id="bag-118" /></div>
+                <div class="bag-cell"><item-slot id="bag-119" /></div>
+            </div>
+            </div>
+            <div class="inventory-footer ui-footer">
+                <div id="inventory-weight" class="ui-currency" data-class-overweight="overweight"><img sprite="ice-weight" /><span>{{weight}}</span></div>
+                <div id="inventory-zulie" class="ui-currency"><button id="inventory-money" class="zulie" onclick="money" data-attrif-disabled="!enabled" /><span>{{money}}</span></div>
+            </div>
+        </div>
+        <div class="ice-fx" id="ice-corner-tl"></div>
+        <div class="ice-fx" id="ice-corner-br"></div>
+    </body>
+</rml>

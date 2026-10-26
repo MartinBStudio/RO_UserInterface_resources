@@ -1,0 +1,236 @@
+<rml>
+    <head>
+        <title>Group</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_gauges.css" />
+        <link type="text/rcss" href="../styles/ice_status_glow.css" />
+        <style>
+            #arena-group { width: auto; min-width: 150dp; min-height: 0; max-width: 95vw; padding: 2dp; padding-top: 24dp; }
+            #arena-group #window-content { padding: 2dp; }
+            #arena-group > .window-title { height: 24dp; line-height: 24dp; padding-left: 4dp; }
+            #arena-group > .window-title-close { display: none; }
+            #arena-group-panel { display: block; position: relative; }
+            /* dark-blue background (the game paints black from the Opacity setting; this tints it navy) */
+            #ice-group-bg {
+                position: absolute; left: -4dp; top: -28dp; right: -4dp; bottom: -4dp;
+                background-color: rgb(14, 32, 62);
+                border-radius: 6dp;
+                pointer-events: none;
+            }
+            #arena-group-members { position: relative; z-index: 1; }
+            #arena-group .ui-hud-toolbar { z-index: 2; }
+            #arena-group > .window-title { z-index: 2; }
+            #arena-group.collapsed #ice-group-bg { display: none; }
+            /* member count next to the "Group" title: plain text, shown with the title (on hover / collapsed) */
+            #ice-group-count { position: absolute; top: -24dp; left: 52dp; z-index: 3; height: 24dp; line-height: 24dp;
+                font-size: 13dp; font-weight: 820; color: rgb(255, 224, 150); font-effect: outline(1dp rgb(14, 32, 62));
+                pointer-events: none; visibility: hidden; }
+            #arena-group:hover #ice-group-count, #arena-group.collapsed #ice-group-count { visibility: visible; }
+            #arena-group.collapsed { padding-bottom: 0; }
+            #arena-group.collapsed #window-content { height: 0; min-height: 0; padding: 0; }
+            #arena-group.collapsed > .window-title, #arena-group.collapsed .ui-hud-toolbar { visibility: visible; }
+            #arena-group .ui-hud-toolbar { top: -24dp; right: 0; flex-direction: row; gap: 2dp; }
+            #arena-group .ui-hud-toolbar button { width: 20dp; min-width: 20dp; height: 20dp; padding: 0; margin: 0; }
+            /* toolbar in close-button style, same as the party: collapse = orange minus / green plus, gear, orange leave */
+            #group-collapse { decorator: image(ice-min-n); background-color: rgba(0, 0, 0, 0); border-width: 0dp; }
+            #group-collapse:hover { decorator: image(ice-min-h); }
+            #group-collapse:active { decorator: image(ice-min-a); }
+            #arena-group.collapsed #group-collapse { decorator: image(ice-learn-n); }
+            #arena-group.collapsed #group-collapse:hover { decorator: image(ice-learn-h); }
+            #arena-group.collapsed #group-collapse:active { decorator: image(ice-learn-a); }
+            #group-collapse icon { display: none; }
+            #group-settings { decorator: image(ice-pgear-n); }
+            #group-settings:hover { decorator: image(ice-pgear-h); }
+            #group-settings:active { decorator: image(ice-pgear-a); }
+            #group-leave { decorator: image(ice-leave-n); }
+            #group-leave:hover { decorator: image(ice-leave-h); }
+            #group-leave:active { decorator: image(ice-leave-a); }
+            #group-leave:disabled, #group-leave[disabled] { decorator: image(ice-leave-n); opacity: 0.4; }
+            #arena-group-members { overflow: auto; max-height: 65vh; }
+            .group-columns { display: flex; gap: 0.4em; }
+            .group-column { width: 10em; flex-shrink: 0; }
+            .group-member { padding: 0; margin-bottom: 0.3em; }
+            /* click anywhere on the HP/MP bars selects the member (the bars swallowed clicks; only the name worked) */
+            #arena-group .ice-click { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 5; cursor: hand; }
+            /* status icons stay above the click area so their tooltips still work (the span stays static: frames/words keep the card as their box) */
+            #arena-group .group-status > img { position: relative; z-index: 6; pointer-events: auto; }
+            gauge.group-health { height: 1.5em; margin-top: 0; }
+            gauge.group-health > .group-name { height: 1.5em; line-height: 1.5em; font-size: 1em; text-align: right; padding-right: 0.2em; box-sizing: border-box; }
+            gauge.group-mana { height: 0.2em; margin-top: 0; }
+            /* 2 rows reserved (user): equal member heights from the start. Block + inline-block icons instead of flex: an EMPTY flex row ignored min-height (members without buffs collapsed). */
+            #arena-group .group-statuses { display: block; margin-top: 0.1em; min-height: 3.3em; height: auto; line-height: 1em; }  /* 3 rows x (1em icon + 0.1em gap) */
+            #arena-group .group-statuses > span { display: inline-block; vertical-align: top; margin: 0 0.1em 0.1em 0; }
+            .group-statuses > span, .group-statuses > span > img { width: 1em; height: 1em; }
+            #group-settings-panel { position: absolute; top: 18dp; left: 0dp; z-index: 80; width: 240dp; padding: 4dp; padding-top: 25dp; }
+            #group-settings-panel .window-pane { padding: 8dp; }
+            #group-settings-panel .ui-range-setting:first-child { margin-top: 0; }
+            /* ===== ice theme: Group Options pop-up (this window doesn't load ice_window.css) ===== */
+            #group-settings-panel {
+                padding: 6dp; padding-top: 34dp;
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+            }
+            #group-settings-panel .window-title {
+                position: absolute; top: 0dp; left: 0dp; width: 100%; height: 34dp;
+                padding-left: 12dp; box-sizing: border-box;
+                line-height: 34dp; font-size: 15dp; font-weight: 820;
+                color: white; font-effect: outline(1.5dp rgb(28, 78, 138)); text-align: left;
+            }
+            #group-settings-panel #group-settings-close { position: absolute; top: 5dp; right: 6dp; z-index: 20; }
+            #group-settings-panel .window-pane {
+                padding: 8dp 10dp;
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                border-width: 0dp;
+            }
+            #group-settings-panel .ui-range-setting label { color: rgb(36, 58, 98); font-weight: 820; font-effect: none; }
+            #group-settings-panel .ui-detail-value { color: rgb(170, 100, 20); font-weight: 820; font-effect: none; }
+            #group-settings-panel input[type="range"] slidertrack {
+                decorator: none; height: 8dp; margin-top: 5dp;
+                background-color: rgb(214, 228, 242);
+                border: 1dp rgb(176, 206, 232); border-radius: 4dp;
+            }
+            #group-settings-panel input[type="range"] sliderbar {
+                decorator: image(ice-equip-gold); width: 16dp; height: 18dp; margin-top: 0dp; margin-left: 0dp;
+            }
+            #group-settings-panel input[type="range"] sliderarrowdec,
+            #group-settings-panel input[type="range"] sliderarrowinc { width: 0dp; height: 0dp; decorator: none; }
+            #arena-group-tooltip { visibility: visible; position: absolute; z-index: 100; clip: none; pointer-events: none; padding: 8dp; width: 250dp; max-width: 90vw; max-height: 90vh; background: rgba(0, 0, 0, 230); border: 1dp rgb(150, 150, 150); border-radius: 3dp; }
+            .status-tooltip-name { display: block; font-weight: 820; margin-bottom: 4dp; }
+            .status-tooltip-description { display: block; margin-bottom: 4dp; }
+            .status-tooltip-time { display: block; color: rgb(90, 230, 110); }
+            .status-tooltip-time.warning { color: rgb(255, 170, 60); }
+            .status-tooltip-time.danger { color: rgb(255, 80, 80); }
+
+            /* Group Options > Buff rows (1/2/3): fixed status rows per card, extra icons hidden.
+               Default (no script) is the 3-row min-height above. */
+            #arena-group.gr-1 .group-statuses { min-height: 1.1em; max-height: 1.1em; overflow: hidden; }
+            #arena-group.gr-2 .group-statuses { min-height: 2.2em; max-height: 2.2em; overflow: hidden; }
+            #arena-group.gr-3 .group-statuses { min-height: 3.3em; max-height: 3.3em; overflow: hidden; }
+            #group-settings-panel .gr-row { display: flex; flex-direction: row; align-items: center; justify-content: space-between; margin-top: 8dp; }
+            #group-settings-panel .gr-row > span { color: rgb(36, 58, 98); font-weight: 820; font-effect: none; font-size: 1em; }
+            #group-settings-panel .gr-row { font-effect: none; }
+            #group-settings-panel .gr-buttons { display: flex; flex-direction: row; gap: 4dp; }
+            #group-settings-panel button.gr-btn {
+                width: 26dp; height: 20dp; line-height: 18dp; padding: 0; text-align: center;
+                background-color: rgb(255, 255, 255); border: 1dp rgb(150, 190, 225); border-radius: 10dp;
+                color: rgb(30, 62, 112); font-weight: 820; font-size: 12dp; decorator: none; font-effect: none;
+            }
+            #group-settings-panel button.gr-btn:hover { border-color: rgb(214, 166, 60); color: rgb(150, 92, 20); }
+            #arena-group.gr-1 #group-settings-panel button.gr-btn[gr="1"],
+            #arena-group.gr-2 #group-settings-panel button.gr-btn[gr="2"],
+            #arena-group.gr-3 #group-settings-panel button.gr-btn[gr="3"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+        </style>
+        <script>
+-- Group Options > Buff rows: 1 / 2 / 3 rows of status icons per member card.
+-- Saved in sp_addons.txt as group_rows=N (default 3).
+pcall(function()
+    local doc = document
+    local FLAGS = 'sp_addons.txt'
+    local function read_all()
+        local t, order = {}, {}
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d+)')
+                if k then
+                    if t[k] == nil then order[#order + 1] = k end
+                    t[k] = v
+                end
+            end
+            f:close()
+        end)
+        return t, order
+    end
+    local function apply(n)
+        local body = doc:GetElementById('arena-group') or doc
+        for i = 1, 3 do body:SetClass('gr-' .. i, i == n) end
+    end
+    local function save(n)
+        local t, order = read_all()
+        if t.group_rows == nil then order[#order + 1] = 'group_rows' end
+        t.group_rows = tostring(n)
+        local f = io.open(FLAGS, 'w')
+        if not f then return end
+        for _, k in ipairs(order) do f:write(k, '=', t[k], '\n') end
+        f:close()
+    end
+    local t = read_all()
+    local n = tonumber(t.group_rows or '') or 3
+    if n ~= 1 and n ~= 2 then n = 3 end
+    apply(n)
+    doc:AddEventListener('click', function(event)
+        pcall(function()
+            local el = event.target_element
+            local v = el and tonumber(el:GetAttribute('gr') or '')
+            if v then apply(v); save(v) end
+        end)
+    end)
+end)
+        </script>
+    </head>
+    <body template="window-fixed-size" id="arena-group" data-model="arena-group" data-class-collapsed="collapsed">
+        <div id="arena-group-panel" data-model="arena-group">
+            <!-- ice theme: dark-blue layer over the game's black background, same opacity setting -->
+            <div id="ice-group-bg" data-style-opacity="background_opacity / 100"></div>
+            <span id="ice-group-count">{{member_count}}</span>
+            <div class="ui-hud-toolbar">
+                <button id="group-collapse" class="ui-hud-action" onclick="collapse"><icon class="arrow-up" data-if="!collapsed" /><icon class="arrow-down" data-if="collapsed" /></button>
+                <button id="group-settings" class="ui-hud-action" onclick="settings"></button>
+                <button id="group-leave" class="ui-hud-action" onclick="leave" data-attrif-disabled="!can_manage" />
+            </div>
+            <div id="group-settings-panel" class="window-fixed-size" data-if="show_settings" onclick="ignore">
+                <span class="window-title">Group Options</span>
+                <button id="group-settings-close" class="window-title-close" onclick="settings" />
+                <div class="window-pane">
+                    <div class="ui-range-setting">
+                        <label><span>Opacity</span><span class="ui-detail-value">{{background_opacity}}%</span></label>
+                        <input id="group-opacity" type="range" min="0" max="100" step="5" data-value="background_opacity" onchange="apply-settings" />
+                    </div>
+                    <div class="ui-range-setting">
+                        <label><span>Scale</span><span class="ui-detail-value">{{scale_percent}}%</span></label>
+                        <input id="group-scale" type="range" min="55" max="160" step="5" data-value="scale_percent" onchange="apply-settings" />
+                    </div>
+                    <div class="gr-row">
+                        <span>Buff rows</span>
+                        <div class="gr-buttons"><button class="gr-btn" gr="1">1</button><button class="gr-btn" gr="2">2</button><button class="gr-btn" gr="3">3</button></div>
+                    </div>
+                </div>
+            </div>
+            <input type="checkbox" id="cc-toggle" />
+            <div id="arena-group-members" data-if="!collapsed" data-style-font-size="members_font_size + 'dp'" data-style-max-height="members_max_height + 'dp'">
+                <div class="group-columns">
+                    <div class="group-column" data-for="column : columns">
+                        <div class="group-member ui-roster-member" data-for="member : column.members" data-attr-id="'group-member-' + member.tag" data-attr-onclick="'select:' + member.tag" data-class-leader="member.leader">
+                            <gauge class="group-health ui-vitals horizontal-sm-md red" data-attr-gvalue="member.hp_percent" gmax="100"><span class="group-name ui-roster-name">{{member.name}}</span></gauge>
+                            <gauge class="group-mana ui-vitals horizontal-sm-sm blue" data-attr-gvalue="member.mp_percent" gmax="100" /><div class="ice-click"></div>
+                            <div class="group-statuses ui-status-icons">
+                                <span class="group-status" data-for="status : member.statuses" data-attr-id="'group-status-' + member.tag + '-' + status.key" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.key" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.key" /></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="arena-group-tooltip" data-if="tooltip_visible" data-style-left="tooltip_x + 'px'" data-style-top="tooltip_y + 'px'">
+                <div data-if="tooltip_text != ''">{{tooltip_text}}</div>
+                <div data-if="tooltip_text == ''">
+                    <div class="status-tooltip-name">{{tooltip_name}}</div>
+                    <div class="status-tooltip-description">{{tooltip_description}}</div>
+                    <div class="status-tooltip-time" data-class-warning="tooltip_time_class == 'warning'" data-class-danger="tooltip_time_class == 'danger'">{{tooltip_remaining}}</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

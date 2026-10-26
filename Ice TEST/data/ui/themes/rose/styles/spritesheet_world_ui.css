@@ -1,0 +1,12 @@
+@spritesheet world-ui-0 {
+    /* ice theme: selected-player marker (red), chosen in Options > Add-ons. Atlas2. */
+    src: /data/ui/themes/rose/imgs/iceinv2.dds;
+    world-target-marker: 211px 878px 32px 28px;
+}
+@spritesheet world-ui-1 {
+    src: /3ddata/control/res/glassui_00.dds;
+    world-quest-1: 1px 301px 43px 43px;
+    world-quest-2: 45px 301px 43px 43px;
+    world-quest-3: 89px 301px 43px 43px;
+    world-quest-4: 133px 301px 43px 43px;
+}

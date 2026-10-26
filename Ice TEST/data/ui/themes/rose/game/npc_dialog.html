@@ -1,0 +1,149 @@
+<rml>
+    <head>
+        <title>Dialogue</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <style>
+            /* The window only holds the answers and never changes size.
+               Portrait + speech bubble float above it and grow upwards. */
+            /* The game re-centres the window whenever its height changes, so the window itself
+               keeps ONE fixed size and stays invisible; the visible frame is drawn on
+               #window-content, anchored at the top, and grows downwards past it. */
+            body#npc-dialog {
+                width: 560dp; max-width: 92vw; height: 120dp;
+                padding: 0dp;
+                decorator: none;
+                background-color: rgba(0, 0, 0, 0);
+                overflow: visible;
+            }
+            #npc-dialog .window-title { z-index: 5; }
+            #npc-dialog #window-content {
+                position: relative;
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                padding: 40dp 6dp 6dp 6dp;
+                height: auto;
+                overflow: visible;
+            }
+            .npc-panel {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                padding: 6dp;
+            }
+
+            /* floating stage: a zero-height line on the window's top edge */
+            #npc-stage { position: absolute; left: 0dp; top: 0dp; width: 100%; height: 0dp; overflow: visible; pointer-events: none; }
+
+            /* NPC stands on top of the window (not over it) */
+            .npc-portrait { position: absolute; left: 0dp; bottom: -2dp; width: 160dp; z-index: 12; }
+            .npc-portrait img { display: block; width: 100%; height: auto; }
+
+            .npc-bubble {
+                position: absolute;
+                left: 160dp;
+                bottom: 30dp;
+                width: auto;
+                max-width: 390dp;
+                min-width: 120dp;
+                box-sizing: border-box;
+                padding: 10dp 14dp;
+                background-color: rgb(255, 255, 255);
+                border: 2dp rgb(150, 192, 228);
+                border-radius: 14dp;
+                pointer-events: auto;
+                z-index: 11;
+            }
+            .npc-bubble.no-portrait { left: 12dp; }
+            /* little tail pointing at the NPC */
+            .npc-bubble-tail {
+                position: absolute;
+                left: -9dp;
+                bottom: 16dp;
+                width: 14dp;
+                height: 14dp;
+                background-color: rgb(255, 255, 255);
+                border-left: 2dp rgb(150, 192, 228);
+                border-bottom: 2dp rgb(150, 192, 228);
+                transform: rotate(45deg);
+            }
+            .npc-bubble.no-portrait .npc-bubble-tail { left: 24dp; bottom: -9dp; transform: rotate(-45deg); }
+            #npc-script-scroll { max-height: 34vh; overflow-y: auto; }
+            #npc-script { display: block; line-height: 21dp; font-size: 15dp; word-break: break-word; color: rgb(36, 58, 98); }
+
+            /* answers: the window's top stays put, so the list only grows downwards
+               (scrolls only when it gets really long) */
+            .npc-choices-box.content-box { padding: 6dp 6dp 2dp 6dp; }
+            #npc-choices { height: auto; max-height: 46vh; overflow-y: auto; }
+            #npc-choices button.npc-answer {
+                decorator: none;
+                display: flex;
+                height: auto;
+                min-width: 0;
+                width: 100%;
+                min-height: 30dp;
+                margin: 0 0 4dp 0;
+                padding: 5dp 8dp;
+                align-items: flex-start;
+                text-align: left;
+                line-height: 20dp;
+                font-size: 14dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+                color: rgb(36, 58, 98);
+                font-effect: none;
+            }
+            #npc-choices button.npc-answer:hover {
+                background-color: rgb(240, 247, 255);
+                border-color: rgb(120, 175, 225);
+                color: rgb(170, 100, 20);
+            }
+            #npc-choices button.npc-answer.selected {
+                background-color: rgb(255, 246, 214);
+                border-color: rgb(214, 166, 60);
+                color: rgb(36, 58, 98);
+            }
+            #npc-choices button.npc-answer:disabled { color: rgb(150, 165, 185); background-color: rgb(246, 249, 252); }
+            .npc-number { flex: 0 0 24dp; width: 24dp; text-align: right; color: rgb(214, 150, 30); font-weight: 820; }
+            .npc-icon { flex: 0 0 20dp; width: 20dp; height: 20dp; }
+            /* Block, not inline: an inline image adds descender space below the 20dp span, which
+               made the list scrollable whenever the last answer had an icon. */
+            .npc-icon img { display: block; width: 20dp; height: 20dp; }
+            .npc-answer-text { display: block; flex: 1; min-width: 0; word-break: break-word; }
+
+            /* portrait covers the top-left corner, so only the bottom-right flourish */
+            #npc-dialog .ice-fx.ice-br { right: -1dp; bottom: -16dp; }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="npc-dialog">
+        <div data-model="npc-dialog">
+            <div id="npc-stage">
+                <div class="npc-portrait" data-if="portrait != ''"><img id="npc-portrait" data-attr-src="portrait" /></div>
+                <div class="npc-bubble" data-class-no-portrait="portrait == ''">
+                    <div class="npc-bubble-tail"></div>
+                    <div id="npc-script-scroll"><str id="npc-script" data-attr-legacy-text="text" /></div>
+                </div>
+            </div>
+            <div class="npc-panel">
+            <div class="npc-choices-box content-box ui-section">
+                <div id="npc-choices">
+                    <button class="ui-list-row npc-answer" data-for="answer : answers" data-attr-id="'npc-answer-' + answer.index" data-attr-onclick="answer.action" data-class-selected="selected == answer.index" data-attrif-disabled="!ready">
+                        <span class="npc-number">{{answer.index + 1}}.</span>
+                        <span class="npc-icon"><img data-if="answer.sprite != ''" data-attr-sprite="answer.sprite" /></span>
+                        <str class="npc-answer-text" data-attr-legacy-text="answer.text" />
+                    </button>
+                </div>
+            </div>
+            </div>
+            <div class="ice-fx ice-br"></div>
+        </div>
+    </body>
+</rml>

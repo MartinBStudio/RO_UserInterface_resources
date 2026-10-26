@@ -1,0 +1,117 @@
+<rml>
+    <head>
+        <title>Party</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_gauges.css" />
+        <link type="text/rcss" href="../styles/ice_status_glow.css" />
+        <style>
+            #party { width: 162dp; min-width: 162dp; /* +12dp so the title clears the FX + toolbar */ min-height: 0; max-width: 95vw; padding: 2dp; padding-top: 24dp; }
+            #party #window-content { padding: 2dp; }
+            #party > .window-title { height: 24dp; line-height: 24dp; padding-left: 4dp; }
+            #party > .window-title-close { display: none; }
+            #party .ui-hud-toolbar { top: -24dp; right: 0; gap: 2dp; }
+            .party-summary { display: flex; align-items: center; gap: 8dp; margin-bottom: 8dp; }
+            /* toolbar icons in close-button style (atlas2): crown / kick (red) / leave (orange) / gear */
+            #party button.party-action { width: 20dp; min-width: 20dp; height: 20dp; padding: 0; margin: 0; }
+            #party button.party-action:disabled, #party button.party-action[disabled] { opacity: 0.4; }
+            #party-entrust { decorator: image(ice-crown-n); }
+            #party-entrust:hover { decorator: image(ice-crown-h); }
+            #party-entrust:active { decorator: image(ice-crown-a); }
+            #party-entrust:disabled, #party-entrust[disabled] { decorator: image(ice-crown-n); }
+            #party-kick { decorator: image(ice-kick-n); }
+            #party-kick:hover { decorator: image(ice-kick-h); }
+            #party-kick:active { decorator: image(ice-kick-a); }
+            #party-kick:disabled, #party-kick[disabled] { decorator: image(ice-kick-n); }
+            #party-leave { decorator: image(ice-leave-n); }
+            #party-leave:hover { decorator: image(ice-leave-h); }
+            #party-leave:active { decorator: image(ice-leave-a); }
+            #party-options { decorator: image(ice-pgear-n); }
+            #party-options:hover { decorator: image(ice-pgear-h); }
+            #party-options:active { decorator: image(ice-pgear-a); }
+            .party-level { flex-shrink: 0; color: rgb(255, 247, 191); font-weight: 820; }
+            .party-count { flex-shrink: 0; font-size: 11dp; color: rgb(190, 190, 190); }
+            #party .party-count.full { color: rgb(255, 214, 120); font-weight: 820; }
+            /* party EXP: always at the bottom, full member width */
+            .party-summary { justify-content: space-between; margin-bottom: 4dp; }
+            #party gauge.party-experience { display: block; width: 100%; height: 12dp; margin-top: 3dp; text-align: center; font-size: 10dp; line-height: 12dp; }
+            #party-members { min-height: 80dp; max-height: 40vh; overflow-y: auto; }
+            .party-member.selected .member-name { color: rgb(255, 75, 75); }
+            .party-member { position: relative; padding: 0; margin-bottom: 0.3em; }
+            gauge.member-health { height: 1.5em; margin-top: 0; }
+            gauge.member-health > .member-name { height: 1.5em; line-height: 1.5em; font-size: 1em; text-align: right; padding-right: 0.2em; box-sizing: border-box; }
+            gauge.member-health.unavailable { opacity: 0.5; }
+            .member-statuses { gap: 0.1em; margin-top: 0.1em; }
+            .member-statuses > span, .member-statuses > span > img { width: 1em; height: 1em; }
+            .member-status.blink { opacity: 0.3; }
+            #party-tooltip { visibility: visible; position: absolute; z-index: 100; clip: none; pointer-events: none; padding: 8dp; width: 250dp; max-width: 90vw; max-height: 90vh; background: rgba(0, 0, 0, 230); border: 1dp rgb(150, 150, 150); border-radius: 3dp; }
+            .status-tooltip-name { display: block; font-weight: 820; margin-bottom: 4dp; }
+            .status-tooltip-description { display: block; margin-bottom: 4dp; }
+            .status-tooltip-time { display: block; color: rgb(90, 230, 110); }
+            .status-tooltip-time.warning { color: rgb(255, 170, 60); }
+            .status-tooltip-time.danger { color: rgb(255, 80, 80); }
+
+            /* --- glowing RIP badge when a party member's HP hits 0 --- */
+            /* ice theme: plain red text (no pill), gentle pulse */
+            .rip-badge {
+                position: absolute;
+                top: 0; left: 0.25em;
+                height: 1.5em; line-height: 1.5em;
+                font-weight: 820; font-size: 0.9em; letter-spacing: 0.06em;
+                color: rgb(255, 110, 100);
+                font-effect: outline(1dp rgb(60, 6, 6));
+                pointer-events: none;
+                animation: rip-glow 1.2s ease-in-out infinite;
+            }
+            @keyframes rip-glow {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.65; }
+            }
+            /* out of range: the game reports 0 HP, so show "Far" instead of RIP (plain text, no pill) */
+            .far-badge {
+                position: absolute;
+                top: 0; left: 0.25em;
+                height: 1.5em; line-height: 1.5em;
+                font-weight: 820; font-size: 0.9em;
+                color: rgb(170, 210, 245);
+                font-effect: outline(1dp rgb(14, 32, 62));
+                pointer-events: none;
+            }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="party" data-model="party" data-style-width="members_font_size * 10 + 'dp'">
+        <div data-model="party">
+            <div class="party-summary">
+                <span class="party-level">Level {{level}}</span>
+                <span class="party-count" data-class-full="members.size >= 10">{{members.size >= 10 ? 'Full' : members.size + ' in party'}}</span>
+            </div>
+            <div class="ui-hud-toolbar">
+                <button id="party-entrust" class="ui-hud-action party-action" onmouseover="label-tooltip:357" onmouseout="hide-tooltip" onclick="entrust" data-if="is_leader" data-attrif-disabled="!can_entrust" />
+                <button id="party-kick" class="ui-hud-action party-action" onmouseover="label-tooltip:359" onmouseout="hide-tooltip" onclick="kick" data-if="is_leader" data-attrif-disabled="!can_kick" />
+                <button id="party-leave" class="ui-hud-action party-action" onmouseover="label-tooltip:358" onmouseout="hide-tooltip" onclick="leave" />
+                <button id="party-options" class="ui-hud-action party-action" onmouseover="label-tooltip:26" onmouseout="hide-tooltip" onclick="options" />
+            </div>
+            <input type="checkbox" id="cc-toggle" data-class-leader="is_leader" />
+            <div id="party-members" data-style-font-size="members_font_size + 'dp'" data-style-min-height="members_min_height + 'dp'" data-style-max-height="members_max_height + 'dp'">
+                <div class="party-member ui-roster-member" data-for="member : members" data-attr-id="'member-' + member.tag" data-attr-onclick="'select:' + member.tag" data-class-selected="member.selected" data-class-leader="member.leader">
+                    <gauge class="member-health ui-vitals horizontal-sm-md red" data-class-unavailable="!member.available" data-attr-gvalue="member.hp_percent" gmax="100"><span class="member-name ui-roster-name">{{member.name}}</span></gauge>
+                    <span class="rip-badge" data-if="member.available && member.hp_percent <= 0">RIP</span><span class="far-badge" data-if="!member.available">Far</span>
+                    <div class="member-statuses ui-status-icons" data-if="member.available && member.statuses.size > 0">
+                        <span class="member-status" data-for="status : member.statuses" data-attr-id="'status-' + member.tag + '-' + status.state_id" data-class-blink="status.blink" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.state_id" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.state_id" /></span>
+                    </div>
+                </div>
+            </div>
+            <gauge class="party-experience horizontal-sm-lg yellow" data-attr-gvalue="experience" data-attr-gmax="max_experience"><span>{{experience_percent}}%</span></gauge>
+            <div id="party-tooltip" data-if="tooltip_visible" data-style-left="tooltip_x + 'px'" data-style-top="tooltip_y + 'px'">
+                <div data-if="tooltip_text != ''">{{tooltip_text}}</div>
+                <div data-if="tooltip_text == ''">
+                    <div class="status-tooltip-name">{{tooltip_name}}</div>
+                    <div class="status-tooltip-description">{{tooltip_description}}</div>
+                    <div class="status-tooltip-time" data-class-warning="tooltip_time_class == 'warning'" data-class-danger="tooltip_time_class == 'danger'">{{tooltip_remaining}}</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</rml>

@@ -1,0 +1,15 @@
+/* Nameplate bars: the native nameplate layer draws these sprite NAMES directly,
+ * so they are remapped onto the ice art (only linked from character_nameplates.html). */
+@spritesheet ice-nameplate
+{
+    src: /data/ui/themes/rose/imgs/iceinv.dds;
+    gauge-bg-sm-md: 160px 394px 200px 26px;
+    gauge-red-sm-md: 2px 532px 200px 26px;
+    gauge-bg-sm-sm: 160px 394px 200px 26px;
+    gauge-blue-sm-sm: 206px 532px 200px 26px;
+}
+@spritesheet ice-nameplate-keep
+{
+    src: /data/ui/themes/rose/imgs/gauge.dds;
+    gauge-purple-sm-sm: 1px 52px 99px 4px;
+}

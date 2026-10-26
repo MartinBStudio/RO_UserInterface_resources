@@ -1,0 +1,76 @@
+<rml>
+    <head>
+        <title>Zone notice</title>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <style>
+            body {
+                left: 5%; top: 150dp; width: 90%; z-index: -50;
+                pointer-events: none;
+                text-align: center;
+                font-effect: outline(1dp black);
+                color: white;
+            }
+            #zone-name { font-size: 18dp; line-height: 24dp; margin-bottom: 8dp; }
+
+            /* ===== ice theme v2: title card ===== */
+            #game-zone-notice #zone-name {
+                font-size: 30dp; line-height: 36dp; margin-bottom: 2dp;
+                font-weight: 820;
+                color: rgb(255, 226, 150);
+                font-effect: outline(2.5dp rgb(14, 32, 62));
+                animation: 0.6s cubic-out 1 zn-drop-a;
+            }
+            /* gold line with a diamond under the name */
+            #game-zone-notice .zn-orn { display: flex; flex-direction: row; align-items: center; justify-content: center; height: 12dp; margin-bottom: 5dp; }
+            #game-zone-notice .zn-line { width: 120dp; height: 2dp; background-color: rgb(214, 166, 60); border: 0.5dp rgb(14, 32, 62); animation: 0.7s cubic-out 1 zn-grow-a; }
+            #game-zone-notice .zn-dia {
+                width: 8dp; height: 8dp; margin: 0dp 6dp;
+                background-color: rgb(255, 214, 120); border: 1dp rgb(14, 32, 62);
+                transform: rotate(45deg);
+            }
+            /* level line in a navy pill */
+            #game-zone-notice #zone-description {
+                display: inline-block;
+                padding: 2dp 12dp;
+                background-color: rgba(14, 32, 62, 170);
+                border: 1dp rgba(150, 190, 225, 200);
+                border-radius: 10dp;
+                color: rgb(225, 238, 252);
+                font-size: 14dp;
+                font-weight: 820;
+                font-effect: none;
+                animation: 0.9s cubic-out 1 zn-fade-a;
+            }
+            @keyframes zn-drop-a { 0% { opacity: 0; transform: translateY(-14dp); } 100% { opacity: 1; transform: translateY(0dp); } }
+            @keyframes zn-drop-b { 0% { opacity: 0; transform: translateY(-14dp); } 100% { opacity: 1; transform: translateY(0dp); } }
+            @keyframes zn-grow-a { 0% { width: 0dp; } 30% { width: 0dp; } 100% { width: 120dp; } }
+            @keyframes zn-grow-b { 0% { width: 0dp; } 30% { width: 0dp; } 100% { width: 120dp; } }
+            @keyframes zn-fade-a { 0% { opacity: 0; } 45% { opacity: 0; } 100% { opacity: 1; } }
+            @keyframes zn-fade-b { 0% { opacity: 0; } 45% { opacity: 0; } 100% { opacity: 1; } }
+        </style>
+        <script>
+-- replay the entrance each time the notice is shown (alternate keyframe names to restart)
+local flip = false
+local function replay()
+    flip = not flip
+    local v = flip and 'b' or 'a'
+    pcall(function()
+        document:GetElementById('zone-name').style.animation = '0.6s cubic-out 1 zn-drop-' .. v
+        document:GetElementById('zn-line-l').style.animation = '0.7s cubic-out 1 zn-grow-' .. v
+        document:GetElementById('zn-line-r').style.animation = '0.7s cubic-out 1 zn-grow-' .. v
+        -- last: the level pill may not exist (no description)
+        document:GetElementById('zone-description').style.animation = '0.9s cubic-out 1 zn-fade-' .. v
+    end)
+end
+document:AddEventListener('show', replay)
+        </script>
+    </head>
+    <body id="game-zone-notice">
+        <div data-model="zone-notice">
+            <div id="zone-name" class="ui-section-title">{{ name }}</div>
+            <div class="zn-orn"><div class="zn-line" id="zn-line-l"></div><div class="zn-dia"></div><div class="zn-line" id="zn-line-r"></div></div>
+            <div data-if="description != ''"><div id="zone-description" class="ui-banner-text">{{ description }}</div></div>
+        </div>
+    </body>
+</rml>

@@ -1,0 +1,93 @@
+<rml>
+    <head>
+        <title>Trade</title>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/components.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <style>
+            body { width: 504dp; max-width: 94vw; }
+            .trade-offers { display: flex; flex-wrap: wrap; justify-content: center; gap: 12dp; margin-bottom: 12dp; }
+            .trade-offer { display: flex; flex-direction: column; width: 234dp; flex: 0 0 234dp; }
+            .trade-grid { width: 216dp; margin-top: auto; }
+            .trade-status { margin-top: 8dp; }
+            .trade-status.ready { color: rgb(40, 140, 60); font-weight: 820; }
+            #trade-status { margin-bottom: 8dp; }
+
+            /* ===== ice theme ===== */
+            #player-trade #window-content { overflow: visible; }
+            #player-trade .trade-offer .ui-section-title { color: rgb(30, 62, 112); font-weight: 820; text-align: center; }
+            #player-trade .ui-currency {
+                color: rgb(36, 58, 98);
+                font-size: 15dp;
+                font-weight: 820;
+                font-effect: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+                padding: 3dp 8dp;
+            }
+            #player-trade .ui-status { color: rgb(110, 130, 160); font-effect: none; }
+            #player-trade .trade-status.ready { color: rgb(40, 140, 60); }
+            #player-trade #trade-status { color: rgb(36, 58, 98); }
+        
+            /* zulie: close-button style Z icon (atlas2) */
+            body img[sprite="ice-zulie-n"] { width: 20dp; min-width: 20dp; height: 20dp; }
+            body button.zulie { width: 20dp; min-width: 20dp; height: 20dp; decorator: image(ice-zulie-n); background-color: rgba(0, 0, 0, 0); border-width: 0dp; }
+            body button.zulie:hover { decorator: image(ice-zulie-h); }
+            body button.zulie:active { decorator: image(ice-zulie-a); }
+            body button.zulie:disabled, body button.zulie[disabled] { decorator: image(ice-zulie-n); }
+        </style>
+    </head>
+    <body template="window-fixed-size" id="player-trade">
+        <div data-model="player-trade">
+        <div class="trade-offers">
+            <div class="trade-offer ui-section content-box">
+                <div id="my-name" class="ui-section-title">{{ my_name }}</div>
+                <div class="trade-grid ui-slot-grid" id="my-slots">
+                    <item-slot id="trade-slot-0" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-1" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-2" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-3" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-4" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-5" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-6" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-7" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-8" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-9" data-attr-dimmed="dimmed" />
+                </div>
+                <div class="ui-currency ui-footer"><button id="my-money-icon" class="zulie" onclick="money" data-attrif-disabled="!money_enabled" /><span id="my-money">{{ my_money }}</span></div>
+                <div id="my-status" class="trade-status ui-status" data-class-ready="my_ready">{{ my_status }}</div>
+            </div>
+            <div class="trade-offer ui-section content-box">
+                <div id="other-name" class="ui-section-title">{{ other_name }}</div>
+                <div class="trade-grid ui-slot-grid" id="other-slots">
+                    <item-slot id="trade-slot-10" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-11" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-12" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-13" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-14" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-15" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-16" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-17" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-18" data-attr-dimmed="dimmed" />
+                    <item-slot id="trade-slot-19" data-attr-dimmed="dimmed" />
+                </div>
+                <div class="ui-currency ui-footer"><img sprite="ice-zulie-n" /><span id="other-money">{{ other_money }}</span></div>
+                <div id="other-status" class="trade-status ui-status" data-class-ready="other_ready">{{ other_status }}</div>
+            </div>
+        </div>
+        <div id="trade-status" class="ui-status">{{ trade_status }}</div>
+        <div class="ui-actions">
+            <button id="ready" class="default" onclick="ready" data-attrif-disabled="!ready_enabled">{{ ready_label }}</button>
+            <button id="confirm" class="default ice-primary" onclick="confirm" data-attrif-disabled="!confirm_enabled">{{ confirm_label }}</button>
+        </div>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

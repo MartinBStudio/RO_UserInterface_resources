@@ -1,0 +1,125 @@
+<rml>
+    <head>
+        <title>Community</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            #game-friend-list
+            {
+                width: 300dp;
+                height: 380dp;
+                min-width: 280dp;
+                min-height: 200dp;
+            }
+
+            listbox {
+                padding-right: 15dp;
+            }
+
+            listbox-item {
+                padding: 4dp;
+            }
+
+            button.default {
+                min-width: 110dp;
+            }
+
+            tabset {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            tab.default {
+                min-width: 0dp;
+                flex: 1;
+                box-sizing: border-box;
+            }
+
+            tabset > panels {
+                flex: 1;
+            }
+
+            /* ===== ice theme ===== */
+            #game-friend-list .ice-fx.ice-br { bottom: -32dp; }
+            #game-friend-list .content-box { margin-bottom: 6dp; }
+            #game-friend-list listbox-item {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(206, 224, 242);
+                border-radius: 6dp;
+                margin: 2dp 0;
+                padding: 4dp 6dp;
+                color: rgb(36, 58, 98);
+                font-effect: none;
+            }
+            #game-friend-list listbox-item:hover { background-color: rgb(240, 247, 255); border-color: rgb(120, 175, 225); }
+            #game-friend-list listbox-item[selected] { background-color: rgb(255, 246, 214); border-color: rgb(214, 166, 60); color: rgb(36, 58, 98); }
+            #game-friend-list listbox-item str { color: rgb(110, 130, 160); font-size: 12dp; }
+            #game-friend-list button.default { margin: 3dp 0; min-width: 126dp; white-space: nowrap; font-size: 14dp; padding-left: 6dp; padding-right: 6dp; }
+            #game-friend-list button.cm-danger { color: rgb(170, 40, 40); }
+        </style>
+    </head>
+
+    <body id="game-friend-list" template="window-resizeable">
+        <tabset id="community-tabs">
+            <tab class="default" id="friends-tab">Friends</tab>
+            <panel>
+                <div data-model="friend-list" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+                    <div style="flex: 1" class="content-box">
+                        <div style="width: 100%; height: 100%; overflow: hidden auto;">
+                            <listbox id="friend-list">
+                                <listbox-item
+                                    data-for="friend : friends"
+                                    data-attr-value="friend.name"
+                                    ondblclick="mail_or_message_friend"
+                                    style="display: flex; flex-direction: row; column-gap: 4dp; width: 100%; height: 20dp">
+                                    <img data-attr-sprite="(friend.status == 8 || friend.status == 10 || friend.status == 80 || friend.status == 81) ? 'clan-member-offline' : 'clan-member-online'" />
+                                    <span style="flex: 1">{{friend.name}}</span>
+                                    <span><str data-attr-friend-status="friend.status" /></span>
+                                </listbox-item>
+                            </listbox>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="width: 126dp">
+                            <button class="default" onclick="add_friend">Add Friend</button>
+                            <button class="default cm-danger" onclick="delete_friend">Delete Friend</button>
+                        </div>
+                        <div style="flex: 1"></div>
+                        <div style="width: 126dp">
+                            <button class="default ice-primary" onclick="mail_or_message_friend">Message</button>
+                        </div>
+                    </div>
+            </div>
+            </panel>
+            <tab class="default" id="ignore-tab">Ignore</tab>
+            <panel>
+                <div data-model="ignore-list" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+                    <div style="flex: 1" class="content-box">
+                        <div style="width: 100%; height: 100%; overflow: hidden auto;">
+                            <listbox id="ignore-list">
+                                <listbox-item
+                                    data-for="ignore : ignore_list"
+                                    data-attr-value="ignore.name"
+                                    style="display: flex; flex-direction: row; column-gap: 4dp; width: 100%; height: 20dp"
+                                >
+                                    <span>{{ignore.name}}</span>
+                                </listbox-item>
+                            </listbox>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <button class="default" onclick="add_ignore">Add Ignore</button>
+                        <button class="default cm-danger" onclick="delete_ignore">Delete Ignore</button>
+                    </div>
+                </div>
+            </panel>
+        </tabset>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

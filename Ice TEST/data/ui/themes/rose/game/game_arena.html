@@ -1,0 +1,179 @@
+<rml>
+<head>
+    <title>Game Arena</title>
+    <link type="text/template" href="../templates/window-fixed-size.html" />
+    <link type="text/rcss" href="../styles/components.css" />
+    <link type="text/rcss" href="../styles/spritesheet_currencyicon.css" />
+    <link type="text/rcss" href="arena_browser.css" />
+    <link type="text/rcss" href="../styles/ice_sprites.css" />
+    <script src="game_arena.lua" />
+    <style>
+            /* --- ice theme (shared art: imgs/iceinv.dds), Game Arena --- */
+
+            /* Frame + title band */
+            .window-fixed-size {
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+                padding: 6dp;
+                padding-top: 40dp;
+            }
+            .window-title {
+                position: absolute;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 40dp;
+                padding-left: 60dp;
+                color: white;
+                font-size: 20dp;
+                font-weight: 820;
+                font-effect: outline(1.5dp rgb(28, 78, 138));
+                text-align: left;
+                line-height: 40dp;
+            }
+            .window-title-text { margin-left: 0dp; }
+            button.window-title-close { top: 7dp; right: 8dp; z-index: 20; }
+
+            body#game-arena #window-content {
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+                background-color: rgba(0, 0, 0, 0);
+                border: 0dp rgba(0, 0, 0, 0);
+                overflow: visible;
+                z-index: 0;
+                color: rgb(36, 58, 98);
+            }
+
+            /* Corner flourishes */
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #ice-corner-tl { left: -8dp; top: -63dp; width: 81dp; height: 70dp; decorator: image(ice-corner-tl); }
+            #ice-corner-br { right: -8dp; bottom: -21dp; width: 77dp; height: 67dp; decorator: image(ice-corner-br); }
+
+            /* Inner boxes: light ice panels */
+            body#game-arena .content-box {
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+
+            /* Buttons: glossy blue, selected = gold */
+            body#game-arena button.default {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                color: rgb(30, 62, 112);
+                font-weight: 820;
+                font-effect: none;
+            }
+            body#game-arena button.default str { color: rgb(30, 62, 112); font-effect: none; }
+            body#game-arena button.default:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            body#game-arena button.default.selected,
+            body#game-arena button.default.selected:hover,
+            body#game-arena .arena-version-action button.default,
+            body#game-arena .arena-version-action button.default:hover {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+                color: rgb(92, 50, 8);
+            }
+            body#game-arena button.default.selected str { color: rgb(92, 50, 8); }
+            body#game-arena button.default:disabled,
+            body#game-arena button.default[disabled] {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                color: rgb(30, 62, 112);
+                opacity: 0.45;
+            }
+            body#game-arena .ui-tabs { gap: 6dp; }
+            body#game-arena .ui-tabs > button.default { height: 28dp; line-height: 28dp; padding: 0 6dp; font-size: 14dp; }
+
+            /* Search box */
+            body#game-arena input[type="text"] {
+                decorator: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 5dp;
+                color: rgb(30, 62, 112);
+            }
+            body#game-arena input[type="text"]:focus { border-color: rgb(90, 160, 220); }
+
+            /* Text */
+            body#game-arena .ui-section-title { color: rgb(30, 62, 112); }
+            body#game-arena .arena-caption { color: rgb(98, 124, 156); }
+            body#game-arena .ui-status { color: rgb(110, 130, 160); }
+            body#game-arena .arena-heading .arena-caption { color: rgb(150, 92, 20); font-weight: 820; }
+
+            /* Arena photo cards: keep the photo, navy fade instead of black */
+            body#game-arena .arena-card-overlay {
+                decorator: horizontal-gradient(rgba(16, 48, 92, 225) rgba(16, 48, 92, 50));
+                border-left: 4dp rgb(110, 172, 226);
+                color: white;
+            }
+            body#game-arena .arena-card:hover .arena-card-overlay { border-left-color: rgb(200, 232, 255); background-color: rgba(255, 255, 255, 20); }
+            body#game-arena .arena-card.selected .arena-card-overlay { border-left-color: rgb(255, 196, 58); }
+            body#game-arena .arena-card .arena-caption { color: rgb(214, 232, 248); }
+            body#game-arena .arena-card .arena-card-copy { font-effect: shadow(1dp 1dp rgb(10, 30, 60)); }
+            body#game-arena .arena-dot { background-color: rgb(160, 175, 190); border: 1dp rgba(255, 255, 255, 160); }
+            body#game-arena .arena-dot.eligible { background-color: rgb(80, 200, 120); }
+
+            /* Detail hero caption */
+            body#game-arena .arena-hero-caption { background-color: rgba(16, 48, 92, 200); }
+            body#game-arena .arena-hero-caption .ui-section-title { color: white; font-effect: outline(1dp rgb(10, 30, 60)); }
+            body#game-arena .arena-hero-caption .arena-caption { color: rgb(255, 210, 110); font-weight: 820; }
+
+            /* Level bracket table */
+            body#game-arena .arena-version { border-bottom: 1dp rgb(214, 226, 238); }
+            body#game-arena .arena-versions > .arena-version.arena-caption { color: rgb(98, 124, 156); font-weight: 820; }
+            body#game-arena .arena-version .ui-currency { color: rgb(170, 110, 20); font-effect: none; }
+            body#game-arena .arena-stats b { color: rgb(170, 100, 20); }
+
+            /* Group footer; padded right so the corner bracket clears the button */
+            body#game-arena .arena-group-footer { border-top: 1dp rgb(214, 226, 238); padding-right: 52dp; }
+
+            /* Scrollbars: glossy ice thumb on an inset track */
+            body#game-arena scrollbarvertical { width: 14dp; }
+            body#game-arena scrollbarvertical slidertrack {
+                decorator: tiled-vertical(ice-strack-t, ice-strack-c, ice-strack-b);
+                image-color: rgb(255, 255, 255);
+                margin-left: 3dp;
+                width: 8dp;
+            }
+            body#game-arena scrollbarvertical sliderbar {
+                decorator: tiled-vertical(ice-sbar-t, ice-sbar-c, ice-sbar-b);
+                margin-left: 2dp;
+                width: 10dp;
+                min-height: 28dp;
+            }
+            body#game-arena scrollbarvertical sliderbar:hover,
+            body#game-arena scrollbarvertical sliderbar:active {
+                decorator: tiled-vertical(ice-sbar-hover-t, ice-sbar-hover-c, ice-sbar-hover-b);
+            }
+    </style>
+</head>
+<body template="window-fixed-size" id="game-arena">
+    <div class="arena-browser">
+        <div class="arena-sidebar content-box">
+            <div class="arena-filters">
+                <div class="ui-tabs">
+                    <button id="arena-all" class="default selected" arena-filter="0">All</button>
+                    <button id="arena-dungeons" class="default" arena-filter="1"><str string-id="984">Dungeons</str></button>
+                    <button id="arena-pvp" class="default" arena-filter="2"><str string-id="985">PvP</str></button>
+                </div>
+                <div class="arena-search-row"><input id="arena-search" type="text" placeholder="Search arenas..." maxlength="80" /><span class="tooltip arena-level-choice"><button id="arena-all-levels" class="default ui-compact selected">A</button><span class="tooltiptext">All levels: show every arena.</span></span><span class="tooltip arena-level-choice"><button id="arena-level-filter" class="default ui-compact">Lv</button><span class="tooltiptext">My level: show arenas with a bracket for your character level.</span></span></div>
+            </div>
+            <div id="arena-game-list"><div class="arena-empty ui-status">Loading arenas...</div></div>
+        </div>
+        <div class="arena-detail content-box">
+            <div id="arena-detail-content"><div class="arena-empty ui-status">Select an arena</div></div>
+            <div class="arena-group-footer ui-footer"><span id="arena-group-summary">No group</span><button id="arena-manage-group" class="default" onclick="group">Manage Group</button></div>
+        </div>
+    </div>
+    <div class="ice-fx" id="ice-corner-tl"></div>
+    <div class="ice-fx" id="ice-corner-br"></div>
+</body>
+</rml>

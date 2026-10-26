@@ -1,0 +1,301 @@
+<rml>
+    <head>
+        <title>Login</title>
+
+        <link type="text/template" href="../templates/window-box.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                text-align: center;
+                font-effect: outline(1px black);
+            }
+
+            #build-version-container {
+                position: absolute;
+                top: 10dp;
+                left: 10dp;
+                font-size: 12dp;
+            }
+
+            #login-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 310dp;
+                height: 100%;
+                margin: 0 auto;
+            }
+
+            #remember-email-label {
+                font-size: 12dp;
+            }
+
+            #tos {
+                font-size: 11dp;
+            }
+
+            input.credentials {
+                text-align: center;
+                width: 100%;
+            }
+
+            .email-field {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+            }
+
+            .email-suggestions {
+                display: flex;
+                justify-content: center;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                z-index: 10;
+            }
+
+            .email-suggestions-list {
+                overflow-y: auto;
+                width: 100%;
+                max-height: 95dp;
+            }
+
+            .email-suggestion-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 2dp 6dp;
+            }
+
+            .email-suggestion-item > span {
+                flex: 1;
+                text-align: left;
+                cursor: hand;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            .email-remove {
+                min-width: 16dp;
+                width: 16dp;
+                padding: 0;
+                cursor: hand;
+            }
+
+            button#suggestions {
+                position: absolute;
+                right: -10dp;
+                top: 2dp;
+            }
+
+            /* ===== ice theme (same composition as Game Arena) ===== */
+            .window-box {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 40dp 6dp 6dp 6dp;
+                decorator: tiled-box(
+                    ice-frame-tl, ice-frame-t, ice-frame-tr,
+                    ice-frame-l,  ice-frame-c, ice-frame-r,
+                    ice-frame-bl, ice-frame-b, ice-frame-br
+                );
+                font-effect: none;
+                color: rgb(36, 58, 98);
+            }
+            .login-title {
+                position: absolute;
+                top: 0dp;
+                left: 0dp;
+                width: 100%;
+                height: 40dp;
+                line-height: 40dp;
+                padding-left: 60dp;
+                box-sizing: border-box;
+                text-align: left;
+                color: white;
+                font-size: 20dp;
+                font-weight: 820;
+                font-effect: outline(1.5dp rgb(28, 78, 138));
+            }
+            .login-panel {
+                padding: 10dp;
+                decorator: tiled-box(
+                    ice-panel-tl, ice-panel-t, ice-panel-tr,
+                    ice-panel-l,  ice-panel-c, ice-panel-r,
+                    ice-panel-bl, ice-panel-b, ice-panel-br
+                );
+            }
+            .login-box {
+                padding: 10dp 14dp 12dp 14dp;
+                background-color: rgb(236, 244, 251);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 8dp;
+            }
+            .login-box p {
+                margin: 4dp 0dp 4dp 0dp;
+                color: rgb(30, 62, 112);
+                font-size: 13dp;
+            }
+            #external-login input.credentials {
+                decorator: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 5dp;
+                color: rgb(30, 62, 112);
+                font-effect: none;
+            }
+            #external-login input.credentials:focus { border-color: rgb(90, 160, 220); }
+            #remember-email-container { margin-top: 8dp; color: rgb(36, 58, 98); }
+
+            .login-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6dp;
+                margin-top: 12dp;
+            }
+            .login-actions > button { width: 180dp; }
+            #external-login button.default {
+                decorator: tiled-horizontal(ice-tab-l, ice-tab-c, ice-tab-r);
+                height: 30dp;
+                line-height: 30dp;
+                padding: 0dp;
+                color: rgb(30, 62, 112);
+                font-effect: none;
+            }
+            #external-login button.default:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            #external-login button#login-btn {
+                decorator: tiled-horizontal(ice-tab-sel-l, ice-tab-sel-c, ice-tab-sel-r);
+                height: 36dp;
+                line-height: 36dp;
+                font-size: 16dp;
+                color: rgb(92, 50, 8);
+            }
+            #external-login button#login-btn:hover {
+                decorator: tiled-horizontal(ice-tab-hover-l, ice-tab-hover-c, ice-tab-hover-r);
+            }
+            #tos { display: inline-block; margin-top: 8dp; color: rgb(98, 124, 156); }
+            #tos:hover { color: rgb(170, 100, 20); }
+
+            /* saved-email arrow = blue ice dropdown button (same as the chat), inside the field */
+            #external-login button#suggestions {
+                right: 4dp; top: 4dp;
+                width: 20dp; min-width: 20dp; height: 20dp;
+                decorator: image(ice-dd-n);
+            }
+            #external-login button#suggestions:hover { decorator: image(ice-dd-h); }
+            #external-login button#suggestions:active,
+            #external-login button#suggestions[active] { decorator: image(ice-dd-a); }
+            #external-login button#suggestions:disabled,
+            #external-login button#suggestions[disabled] { decorator: image(ice-dd-n); opacity: 0.45; }
+
+            /* Remember Email: ice checkbox, centred in line with its label */
+            #remember-email-container { display: flex; flex-direction: row; justify-content: center; align-items: center; }
+            #external-login input[type="checkbox"] {
+                width: 14dp; height: 14dp; margin: 0dp 6dp 0dp 0dp;
+                background-color: rgba(0, 0, 0, 0); border: 0dp rgba(0, 0, 0, 0);
+                decorator: image(ice-check-off);
+            }
+            #external-login input[type="checkbox"]:hover { decorator: image(ice-check-off-hover); }
+            #external-login input[type="checkbox"]:checked { decorator: image(ice-check-on); }
+            #external-login input[type="checkbox"]:checked:hover { decorator: image(ice-check-on-hover); }
+            #remember-email-label { line-height: 14dp; }
+
+            /* saved-email dropdown */
+            .email-suggestions-list {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 0dp 0dp 5dp 5dp;
+            }
+            .email-suggestion-item { color: rgb(30, 62, 112); }
+            .email-suggestion-item:hover { background-color: rgb(222, 238, 252); }
+            .email-remove { color: rgb(170, 40, 40); }
+            .email-remove:hover { color: rgb(220, 60, 40); }
+
+            /* scrollbars: same glossy ice thumb + inset track as the Game Arena */
+            scrollbarvertical { width: 14dp; }
+            scrollbarvertical slidertrack {
+                decorator: tiled-vertical(ice-strack-t, ice-strack-c, ice-strack-b);
+                image-color: rgb(255, 255, 255);
+                margin-left: 3dp;
+                width: 8dp;
+            }
+            scrollbarvertical sliderbar {
+                decorator: tiled-vertical(ice-sbar-t, ice-sbar-c, ice-sbar-b);
+                margin-left: 2dp;
+                width: 10dp;
+                min-height: 28dp;
+            }
+            scrollbarvertical sliderbar:hover,
+            scrollbarvertical sliderbar:active {
+                decorator: tiled-vertical(ice-sbar-hover-t, ice-sbar-hover-c, ice-sbar-hover-b);
+            }
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #ice-corner-tl { left: -1dp; top: -23dp; width: 81dp; height: 70dp; decorator: image(ice-corner-tl); }
+            #ice-corner-br { right: -2dp; bottom: -16dp; width: 77dp; height: 67dp; decorator: image(ice-corner-br); }
+        </style>
+    </head>
+
+    <body id="external-login" onkeyup="enter-submit">
+        <div id="build-version-container" data-model="login">
+            <b>Early Access Build (version: {{ build_version }})</b>
+        </div>
+
+        <div id="login-container" data-model="login">
+            <div class="window-box">
+                <div class="login-title">Login</div>
+                <div class="login-panel">
+                    <div class="login-box">
+                        <p string-id="1092"><b>Email Address</b></p>
+                        <div class="email-field">
+                            <input id="username" type="email" class="credentials" data-value="email" data-event-click="toggle_email_list" retains-focus />
+                            <button id="suggestions" class="down-arrow"
+                                data-event-click="toggle_email_list"
+                                data-attrif-active="show_email_list"
+                                data-attrif-disabled="saved_emails.size == 0"></button>
+
+                            <div class="email-suggestions" data-if="show_email_list && saved_emails.size > 0">
+                                <div id="email-list" class="email-suggestions-list">
+                                    <div
+                                        class="email-suggestion-item"
+                                        data-for="saved, saved_idx : saved_emails"
+                                        >
+                                        <span data-event-click="select_saved_email(saved_idx)">{{ saved }}</span>
+                                        <button class="email-remove" data-event-click="remove_saved_email(saved_idx)"><b>x</b></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p string-id="1093"><b>Password</b></p>
+                        <input id="password" type="password" class="credentials" data-value="password" data-event-focus="show_email_list = false" retains-focus />
+
+                        <div id="remember-email-container">
+                            <input id="remember-email" type="checkbox" data-value="remember_email" data-checked="remember_email" />
+                            <label id="remember-email-label" for="remember-email" string-id="1094"><b>Remember Email</b></label>
+                        </div>
+                    </div>
+
+                    <div class="login-actions">
+                        <button class="default" id="login-btn" onclick="login"><b>Log In</b></button>
+                        <button class="default" onclick="quit"><b>Quit</b></button>
+                    </div>
+
+                    <a id="tos" onclick="tos"><b>Terms of Service</b></a>
+                </div>
+                <div class="ice-fx" id="ice-corner-tl"></div>
+                <div class="ice-fx" id="ice-corner-br"></div>
+            </div>
+        </div>
+    </body>
+</rml>

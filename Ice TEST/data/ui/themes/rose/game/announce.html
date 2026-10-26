@@ -1,0 +1,64 @@
+<rml>
+    <head>
+        <title>Announcement</title>
+
+        <link type="text/template" href="../templates/window-box.html" />
+
+        <style>
+            body
+            {
+                width: 100%;
+                text-align: center;
+                background: rgba(20, 20, 20, 230);
+            }
+
+            #content
+            {
+                width: 100%;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                font-size: 18dp;
+                font-weight: 1000;
+                font-effect: outline(1dp black);
+                margin: 15dp;
+            }
+
+            #icon-container
+            {
+                max-width: 32px;
+                max-height: 32px;
+            }
+
+            img
+            {
+                margin-right: 5dp;
+            }
+
+            /* ===== ice theme: navy banner, gold top + bottom line ===== */
+            body#game-announce {
+                background-color: rgba(14, 32, 62, 225);
+                border-top: 2dp rgb(214, 166, 60);
+                border-bottom: 2dp rgb(214, 166, 60);
+                decorator: none;
+            }
+            #game-announce #window-content { decorator: none; background-color: rgba(0, 0, 0, 0); }
+            #game-announce #content { color: rgb(255, 255, 255); font-effect: outline(1.5dp rgb(8, 18, 36)); }
+        </style>
+    </head>
+
+    <body id="game-announce" onkeyup="exit-next" data-model="announce" data-class-fade-in="!fading_out" data-class-fade-out="fading_out">
+        <div id="content">
+            <div class="icon-container">
+                <img id="icon" data-if="icon != ''" data-attr-sprite="icon"/>
+            </div>
+
+            <label id="message" data-rml="message"></label>
+        </div>
+
+        <span class="window-title-close" onclick="close"></span>
+    </body>
+</rml>

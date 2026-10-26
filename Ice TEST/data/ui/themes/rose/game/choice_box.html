@@ -1,0 +1,183 @@
+<rml>
+
+    <head>
+        <link type="text/template" href="../templates/window-fixed-size.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            body {
+                width: 595dp;
+            }
+            
+            handle {
+                text-align: center;
+            }
+
+            #main-container {
+                padding: 10dp;
+                min-height: 100dp;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 5dp;
+            }
+
+            #item-box-preview {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                gap: 2dp;
+            }
+
+            #item-box-preview>div {
+                display: flex;
+                justify-content: center;
+            }
+
+            #box-icon-container {
+                width: 50dp;
+                height: 50dp;
+                text-align: center;
+                align-items: center;
+                background-color: rgba(50, 50, 50, 134);
+                border-radius: 5dp;
+            }
+
+            #choice-label {
+                text-align: center;
+                font-size: 14dp;
+                font-weight: bold;
+            }
+
+            #choice-message {
+                text-align: center;
+                font-size: 18dp;
+                font-weight: bold;
+                color: yellow;
+            }
+
+            #choice-container {
+                width: 100%;
+                min-height: 100dp;
+
+                display: flex;
+                /*display: block;*/
+                box-sizing: border-box;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .choice-item {
+                width: 130dp;
+                height: 90dp;
+                padding: 5dp;
+                margin: 5dp;
+                box-sizing: border-box;
+
+                display: inline-block;
+                text-align: center;
+                background-color: rgba(50, 50, 50, 134);
+            }
+
+            .button-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .button-container>.textarea {
+                display: inline-block;
+                width: 45dp;
+                text-align: center;
+            }
+
+            #confirm {
+                font-size: 16dp;
+                font-weight: bold;
+                color: yellow;
+            }
+
+            /* ===== ice theme ===== */
+            #game-choice-box #main-container { padding: 8dp; }
+            /* the box being opened: white tile, gold edge */
+            #game-choice-box #box-icon-container {
+                display: flex; justify-content: center;
+                background-color: rgb(255, 250, 232);
+                border: 1dp rgb(214, 166, 60);
+                border-radius: 8dp;
+                padding-top: 4dp;
+                box-sizing: border-box;
+            }
+            #game-choice-box #choice-label { color: rgb(30, 62, 112); font-effect: none; }
+            #game-choice-box #choice-message { color: rgb(170, 100, 20); font-size: 16dp; font-effect: none; }
+            #game-choice-box #choice-container { padding: 6dp; }
+            /* each choice = white card; picked ones (quantity > 0) keep the same card */
+            #game-choice-box .choice-item {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(196, 218, 238);
+                border-radius: 6dp;
+                decorator: none;
+            }
+            #game-choice-box .choice-item:hover { border-color: rgb(120, 175, 225); background-color: rgb(246, 251, 255); }
+            #game-choice-box .choice-item item-slot { margin: 2dp auto 4dp auto; }
+            #game-choice-box .button-container > .textarea {
+                display: block;
+                width: 40dp; height: 20dp; line-height: 14dp;
+                margin: 0dp 4dp;
+                box-sizing: border-box;
+                padding: 2dp;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(176, 206, 232);
+                border-radius: 5dp;
+                color: rgb(30, 62, 112);
+                font-weight: 820;
+                decorator: none;
+            }
+            #game-choice-box button.left-sm,
+            #game-choice-box button.right-sm { margin: 0dp; width: 20dp; min-width: 20dp; height: 20dp; }
+            #game-choice-box button.left-sm { decorator: image(ice-left-n); }
+            #game-choice-box button.left-sm:hover { decorator: image(ice-left-h); }
+            #game-choice-box button.left-sm:active { decorator: image(ice-left-a); }
+            #game-choice-box button.right-sm { decorator: image(ice-right-n); }
+            #game-choice-box button.right-sm:hover { decorator: image(ice-right-h); }
+            #game-choice-box button.right-sm:active { decorator: image(ice-right-a); }
+            #game-choice-box #confirm { color: rgb(92, 50, 8); font-size: 15dp; min-width: 150dp; }
+        </style>
+    </head>
+
+    <body id="game-choice-box" template="window-fixed-size">
+        <div id="main-container" data-model="item-box">
+            <div id="item-box-preview">
+                <div id="box-icon-container">
+                    <item-slot item-actions id="box-icon" data-attr-item="item_box.ref_key" data-attr-item-quantity="item_box.quantity"></item-slot>
+                </div>
+                <label id="choice-label">{{choice_quantity}} / {{item_box.quantity}}</label>
+            </div>
+            <label id="choice-message"><str string-id="1427">Choose your item(s)</str></label>
+            <panel id="choice-container" class="content-box">
+                <listbox id="choice-list">
+                    <listbox-item class="choice-item" data-for="choice : choice_list">
+                        <item-slot item-actions data-attr-id="'choice-icon-' + choice.index" data-attr-item="choice.ref_key" item-quantity="0"/>
+                        <div class="button-container">
+                            <button data-attr-id="'choice-decrease-' + choice.index" class="left-sm" data-event-click="dec_choice(choice.index)" /><label class="textarea">{{choice.choice_quantity}}</label><button data-attr-id="'choice-increase-' + choice.index" class="right-sm" data-event-click="inc_choice(choice.index)" />
+                        </div>
+                    </listbox-item>
+                </listbox>
+            </panel>
+            <button class="default ice-primary" id="confirm" onclick="confirm">
+                <str string-id="858">Confirm</str>
+            </button>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

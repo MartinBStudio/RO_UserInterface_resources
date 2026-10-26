@@ -1,0 +1,2237 @@
+<rml>
+    <head>
+        <title>Options</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_sprites2.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+        <script>
+-- Loot filter core (inlined into both dropped_item_labels.html and options_bgfx.html)
+local LF = {}
+LF.file = 'loot_filter.txt'
+-- lists in the game's rarity order (normal -> rarest); rarer lists win when a name is in two
+LF.order = { 'yellow', 'blue', 'purple', 'red', 'green', 'rainbow' }
+LF.priority = { 'rainbow', 'green', 'red', 'purple', 'blue', 'yellow' }
+LF.colors = {
+    yellow = 'rgb(255, 226, 84)',
+    blue = 'rgb(150, 230, 255)',
+    purple = 'rgb(205, 140, 255)',
+    red = 'rgb(255, 96, 96)',
+    green = 'rgb(120, 235, 120)',
+    rainbow = 'animated',
+}
+LF.defaults = { yellow = '', blue = '', purple = '', red = '', green = '', rainbow = '' }
+LF.io_ok = (io ~= nil and io.open ~= nil)
+
+function LF.split(text)
+    local out = {}
+    for part in (text or ''):gmatch('[^,]+') do
+        local name = part:match('^%s*(.-)%s*$')
+        if name ~= '' then out[#out + 1] = name end
+    end
+    return out
+end
+
+function LF.load()
+    local lists = {}
+    for k, v in pairs(LF.defaults) do lists[k] = v end
+    if not LF.io_ok then return lists end
+    local f = io.open(LF.file, 'r')
+    if not f then return lists end
+    for line in f:lines() do
+        local key, value = line:match('^%s*([%a_]+)%s*=(.*)$')
+        if key and LF.colors[key] then lists[key] = value end
+        if key == 'only_filtered' then lists.only_filtered = value:match('^%s*1') ~= nil end
+        if key == 'dim_others' then lists.dim_others = value:match('^%s*1') ~= nil end
+    end
+    f:close()
+    return lists
+end
+
+function LF.save(lists)
+    if not LF.io_ok then return false, 'file access is not available in this client' end
+    local f, err = io.open(LF.file, 'w')
+    if not f then return false, tostring(err) end
+    for _, key in ipairs(LF.order) do f:write(key, '=', lists[key] or '', '\n') end
+    f:write('only_filtered=', lists.only_filtered and '1' or '0', '\n')
+    f:write('dim_others=', lists.dim_others and '1' or '0', '\n')
+    f:close()
+    return true
+end
+
+-- css rules (v5): each listed name becomes a style rule on the label's bound lf-name attribute,
+-- so the glow follows the name in the same frame the game writes it. Loaded at game start.
+-- One rule set per saved profile (tag lfp-HASH on the label list) plus the plain lists
+-- (tag lfp-none): switching to a profile the game loaded at start only swaps the tag = instant.
+LF.css_file = 'data/ui/themes/rose/styles/lf_rules.css'
+LF.profiles_file = 'loot_filter_profiles.txt'
+
+-- profiles file: optional "active=Name" line, then "[Name]" sections with key=value lines
+function LF.load_profiles()
+    local list, by, active = {}, {}, nil
+    if not LF.io_ok then return list, by, active end
+    local f = io.open(LF.profiles_file, 'r')
+    if not f then return list, by, active end
+    local cur = nil
+    for line in f:lines() do
+        local sec = line:match('^%s*%[(.-)%]%s*$')
+        if sec then
+            cur = {}
+            for _, k in ipairs(LF.order) do cur[k] = '' end
+            if not by[sec] then list[#list + 1] = sec end
+            by[sec] = cur
+        else
+            local key, value = line:match('^%s*([%a_]+)%s*=(.*)$')
+            if key == 'active' and not cur then active = value:match('^%s*(.-)%s*$')
+            elseif key and cur and LF.colors[key] then cur[key] = value end
+        end
+    end
+    f:close()
+    if active and not by[active] then active = nil end
+    return list, by, active
+end
+
+function LF.hash(text)
+    local h = 5381
+    for i = 1, #text do h = (h * 33 + text:byte(i)) % 1000000007 end
+    return tostring(h)
+end
+
+function LF.sig(lists)
+    local parts = {}
+    for i, k in ipairs(LF.order) do parts[i] = lists[k] or '' end
+    return LF.hash(table.concat(parts, '|'))
+end
+
+function LF.pclass(name)
+    if not name then return 'lfp-none' end
+    return 'lfp-' .. LF.hash(name)
+end
+
+local function css_block(out, lists, tag)
+    local R = '#dropped-item-labels-root.' .. tag
+    out[#out + 1] = '/* set ' .. tag .. ' ' .. LF.sig(lists) .. ' */'
+    local all, per = {}, {}
+    for _, key in ipairs(LF.order) do
+        local names = {}
+        for _, n in ipairs(LF.split(lists[key])) do
+            n = (n:gsub('["\\]', ''))
+            if n ~= '' then
+                names[#names + 1] = n
+                all[#all + 1] = n
+            end
+        end
+        per[key] = names
+    end
+    local function rule(names, pre, suf, body)
+        if #names == 0 then return end
+        local parts = {}
+        for i, n in ipairs(names) do
+            parts[i] = R .. pre .. ' .dropped-item[lf-name="' .. n .. '"]' .. suf
+        end
+        out[#out + 1] = table.concat(parts, ',\n') .. ' { ' .. body .. ' }'
+    end
+    local pulse = 'animation: 1.3s sine-in-out infinite alternate lf-pulse;'
+    rule(all, '', '', 'overflow: visible; font-size: 22dp;')
+    rule(all, '', ' .lf-beam-wrap', 'display: block;')
+    rule(all, '', ' .lf-text', 'color: rgb(255, 255, 255);')
+    rule(all, '', ' .lf-beam', pulse)
+    rule(all, '', ' .lf-base', pulse)
+    rule(all, '', ' .lf-core', 'animation: 1.3s sine-in-out infinite alternate lf-pulse-core;')
+    rule(all, '', ' .lf-shine', 'animation: 1.9s linear infinite lf-shine;')
+    rule(all, '.lf-only', '', 'display: inline-block;')
+    rule(all, '.lf-dim', '', 'opacity: 1;')
+    -- least rare first: a name in two lists gets the rarer (later) one
+    for _, key in ipairs(LF.order) do
+        local names = per[key]
+        if key == 'rainbow' then
+            local rb = 'animation: 1.3s sine-in-out infinite alternate lf-pulse, 3s linear infinite lf-rainbow-beam;'
+            rule(names, '', '', 'font-effect: outline(1dp rgb(36, 24, 60)), glow(2dp rgb(255, 255, 255));')
+            rule(names, '', ' .lf-text', 'animation: 3s linear infinite lf-rainbow-text;')
+            rule(names, '', ' .lf-beam', rb)
+            rule(names, '', ' .lf-base', rb)
+        else
+            local c = LF.colors[key]
+            rule(names, '', ' .lf-beam', 'image-color: ' .. c .. ';')
+            rule(names, '', ' .lf-base', 'image-color: ' .. c .. ';')
+            rule(names, '', '', 'font-effect: outline(1dp ' .. c .. '), glow(3dp ' .. c .. ');')
+        end
+    end
+end
+
+function LF.css(lists)
+    local out = { '/* generated by the Loot Filter (Options > Loot Filter > Save). Do not edit. */' }
+    css_block(out, lists, 'lfp-none')
+    local plist, by = LF.load_profiles()
+    for _, name in ipairs(plist) do css_block(out, by[name], LF.pclass(name)) end
+    return table.concat(out, '\n') .. '\n'
+end
+
+function LF.write_css(lists)
+    if not LF.io_ok then return false end
+    local f = io.open(LF.css_file, 'w')
+    if not f then return false end
+    f:write(LF.css(lists))
+    f:close()
+    return true
+end
+
+-- saving the lists also rewrites the rules file
+local save_txt = LF.save
+function LF.save(lists)
+    local ok, err = save_txt(lists)
+    if ok then LF.css_ok = LF.write_css(lists) end
+    return ok, err
+end
+
+LF.reload_event = 'lootfilter-reload'
+
+-- Options > Loot Filter tab
+local function el(id) return document:GetElementById(id) end
+
+local function status(text, ok)
+    local s = el('lf-status')
+    if not s then return end
+    s.inner_rml = text
+    s:SetClass('lf-ok', ok == true)
+    s:SetClass('lf-bad', ok == false)
+end
+
+local function get_value(node)
+    local ok, v = pcall(function() return node.value end)
+    if ok and v ~= nil then return v end
+    return node:GetAttribute('value') or ''
+end
+
+local function set_value(node, v)
+    -- the text box shows its 'value' attribute; also try the form-control property
+    node:SetAttribute('value', v)
+    pcall(function() node.value = v end)
+end
+
+-- find the dropped-item labels document in this context
+local function labels_doc()
+    local found
+    pcall(function()
+        local docs = document.context.documents
+        found = docs['dropped-item-labels']
+        if not found then
+            for _, d in pairs(docs) do
+                if d.id == 'dropped-item-labels' then found = d; break end
+            end
+        end
+    end)
+    return found
+end
+
+local function is_checked(node)
+    local ok, v = pcall(function() return node.checked end)
+    if ok and type(v) == 'boolean' then return v end
+    return node:HasAttribute('checked')
+end
+
+local function set_checked(node, on)
+    if on then node:SetAttribute('checked', '') else node:RemoveAttribute('checked') end
+    pcall(function() node.checked = on end)
+end
+
+local function fill()
+    local lists = LF.load()
+    for _, k in ipairs(LF.order) do
+        local node = el('lf-' .. k)
+        if node then set_value(node, lists[k] or '') end
+    end
+    local only = el('lf-only')
+    if only then set_checked(only, lists.only_filtered == true) end
+    local dim = el('lf-dim')
+    if dim then set_checked(dim, lists.dim_others == true) end
+    if not LF.io_ok then status('File access is not available in this client, so lists cannot be saved.', false) end
+end
+
+-- save + refresh the drop labels; lists = what to write
+local function save_and_apply(lists, done_text)
+    local ok, err = LF.save(lists)
+    if not ok then status('Could not save: ' .. (err or 'unknown error'), false); return end
+    local doc = labels_doc()
+    if not doc then status('Saved, but the drop labels window was not found (step 2).', false); return end
+    local before = doc:GetAttribute('lf-applied')
+    if LootFilter and LootFilter.apply then
+        LootFilter.apply()
+    else
+        pcall(function() doc:DispatchEvent(LF.reload_event, {}) end)
+    end
+    local after = doc:GetAttribute('lf-applied')
+    if after == nil then
+        status('Saved, but the drop labels script is not running (step 3).', false)
+    elseif after == before then
+        status('Saved, but the drop labels did not reload (step 4).', false)
+    elseif (doc:GetAttribute('lf-error') or '') ~= '' then
+        status('Saved, but refresh failed: ' .. doc:GetAttribute('lf-error'), false)
+    else
+        status(done_text, true)
+    end
+end
+
+el('lf-save'):AddEventListener('click', function()
+    local lists = {}
+    for _, k in ipairs(LF.order) do lists[k] = get_value(el('lf-' .. k)) end
+    lists.only_filtered = is_checked(el('lf-only'))
+    lists.dim_others = is_checked(el('lf-dim'))
+    local plist, pby, pactive = LF.load_profiles()
+    if pactive and LF.save_profiles then
+        for _, k in ipairs(LF.order) do pby[pactive][k] = lists[k] or '' end
+        LF.save_profiles(plist, pby, pactive)
+    end
+    local done = pactive and ('Saved and updated profile ' .. pactive .. '. Restart the game to update the glowing names.')
+        or 'Saved. Restart the game to update the glowing names.'
+    save_and_apply(lists, LF.css_ok ~= false and done
+        or 'Saved the lists, but the glow rules file could not be written.')
+end)
+
+-- the checkbox applies at once (keeps the saved lists, not unsaved typing)
+el('lf-only'):AddEventListener('change', function()
+    local lists = LF.load()
+    lists.only_filtered = is_checked(el('lf-only'))
+    save_and_apply(lists, lists.only_filtered and 'Only filtered drops are shown now.' or 'All drop names are shown again.')
+end)
+
+el('lf-dim'):AddEventListener('change', function()
+    local lists = LF.load()
+    lists.dim_others = is_checked(el('lf-dim'))
+    save_and_apply(lists, lists.dim_others and 'Other drops are dimmed now.' or 'Other drops are at full opacity again.')
+end)
+
+el('lf-reset'):AddEventListener('click', function()
+    for _, k in ipairs(LF.order) do set_value(el('lf-' .. k), LF.defaults[k] or '') end
+    status('Cleared. Press Save to keep it.', nil)
+end)
+
+document:AddEventListener('show', fill)
+fill()
+
+-- profiles (v2): named sets of the six lists in loot_filter_profiles.txt. Every saved profile
+-- has its own rule set in lf_rules.css, so switching to one the game loaded at start is instant.
+local LT = string.char(60)
+local AMP = string.char(38)
+local selected_profile = nil
+
+local function clean_name(n)
+    n = (n or ''):gsub('[%c%[%]=' .. LT .. '>' .. AMP .. '"]', ''):match('^%s*(.-)%s*$') or ''
+    if #n > 20 then n = n:sub(1, 20) end
+    return n
+end
+
+function LF.save_profiles(list, by, active)
+    if not LF.io_ok then return false end
+    local f = io.open(LF.profiles_file, 'w')
+    if not f then return false end
+    if active and by[active] then f:write('active=', active, '\n') end
+    for _, name in ipairs(list) do
+        f:write('[', name, ']\n')
+        for _, k in ipairs(LF.order) do f:write(k, '=', by[name][k] or '', '\n') end
+    end
+    f:close()
+    return true
+end
+
+-- what the switch did, based on the rule sets the game loaded at start
+local function profile_note(name, p)
+    local L = LootFilter and LootFilter.loaded
+    local tag = LF.pclass(name)
+    if not L or not L[tag] then
+        return 'Profile ' .. name .. ' saved. Restart the game once to use it; after that switching to it is instant.'
+    end
+    if L[tag] ~= LF.sig(p) then
+        return 'Profile ' .. name .. ' is active. It changed since the game started, so restart to see the changes.'
+    end
+    return 'Profile ' .. name .. ' is active now.'
+end
+
+local function draw_profiles()
+    local box = el('lf-profiles')
+    if not box then return end
+    local list, by, active = LF.load_profiles()
+    selected_profile = active
+    if #list == 0 then
+        box.inner_rml = LT .. 'span class="lf-prof-empty">No profiles yet. Type a name below and press Save as profile.' .. LT .. '/span>'
+        return
+    end
+    local parts = {}
+    for _, name in ipairs(list) do
+        local cls = 'lf-prof' .. ((name == selected_profile) and ' lf-prof-on' or '')
+        parts[#parts + 1] = LT .. 'button class="' .. cls .. '" lf-p="' .. name .. '">' .. name .. LT .. '/button>'
+    end
+    box.inner_rml = table.concat(parts, '')
+end
+
+local function current_inputs()
+    local lists = LF.load()
+    for _, k in ipairs(LF.order) do lists[k] = get_value(el('lf-' .. k)) end
+    lists.only_filtered = is_checked(el('lf-only'))
+    lists.dim_others = is_checked(el('lf-dim'))
+    return lists
+end
+
+-- click a profile: fill the boxes with it, make it the active lists, switch the glow tag
+el('lf-profiles'):AddEventListener('click', function(event)
+    -- the click can land on the button's text, so walk up to the button
+    local t, name = event.target_element, nil
+    while t and not name do
+        name = t:GetAttribute('lf-p')
+        if t:GetAttribute('id') == 'lf-profiles' then break end
+        t = t.parent_node
+    end
+    if not name then return end
+    local list, by = LF.load_profiles()
+    local p = by[name]
+    if not p then return end
+    local lists = current_inputs()
+    for _, k in ipairs(LF.order) do
+        lists[k] = p[k] or ''
+        set_value(el('lf-' .. k), lists[k])
+    end
+    LF.save_profiles(list, by, name)
+    draw_profiles()
+    save_and_apply(lists, profile_note(name, p))
+end)
+
+el('lf-prof-save'):AddEventListener('click', function()
+    local name = clean_name(get_value(el('lf-prof-name')))
+    if name == '' then status('Type a profile name first.', false); return end
+    local list, by = LF.load_profiles()
+    local lists = current_inputs()
+    local p = {}
+    for _, k in ipairs(LF.order) do p[k] = lists[k] or '' end
+    if not by[name] then list[#list + 1] = name end
+    by[name] = p
+    if not LF.save_profiles(list, by, name) then status('Could not write the profiles file.', false); return end
+    set_value(el('lf-prof-name'), '')
+    draw_profiles()
+    save_and_apply(lists, profile_note(name, p))
+end)
+
+el('lf-prof-del'):AddEventListener('click', function()
+    if not selected_profile then status('Click a profile first, then Delete.', false); return end
+    local list, by, active = LF.load_profiles()
+    local gone = selected_profile
+    by[gone] = nil
+    for i = #list, 1, -1 do if list[i] == gone then table.remove(list, i) end end
+    LF.save_profiles(list, by, (active ~= gone) and active or nil)
+    draw_profiles()
+    save_and_apply(LF.load(), 'Deleted profile ' .. gone .. '. The lists in the boxes are unchanged.')
+end)
+
+document:AddEventListener('show', draw_profiles)
+draw_profiles()
+        </script>
+        <script>
+-- Add-ons > Target Marker colour: rewrites styles/spritesheet_world_ui.css so world-target-marker
+-- points at the chosen atlas2 sprite (the game reads it at start -> restart). Saved as target_marker=1/2/3.
+pcall(function()
+    local FLAGS = 'sp_addons.txt'
+    local CSS = 'data/ui/themes/rose/styles/spritesheet_world_ui.css'
+    local POS = { [1] = '211px 878px', [2] = '2px 910px', [3] = '38px 910px' }   -- 32x28 markers (wide 48x28 ones looked the same: the game draws a fixed box)
+    local NAMES = { [1] = 'red', [2] = 'blue', [3] = 'green' }
+    local function read_all()
+        local t, order = {}, {}
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d+)')
+                if k then
+                    if t[k] == nil then order[#order + 1] = k end
+                    t[k] = v
+                end
+            end
+            f:close()
+        end)
+        return t, order
+    end
+    local function mark(n)
+        local row = document:GetElementById('tm-status')
+        local p = row and row.parent_node
+        local c = p and p.first_child
+        while c do
+            local v = tonumber(c:GetAttribute('tm') or '')
+            if v then c:SetClass('tm-on', v == n) end
+            c = c.next_sibling
+        end
+    end
+    local function write_css(n)
+        local f = io.open(CSS, 'w')
+        if not f then return false end
+        f:write('@spritesheet world-ui-0 {\n')
+        f:write('    /* ice theme: selected-player marker (' .. NAMES[n] .. '), chosen in Options > Add-ons. Atlas2. */\n')
+        f:write('    src: /data/ui/themes/rose/imgs/iceinv2.dds;\n')
+        f:write('    world-target-marker: ' .. POS[n] .. ' 32px 28px;\n')
+        f:write('}\n')
+        f:write('@spritesheet world-ui-1 {\n')
+        f:write('    src: /3ddata/control/res/glassui_00.dds;\n')
+        f:write('    world-quest-1: 1px 301px 43px 43px;\n')
+        f:write('    world-quest-2: 45px 301px 43px 43px;\n')
+        f:write('    world-quest-3: 89px 301px 43px 43px;\n')
+        f:write('    world-quest-4: 133px 301px 43px 43px;\n')
+        f:write('}\n')
+        f:close()
+        return true
+    end
+    local function current()
+        local n = tonumber(read_all().target_marker or '') or 1
+        if not POS[n] then n = 1 end
+        return n
+    end
+    document:AddEventListener('click', function(event)
+        pcall(function()
+            local el = event.target_element
+            local n = el and tonumber(el:GetAttribute('tm') or '')
+            if not n or not POS[n] then return end
+            local t, order = read_all()
+            if t.target_marker == nil then order[#order + 1] = 'target_marker' end
+            t.target_marker = tostring(n)
+            local f = io.open(FLAGS, 'w')
+            if f then
+                for _, k in ipairs(order) do f:write(k, '=', t[k], '\n') end
+                f:close()
+            end
+            local ok = write_css(n)
+            mark(n)
+            local st = document:GetElementById('tm-status')
+            if st then st.inner_rml = ok and 'Saved. Restart the game to see it.' or 'Could not write the marker file.' end
+        end)
+    end)
+    document:AddEventListener('show', function() pcall(function() mark(current()) end) end)
+    mark(current())
+end)
+        </script>
+        <script>
+-- Interface > Target Bar: element/counters + DPS meter switches, saved in sp_addons.txt (key=1/0)
+pcall(function()
+    local FLAGS = 'sp_addons.txt'
+    local KEYS = { ['ta-element'] = 'target_element', ['ta-dps'] = 'dps_meter' }
+    local function read()
+        local t, order = {}, {}
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d)')
+                if k then
+                    if t[k] == nil then order[#order + 1] = k end
+                    t[k] = v
+                end
+            end
+            f:close()
+        end)
+        return t, order
+    end
+    local function write(t, order)
+        local f = io.open(FLAGS, 'w')
+        if not f then return end
+        for _, k in ipairs(order) do f:write(k, '=', t[k], '\n') end
+        f:close()
+    end
+    local function checked(node)
+        local ok, v = pcall(function() return node.checked end)
+        if ok and type(v) == 'boolean' then return v end
+        return node:HasAttribute('checked')
+    end
+    local function set(node, on)
+        if on then node:SetAttribute('checked', '') else node:RemoveAttribute('checked') end
+        pcall(function() node.checked = on end)
+    end
+    local function fill()
+        local t = read()
+        for id, key in pairs(KEYS) do
+            local n = document:GetElementById(id)
+            if n then set(n, t[key] ~= '0') end
+        end
+    end
+    for id, key in pairs(KEYS) do
+        local n = document:GetElementById(id)
+        if n then
+            n:AddEventListener('change', function()
+                local t, order = read()
+                if t[key] == nil then order[#order + 1] = key end
+                t[key] = checked(n) and '1' or '0'
+                write(t, order)
+                if TA_APPLY then TA_APPLY() end
+            end)
+        end
+    end
+    document:AddEventListener('show', function() pcall(fill) end)
+    fill()
+end)
+        </script>
+
+        <style>
+            #game-options
+            {
+                min-width: 650dp;
+                min-height: 350dp;
+                width: 870dp;
+                height: 570dp;
+            }
+
+            tabset
+            {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                gap: 4dp;
+                box-sizing: border-box;
+            }
+
+            tabset > tabs
+            {
+                width: 140dp;
+                display: block;
+            }
+
+            tabset > panels
+            {
+                flex: 1;
+            }
+
+            panel
+            {
+                height: 100%;
+                padding: 4dp;
+                box-sizing: border-box;
+            }
+
+            .options-panel
+            {
+                display: block;
+                width: 100%;
+                height: 100%;
+                overflow: hidden auto;
+                box-sizing: border-box;
+                padding: 2dp 2dp 2dp 4dp;
+            }
+
+            tab.default
+            {
+                display: inline-block;
+                font-weight: 800;
+                font-effect: outline(1dp black);
+                width: 100%;
+            }
+
+            /* ── Section group boxes ── */
+            .settings-group
+            {
+                display: block;
+                padding: 8dp 10dp;
+                margin-bottom: 6dp;
+                background: rgba(0, 0, 0, 50);
+                border: 1dp rgba(120, 120, 120, 80);
+                border-radius: 4dp;
+                box-sizing: border-box;
+            }
+
+            .settings-group > h3
+            {
+                margin-top: 0;
+                margin-bottom: 4dp;
+                font-size: 1.05em;
+                color: #f39c12;
+                font-effect: outline(1dp black);
+            }
+
+            /* ── Collapsible advanced sections ── */
+            .options-panel details
+            {
+                display: block;
+                margin-bottom: 6dp;
+                padding: 4dp 6dp 8dp 6dp;
+                background: rgba(0, 0, 0, 50);
+                border: 1dp rgba(120, 120, 120, 80);
+                border-radius: 4dp;
+                box-sizing: border-box;
+            }
+
+            .options-panel details > summary
+            {
+                margin-bottom: 4dp;
+            }
+
+            .options-panel details > summary > summary-text
+            {
+                color: #f39c12;
+                font-weight: 800;
+                font-effect: outline(1dp black);
+            }
+
+            /* ── Table layout ── */
+            table.main tr
+            {
+                margin: 3dp 0dp;
+            }
+
+            tr
+            {
+                min-height: 10dp;
+            }
+
+            tr > td:nth-child(1)
+            {
+                width: 185dp;
+                text-align: left;
+            }
+
+            table.sub tr
+            {
+                margin: 0dp;
+            }
+
+            table.sub td
+            {
+                vertical-align: middle;
+            }
+
+            tr.container td
+            {
+                vertical-align: top;
+            }
+
+            /* ── Shortcut sub ── */
+            table.shortcut-sub td
+            {
+                margin-left: 25dp;
+            }
+
+            tr.shortcut-sub > td:nth-child(1)
+            {
+                width: 100%;
+            }
+
+            /* ── Form controls ── */
+            select
+            {
+                width: 180dp;
+            }
+
+            select.small
+            {
+                width: 100dp;
+            }
+
+            select.medium,
+            select.medium#text
+            {
+                width: 130dp;
+            }
+
+            input.range.big
+            {
+                width: 230dp;
+            }
+
+            input.range.full
+            {
+                width: 100%;
+            }
+
+            /* ── Slider row layout ── */
+            .slider-row
+            {
+                display: flex;
+                flex-direction: row;
+                gap: 4dp;
+                padding-right: 4dp;
+            }
+
+            .slider-row input.range
+            {
+                flex: 1;
+            }
+
+            .slider-value
+            {
+                display: inline-block;
+                min-width: 38dp;
+                text-align: right;
+            }
+
+            /* ── Checkbox grid ── */
+            .checkbox-grid
+            {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2dp 0dp;
+            }
+
+            .checkbox-grid > span
+            {
+                width: 100dp;
+            }
+
+            .checkbox-grid > span.wide
+            {
+                width: 200dp;
+            }
+
+            /* ── Key Bindings ── */
+            .keybind-table
+            {
+                width: 100%;
+            }
+
+            .keybind-table tr
+            {
+                margin: 2dp 0dp;
+            }
+
+            .keybind-table thead td
+            {
+                font-weight: 800;
+                font-size: 0.9em;
+                color: #ccc;
+                font-effect: outline(1dp black);
+                padding-bottom: 2dp;
+            }
+
+            .keybind-table td:nth-child(1)
+            {
+                width: auto;
+                line-height: 34dp;
+            }
+
+            .keybind-table td:nth-child(2),
+            .keybind-table td:nth-child(3)
+            {
+                width: 140dp;
+                text-align: center;
+            }
+
+            .keybind-table button.default
+            {
+                min-width: 0dp;
+                width: 130dp;
+            }
+
+            /* ── Misc ── */
+            h3
+            {
+                margin-bottom: 3dp;
+            }
+
+            .button-row
+            {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 6dp;
+            }
+
+            /* ===== ice theme (Game Arena composition via ice_window.css) ===== */
+            #game-options tab.default {
+                width: 100%;
+                margin-bottom: 4dp;
+                text-align: left;
+                padding: 0dp 12dp;
+                font-weight: 820;
+                /* same size for every tab (plain-text tabs came out a bit smaller) */
+                box-sizing: border-box;
+                height: 28dp;
+                min-height: 28dp;
+                line-height: 28dp;
+                flex-shrink: 0;
+            }
+            #game-options panel.content-box { padding: 6dp; }
+            #game-options .settings-group,
+            #game-options .options-panel details {
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(196, 218, 238);
+                border-radius: 6dp;
+            }
+            #game-options .settings-group > h3 {
+                color: rgb(30, 62, 112);
+                font-effect: none;
+                padding-bottom: 3dp;
+                border-bottom: 1dp rgb(226, 236, 246);
+            }
+            #game-options .options-panel details > summary > summary-text {
+                color: rgb(30, 62, 112);
+                font-effect: none;
+            }
+            #game-options .keybind-table thead td { color: rgb(98, 124, 156); font-effect: none; }
+            #game-options .slider-value { color: rgb(170, 100, 20); font-weight: 820; }
+            #game-options h3 { color: rgb(30, 62, 112); font-effect: none; }
+
+            /* resizeable window has a taller bottom edge (grip): drop the BR flourish to the corner */
+            #game-options .ice-fx.ice-br { bottom: -32dp; }
+
+            /* ===== loot filter tab ===== */
+            #loot-filter-panel .lf-help { color: rgb(70, 92, 128); margin: 0 0 8dp 0; }
+            #loot-filter-panel .lf-row { display: flex; flex-direction: row; align-items: center; gap: 10dp; margin: 6dp 0; }
+            #loot-filter-panel .lf-name { width: 70dp; font-weight: 820; font-effect: outline(1dp rgb(40, 40, 60)); }
+            #loot-filter-panel .lf-name.purple { color: rgb(205, 140, 255); }
+            #loot-filter-panel .lf-name.red { color: rgb(255, 96, 96); }
+            #loot-filter-panel .lf-name.yellow { color: rgb(255, 226, 84); }
+            #loot-filter-panel .lf-name.blue { color: rgb(150, 230, 255); }
+            #loot-filter-panel .lf-name.green { color: rgb(120, 235, 120); }
+            #loot-filter-panel .lf-name.rainbow { animation: 3s linear infinite lf-rainbow-text; }
+            @keyframes lf-rainbow-text {
+                0% { color: rgb(255, 110, 110); }
+                17% { color: rgb(255, 180, 80); }
+                33% { color: rgb(255, 240, 100); }
+                50% { color: rgb(120, 235, 120); }
+                67% { color: rgb(110, 200, 255); }
+                83% { color: rgb(200, 140, 255); }
+                100% { color: rgb(255, 110, 110); }
+            }
+            #loot-filter-panel input.lf-input { flex: 1; width: auto; }
+            #loot-filter-panel .lf-buttons { display: flex; flex-direction: row; gap: 8dp; align-items: center; margin-top: 10dp; }
+            #loot-filter-panel #lf-status { color: rgb(70, 92, 128); }
+            #loot-filter-panel #lf-status.lf-ok { color: rgb(40, 140, 60); }
+            #loot-filter-panel #lf-status.lf-bad { color: rgb(190, 40, 40); }
+            /* Add-ons > Target Marker colour */
+            #addons-panel .tm-help { color: rgb(70, 92, 128); margin: 0 0 6dp 0; }
+            #addons-panel .tm-row { display: flex; flex-direction: row; align-items: center; gap: 6dp; }
+            #addons-panel button.tm-btn {
+                display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 40dp;
+                width: 110dp; height: 32dp; padding: 0;
+                background-color: rgb(255, 255, 255); border: 1dp rgb(150, 190, 225); border-radius: 8dp;
+                decorator: none; font-effect: none;
+            }
+            #addons-panel button.tm-btn img { width: 21dp; height: 18dp; pointer-events: none; }
+            #addons-panel button.tm-btn img.tm-r { transform: scale(-1, 1); }
+            #addons-panel button.tm-btn:hover { border-color: rgb(214, 166, 60); }
+            #addons-panel button.tm-btn.tm-on { background-color: rgb(255, 238, 190); border: 2dp rgb(214, 166, 60); }
+            #addons-panel #tm-status { color: rgb(150, 92, 20); font-weight: 820; margin-left: 6dp; }
+            /* Add-ons tab */
+            #addons-panel .ao-info p { color: rgb(70, 92, 128); margin: 0 0 5dp 0; line-height: 18dp; }
+            #addons-panel .ao-info b { color: rgb(30, 62, 112); font-weight: 820; }
+            /* Interface > Target Bar switches */
+            #game-options .ta-group .ta-row { display: flex; flex-direction: row; align-items: center; gap: 8dp; margin: 5dp 0; }
+            #game-options .lf-need { margin-left: 6dp; padding: 1dp 8dp; background-color: rgb(255, 236, 214); border: 1dp rgb(230, 140, 60); border-radius: 8dp; color: rgb(170, 60, 20); font-weight: 820; font-size: 12dp; }
+            /* profiles */
+            #loot-filter-panel .lf-prof-box { margin: 2dp 0 8dp 0; padding: 6dp 8dp; background-color: rgb(236, 244, 251); border: 1dp rgb(176, 206, 232); border-radius: 8dp; }
+            #loot-filter-panel .lf-prof-title { color: rgb(30, 62, 112); font-weight: 820; margin-bottom: 4dp; }
+            #loot-filter-panel #lf-profiles { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6dp; margin-bottom: 6dp; }
+            #loot-filter-panel button.lf-prof {
+                height: 24dp; padding: 0 10dp; line-height: 22dp;
+                background-color: rgb(255, 255, 255); border: 1dp rgb(150, 190, 225); border-radius: 12dp;
+                color: rgb(30, 62, 112); font-weight: 820; decorator: none; font-effect: none;
+            }
+            #loot-filter-panel button.lf-prof:hover { border-color: rgb(214, 166, 60); color: rgb(150, 92, 20); }
+            #loot-filter-panel button.lf-prof.lf-prof-on { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+            #loot-filter-panel .lf-prof-empty { color: rgb(120, 140, 170); }
+            #loot-filter-panel .lf-prof-row { display: flex; flex-direction: row; align-items: center; gap: 8dp; }
+            #loot-filter-panel input#lf-prof-name { width: 180dp; }
+            #loot-filter-panel #lf-prof-del { color: rgb(170, 40, 40); }
+            /* "How it works" box */
+            #loot-filter-panel .lf-info { margin-top: 10dp; }
+            #loot-filter-panel .lf-info p { color: rgb(70, 92, 128); margin: 0 0 5dp 0; line-height: 18dp; }
+            #loot-filter-panel .lf-info b { color: rgb(30, 62, 112); font-weight: 820; }
+            #loot-filter-panel .lf-info .lf-warn { color: rgb(150, 92, 20); font-weight: 820; }
+        </style>
+    </head>
+
+    <body id="game-options" template="window-resizeable">
+        <tabset id="options-tabs">
+            <!-- ===================== VIDEO ===================== -->
+            <tab class="default"><str string-id="478">Video</str></tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+
+                    <!-- Display -->
+                    <div class="settings-group">
+                        <h3>Display</h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td><str string-id="471">Screen Mode</str></td>
+                                    <td>
+                                        <select id="screen-mode" data-value="video.mode" onchange="screen-mode">
+                                            <option value="0" selected>Windowed</option>
+                                            <option value="3">Borderless</option>
+                                            <option value="2">Fullscreen</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Display</td>
+                                    <td>
+                                        <select id="display" data-value="video.display_index" data-attrif-disabled="video.mode == 0" onchange="display-index">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><str string-id="766">Resolution</str></td>
+                                    <td>
+                                        <select id="resolution" data-value="video.resolution" data-attrif-disabled="video.mode == 3">
+                                            <option value="-1" selected> </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button class="default" onclick="apply_display_mode">Apply</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- General -->
+                    <div class="settings-group">
+                        <h3>General</h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="can-resize-window" type="checkbox" data-checked="video.can_resize_window" onchange="can-resize-window"/>
+                                        <label for="can-resize-window">Enable window resizing</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="background-rendering" type="checkbox" data-checked="video.background_render" onchange="background-render"/>
+                                        <label for="background-rendering"><str string-id="1376">Display rendering when window is not active</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="show-fps" type="checkbox" data-checked="video.show_fps" onchange="show-fps"/>
+                                        <label for="show-fps">Display FPS</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="use-vsync" type="checkbox" data-checked="video.use_vsync" onchange="use-vsync"/>
+                                        <label for="use-vsync">Enable Vertical Sync</label>
+                                    </td>
+                                </tr>
+                                <tr data-if="video.use_vsync == false">
+                                    <td>Limit FPS</td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input id="max-fps" type="range" min="15" max="500" data-value="video.max_fps" onchange="max-fps" style="flex: 1" />
+                                            <label class="slider-value" for="max-fps">{{video.max_fps}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Performance -->
+                    <div class="settings-group">
+                        <h3><str string-id="771">Performance</str></h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td>Quality</td>
+                                    <td>
+                                        <select data-value="video.graphics_quality" onchange="graphics-quality">
+                                            <option value="0" selected>Minimum</option>
+                                            <option value="1" selected>Low</option>
+                                            <option value="2" selected>Medium</option>
+                                            <option value="3" selected>High</option>
+                                            <option value="4" selected>Ultra</option>
+                                            <option value="5" selected>Custom</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Draw Distance</td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input id="view-range" type="range" min="0" max="4" data-value="video.view_range" onchange="view-range" style="flex: 1" />
+                                            <label class="slider-value" for="view-range">{{video.view_range}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Advanced (collapsible) -->
+                    <details>
+                        <summary>Advanced</summary>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td><str string-id="1135">Anti Aliasing</str></td>
+                                    <td>
+                                        <select id="anti-aliasing" data-value="video.anti_aliasing" onchange="anti-aliasing">
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Shadow Quality</td>
+                                    <td>
+                                        <select data-value="video.shadow_quality" onchange="shadow-quality">
+                                            <option value="0" selected>Off</option>
+                                            <option value="1" selected>Low</option>
+                                            <option value="2" selected>Medium</option>
+                                            <option value="3" selected>High</option>
+                                            <option value="4" selected>Ultra</option>
+                                            <option value="5" selected>Custom</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Glow Quality</td>
+                                    <td>
+                                        <select data-value="video.glow_quality" onchange="glow-quality">
+                                            <option value="0" selected>Off</option>
+                                            <option value="1" selected>Low</option>
+                                            <option value="2" selected>Medium</option>
+                                            <option value="3" selected>High</option>
+                                            <option value="4" selected>Ultra</option>
+                                            <option value="5" selected>Custom</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Glow Brightness</td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="1" max="20" data-value="video.glow_brightness" onchange="glow-brightness" style="flex: 1"/>
+                                            <button class="close" onclick="reset_glow_brightness" />
+                                            <label class="slider-value">{{video.glow_brightness * 10 + '%'}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Particle Brightness</td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="0" max="20" data-value="video.particle_brightness" onchange="particle-brightness" style="flex: 1"/>
+                                            <button class="close" onclick="reset_particle_brightness" />
+                                            <label class="slider-value">{{video.particle_brightness * 10 + '%'}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="particle-invert" type="checkbox" data-checked="video.particle_invert" onchange="particle-brightness"/>
+                                        <label for="particle-invert">Invert particles</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </details>
+
+                    <!-- Limits (collapsible) -->
+                    <details>
+                        <summary>Limits</summary>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="tooltip">
+                                            Max Dynamic Models
+                                            <span class="tooltiptext">Max amount of characters, mounts and PAT displayed.</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="20" max="1000" data-value="video.max_dynamic_models" onchange="max-limits" style="flex: 1"/>
+                                            <label class="slider-value">{{video.max_dynamic_models}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tooltip">
+                                            Max Shadow Models
+                                            <span class="tooltiptext">Max amount of character, mount and pat's shadows displayed.</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="10" max="1000" data-value="video.max_shadow_models" onchange="max-limits" style="flex: 1"/>
+                                            <label class="slider-value">{{video.max_shadow_models}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tooltip">
+                                            Max Effects
+                                            <span class="tooltiptext">Max amount of effects displayed.</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="10" max="2000" data-value="video.max_effects" onchange="max-limits" style="flex: 1"/>
+                                            <label class="slider-value">{{video.max_effects}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tooltip">
+                                            Max Glow Render Units
+                                            <span class="tooltiptext">Max amount of glows displayed.</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="500" max="10000" data-value="video.max_glow_render_units" onchange="max-limits" style="flex: 1"/>
+                                            <label class="slider-value">{{video.max_glow_render_units}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </details>
+
+                </div>
+            </panel>
+
+            <!-- ===================== AUDIO ===================== -->
+            <tab class="default"><str string-id="479">Audio</str></tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+                    <form>
+
+                        <!-- General Audio -->
+                        <div class="settings-group">
+                            <h3>General</h3>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td>Master Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_master" onchange="audio-master" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_master + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="enable-sound" type="checkbox" data-value="audio.enable_sound" onchange="audio-enable" data-checked="audio.enable_sound"/>
+                                            <label for="enable-sound"><str string-id="1360">Enable sound</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="background-music" type="checkbox" data-checked="audio.background_player" onchange="audio-background-player"/>
+                                            <label for="background-music"><str string-id="1361">Enable Sound when window is not active</str></label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Music Type -->
+                        <div class="settings-group">
+                            <h3><str string-id="1362">Music Type</str></h3>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="music-1" type="radio" value="0" data-checked="audio.music_type" onchange="audio-type"/>
+                                            <label for="music-1"><str string-id="1363">Default</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="music-2" type="radio" value="1" data-checked="audio.music_type" onchange="audio-type"/>
+                                            <label for="music-2"><str string-id="1364">Legacy</str></label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Volume Levels (collapsible) -->
+                        <details>
+                            <summary>Volume Levels</summary>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td>Music Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_background_music" onchange="audio-bgm" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_background_music + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Effects Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_effects" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_effects + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Footsteps Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_footsteps" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_footsteps + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="other-player-footsteps" type="checkbox" data-checked="audio.other_player_footsteps" onchange="audio-other-player-footsteps"/>
+                                            <label for="other-player-footsteps">Enable other players footsteps</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vehicles Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_vehicles" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_vehicles + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>NPC Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_ambient_npc" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_ambient_npc + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Environment Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_ambient_zone" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_ambient_zone + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>UI Volume</td>
+                                        <td>
+                                            <div class="slider-row">
+                                                <input type="range" min="0" max="100" data-value="audio.volume_user_interface" onchange="audio-effects" style="flex: 1"/>
+                                                <label class="slider-value">{{audio.volume_user_interface + '%'}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="button-row">
+                                <button class="default" onclick="reset_audio_volumes">Reset volumes to default</button>
+                            </div>
+                        </details>
+
+                    </form>
+                </div>
+            </panel>
+
+            <!-- ===================== INTERFACE ===================== -->
+            <tab class="default"><str string-id="480">Interface</str></tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+                    <form>
+
+                        <!-- Language & Scaling -->
+                        <div class="settings-group">
+                            <h3>General</h3>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td><str string-id="921">Language</str></td>
+                                        <td>
+                                            <select id="language" data-value="interface.language" onchange="interface-language" class="medium">
+                                                <option value="0" selected>English</option>
+                                                <option value="1">Portugu&#234;s</option>
+                                                <option value="2">Fran&#231;ais</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>UI scaling</td>
+                                        <td>
+                                            <select data-value="interface.scaling" onchange="interface-size" class="small">
+                                                <option value="0" selected>System</option>
+                                                <option value="2" selected>0.5x</option>
+                                                <option value="3" selected>0.75x</option>
+                                                <option value="4" selected>1x</option>
+                                                <option value="5" selected>1.25x</option>
+                                                <option value="6" selected>1.5x</option>
+                                                <option value="7" selected>1.75x</option>
+                                                <option value="8" selected>2x</option>
+                                                <option value="9" selected>2.25x</option>
+                                                <option value="10" selected>2.5x</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Gameplay -->
+                        <div class="settings-group">
+                            <h3><str string-id="776">Gameplay</str></h3>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td><str string-id="772">Targeting</str></td>
+                                        <td>
+                                            <input name="target" id="target-1" type="radio" value="0" data-checked="interface.targeting" onchange="interface-target"/>
+                                            <label for="target-1"><str string-id="773">1st click: Target, 2nd click: Attack</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input name="target" id="target-2" type="radio" value="1" data-checked="interface.targeting" onchange="interface-target"/>
+                                            <label for="target-2"><str string-id="775">1 click: Target and Attack</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mode</td>
+                                        <td>
+                                            <input name="gameplay" id="gameplay-1" type="radio" data-checked="interface.gameplay" value="0" onchange="interface-gameplay"/>
+                                            <label for="gameplay-1"><str string-id="777">Normal Mode</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input name="gameplay" id="gameplay-2" type="radio" data-checked="interface.gameplay" value="1" onchange="interface-gameplay"/>
+                                            <label for="gameplay-2"><str string-id="778">Legacy Mode</str></label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Block -->
+                        <div class="settings-group">
+                            <h3><str string-id="784">Block</str></h3>
+                            <table class="sub">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input id="block-whisper" type="checkbox" data-checked="interface.block_whisper" onchange="interface-block"/>
+                                            <label for="block-whisper"><str string-id="779">Whisper</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-friend" type="checkbox" data-checked="interface.block_friend" onchange="interface-block"/>
+                                            <label for="block-friend"><str string-id="780">Friend</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-trade" type="checkbox" data-checked="interface.block_trade" onchange="interface-block"/>
+                                            <label for="block-trade"><str string-id="781">Trade</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="block-party" type="checkbox" data-checked="interface.block_party" onchange="interface-block"/>
+                                            <label for="block-party"><str string-id="782">Party</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-message" type="checkbox" data-checked="interface.block_message" onchange="interface-block"/>
+                                            <label for="block-message"><str string-id="783">Message</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-pat-ride" type="checkbox" data-checked="interface.block_ride" onchange="interface-block"/>
+                                            <label for="block-pat-ride"><str string-id="410">PAT Ride</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input id="block-group" type="checkbox" data-checked="interface.block_group" onchange="interface-block"/>
+                                            <label for="block-group"><str string-id="253">Group</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-clan" type="checkbox" data-checked="interface.block_clan" onchange="interface-block"/>
+                                            <label for="block-clan"><str string-id="36">Clan</str></label>
+                                        </td>
+                                        <td>
+                                            <input id="block-duel" type="checkbox" data-checked="interface.block_duel" onchange="interface-block"/>
+                                            <label for="block-duel"><str string-id="1378">Duel</str></label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Hotbar -->
+                        <div class="settings-group">
+                            <h3>Hotbar</h3>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td>1st Hotbar</td>
+                                        <td>
+                                            <table class="sub">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <input id="show-1st-hotbar" type="checkbox" data-checked="interface.show_1st_hotbar" onchange="interface-hotbar"/>
+                                                            <label for="show-1st-hotbar"><str string-id="786">Show</str></label>
+                                                        </td>
+                                                        <td>
+                                                            <input id="lock-1st-hotbar" type="checkbox" data-checked="interface.lock_1st_hotbar" onchange="interface-hotbar"/>
+                                                            <label for="lock-1st-hotbar"><str string-id="407">Lock</str></label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2nd Hotbar</td>
+                                        <td>
+                                            <table class="sub">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <input id="show-2nd-hotbar" type="checkbox" data-checked="interface.show_2nd_hotbar" onchange="interface-hotbar"/>
+                                                            <label for="show-2nd-hotbar"><str string-id="786">Show</str></label>
+                                                        </td>
+                                                        <td>
+                                                            <input id="lock-2nd-hotbar" type="checkbox" data-checked="interface.lock_2nd_hotbar" onchange="interface-hotbar"/>
+                                                            <label for="lock-2nd-hotbar"><str string-id="407">Lock</str></label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Display & Names -->
+                        <details>
+                            <summary>Display</summary>
+                            <table class="main">
+                                <tbody>
+                                    <tr>
+                                        <td>Quest Tracker</td>
+                                        <td>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <input id="show-quest-tracker" type="checkbox" data-checked="interface.show_quest_tracker" onchange="interface-show-quest-tracker"/>
+                                                            <label for="show-quest-tracker"><str string-id="786">Show</str></label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><str string-id="1449">Proximity Filter</str></td>
+                                        <td>
+                                            <input id="shortcut-proximity" type="checkbox" data-checked="interface.shortcut_proximity" onchange="interface-shortcuts"/>
+                                            <div class="tooltip">
+                                                <label for="shortcut-proximity"><str string-id="1450">Proximity Filter</str></label>
+                                                <span class="tooltiptext"><str string-id="1451">Fades chars near NPCs and Shops to improve visibility.</str></span>
+                                            </div>
+                                            <table data-if="interface.shortcut_proximity" class="shortcut-sub" style="margin-top: 4dp">
+                                                <tbody>
+                                                    <tr class="shortcut-sub">
+                                                        <td>
+                                                            <input id="shortcut-proximity-alt" type="checkbox" data-checked="interface.shortcut_proximity_alt" onchange="interface-shortcuts"/>
+                                                            <label for="shortcut-proximity-alt"><str string-id="1452">Enable only when [ALT] is held</str></label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="shortcut-sub">
+                                                        <td>
+                                                            <input id="shortcut-proximity-shop" type="checkbox" data-checked="interface.shortcut_proximity_shop" onchange="interface-shortcuts"/>
+                                                            <label for="shortcut-proximity-shop"><str string-id="1453">Fades chars near Personal Stores</str></label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Icons</td>
+                                        <td>
+                                            <input id="show-element-icon" type="checkbox" data-checked="interface.show_element_icon" onchange="interface-show-element-icon"/>
+                                            <label for="show-element-icon"><str string-id="1446">Show elements on item icons</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <input id="show-element-icon-skills" type="checkbox" data-checked="interface.show_element_icon_skills" onchange="interface-show-element-icon-skills"/>
+                                            <label for="show-element-icon-skills"><str string-id="1447">Show elements on skill icons</str></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Character Names</td>
+                                        <td>
+                                            <table class="sub">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select data-attrif-disabled="!interface.show_avatar_names" data-value="interface.font_size_character_names" onchange="interface-size" class="small">
+                                                                <option value="0" selected>Small</option>
+                                                                <option value="1" selected>Medium</option>
+                                                                <option value="2" selected>Large</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tooltip">
+                                                                <input id="show-avatar-names" type="checkbox" data-checked="interface.show_avatar_names" onchange="interface-show-avatar-names"/>
+                                                                <label for="show-avatar-names"><str string-id="786">Show</str></label>
+                                                                <span class="tooltiptext"><fc_yellow>[Alt]</fc_yellow> + <fc_yellow>[Z]</fc_yellow></span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>NPC Names</td>
+                                        <td>
+                                            <select data-value="interface.font_size_npc_names" onchange="interface-size" class="small">
+                                                <option value="0" selected>Small</option>
+                                                <option value="1" selected>Medium</option>
+                                                <option value="2" selected>Large</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monster Names</td>
+                                        <td>
+                                            <select data-value="interface.font_size_monster_names" onchange="interface-size" class="small">
+                                                <option value="0" selected>Small</option>
+                                                <option value="1" selected>Medium</option>
+                                                <option value="2" selected>Large</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Developer Settings</td>
+                                        <td>
+                                            <input id="enable-ui-tools" type="checkbox" data-checked="interface.enable_ui_tools" onchange="interface-enable-ui-tools"/>
+                                            <div class="tooltip">
+                                                <label for="enable-ui-tools"><str string-id="1455">Enable UI tools</str></label>
+                                                <span class="tooltiptext"><str string-id="1456">Enables developer tools for UI development</str></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </details>
+
+                    </form>
+                </div>
+            </panel>
+
+            <!-- ===================== GAME ===================== -->
+            <tab class="default"><str string-id="1366">Game</str></tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+
+                    <!-- Controls -->
+                    <div class="settings-group">
+                        <h3>Controls</h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td><str string-id="1370">Analog Sensitivity</str></td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="1" max="101" data-value="game.gamepad_sensitivity" onchange="game-sensitivity" style="flex: 1"/>
+                                            <label class="slider-value">{{game.gamepad_sensitivity}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><str string-id="470">Smoothing</str></td>
+                                    <td>
+                                        <div class="slider-row">
+                                            <input type="range" min="1" max="200" data-value="video.smoothing" onchange="smoothing" style="flex: 1"/>
+                                            <label class="slider-value">{{video.smoothing}}</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="disable-wasd" type="checkbox" data-checked="game.disable_wasd" onchange="game-disablewasd"/>
+                                        <label for="disable-wasd"><str string-id="1372">Disable WASD</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="enable-gamepad" type="checkbox" data-checked="game.enable_gamepad" onchange="game-enablegamepad"/>
+                                        <label for="enable-gamepad"><str string-id="1368">Enable Gamepad</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="enable-gamepad-vibration" type="checkbox" data-checked="game.gamepad_vibration" onchange="game-vibration"/>
+                                        <label for="enable-gamepad-vibration"><str string-id="1369">Enable Gamepad Vibration</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="disable-camera-shake" type="checkbox" data-checked="game.disable_camera_shake" onchange="game-disable-camera-shake"/>
+                                        <label for="disable-camera-shake">Disable camera shake</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Gameplay -->
+                    <div class="settings-group">
+                        <h3><str string-id="776">Gameplay</str></h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="item-name" type="checkbox" data-checked="game.show_item_name" onchange="game-itemname"/>
+                                        <label for="item-name"><str string-id="1367">Show dropped item name</str> <span class="lf-need">! Do not turn off: needed for the Loot Filter</span></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="pickup-status" type="checkbox" data-checked="game.show_item_status" onchange="game-itemstatus"/>
+                                        <label for="pickup-status"><str string-id="1371">Show item pickup status</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="hide-shop-names" type="checkbox" data-checked="game.hide_shop_names" onchange="game-hideshopnames"/>
+                                        <label for="hide-shop-names"><str string-id="1373">Hide shop names</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="show-shop-viewed" type="checkbox" data-checked="game.show_shop_viewed" onchange="game-shopviewed"/>
+                                        <label for="show-shop-viewed"><str string-id="1374">Show shop viewed</str></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="auto-accept-res" type="checkbox" data-checked="interface.auto_accept_res" onchange="interface-auto-accept-res"/>
+                                        <label for="auto-accept-res">Automatically accept Resurrection</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="target-enemy-summon" type="checkbox" data-checked="game.target_enemy_summon" onchange="game-target-enemy-summon"/>
+                                        <label for="target-enemy-summon">Target Enemy Summons</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="enable-avatar-menu" type="checkbox" data-checked="game.avatar_menu" onchange="game-avatarmenu"/>
+                                        <label for="enable-avatar-menu">Enable avatar menu</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="show-self-effects" type="checkbox" data-checked="game.show_self_effects" onchange="game-show-self-effects"/>
+                                        <label for="show-self-effects">Show self effects</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="show-other-effects" type="checkbox" data-checked="game.show_other_effects" onchange="game-show-other-effects"/>
+                                        <label for="show-other-effects">Show other players effects</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="skip-planet-cutscene" type="checkbox" data-checked="game.skip_planet_cutscene" onchange="game-skip-planet-cutscene"/>
+                                        <label for="skip-planet-cutscene">Skip planet cutscene.</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Integration -->
+                    <div class="settings-group">
+                        <h3>Integration</h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="enable-discord-integration" type="checkbox" data-checked="game.enable_discord_integration" onchange="game-enable-discord-integration"/>
+                                        <label for="enable-discord-integration">Enable Discord integration (restart required)</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="screenshot-enabled" type="checkbox" data-checked="video.screenshot_enabled" onchange="screenshot-enabled"/>
+                                        <label for="screenshot-enabled"><str string-id="1448">Enable Screenshots</str></label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </panel>
+
+            <!-- ===================== KEY BINDINGS ===================== -->
+            <tab class="default">Key Bindings</tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+
+                    <details open>
+                        <summary>Movement</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_movement">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details open>
+                        <summary>Combat / Actions</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_combat">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Window Shortcuts</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_ui">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Camera</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_camera">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar One</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_quickbar">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar Two</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_quickbar_ext">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar Switching</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Primary</td><td>Secondary</td></tr></thead>
+                            <tr data-for="row : kb_quickbar_pages">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 0)">{{row.primary_label}}</button></td>
+                                <td><button class="default" data-event-click="keybind_start(row.action_id, 1)">{{row.secondary_label}}</button></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <div class="button-row" style="justify-content: center; margin-top: 8dp;">
+                        <button class="default" data-event-click="keybind_reset_defaults()">Reset to Defaults</button>
+                    </div>
+
+                </div>
+            </panel>
+
+            <!-- ===================== GAMEPAD ===================== -->
+            <tab class="default">Gamepad</tab>
+            <panel class="content-box">
+                <div class="options-panel" data-model="options-data">
+
+                    <div class="settings-group">
+                        <h3>Layer Modifiers</h3>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr>
+                                <td>Layer 1</td>
+                                <td><button class="default" style="width: 180dp" data-event-click="gp_layer_rebind(1)">{{gp_layer1_key}}</button></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Layer 2</td>
+                                <td><button class="default" style="width: 180dp" data-event-click="gp_layer_rebind(2)">{{gp_layer2_key}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Sticks</h3>
+                        <table class="main">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="gp-swap-sticks" type="checkbox" data-checked="game.swap_sticks" onchange="game-swap-sticks"/>
+                                        <label for="gp-swap-sticks">Swap left/right sticks (walking ↔ camera)</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="gp-invert-camera-y" type="checkbox" data-checked="game.invert_right_y" onchange="game-invert-right-y"/>
+                                        <label for="gp-invert-camera-y">Invert camera Y axis</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <details open>
+                        <summary>Combat / Actions</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr data-for="row : gp_combat">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="gp_bind_start(row.action_id)">{{row.label}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Window Shortcuts</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr data-for="row : gp_ui">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="gp_bind_start(row.action_id)">{{row.label}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar (Layer 1: {{gp_layer1_key}})</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr data-for="row : gp_quickbar_l1">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="gp_quickbar_bind_start(row.action_id, 1)">{{row.label}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar (Layer 2: {{gp_layer2_key}})</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr data-for="row : gp_quickbar_l2">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="gp_quickbar_bind_start(row.action_id, 2)">{{row.label}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <details>
+                        <summary>Quickbar (Layer 1 + Layer 2)</summary>
+                        <table class="keybind-table">
+                            <thead><tr><td></td><td>Button</td><td></td></tr></thead>
+                            <tr data-for="row : gp_quickbar_l1l2">
+                                <td>{{row.display_name}}</td>
+                                <td><button class="default" data-event-click="gp_quickbar_bind_start(row.action_id, 3)">{{row.label}}</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </details>
+
+                    <div class="button-row" style="justify-content: center; margin-top: 8dp;">
+                        <button class="default" data-event-click="gp_reset_defaults()">Reset to Defaults</button>
+                    </div>
+
+                </div>
+            </panel>
+
+            <!-- ===================== CHAT ===================== -->
+            <tab id="chat-options-tab" class="default">Chat</tab>
+            <panel class="content-box">
+                <div id="chat-options-panel" class="options-panel" data-model="chat-box">
+
+                    <div>
+
+                        <!-- Chat Settings -->
+                        <div class="settings-group">
+                            <h3>Chat Settings</h3>
+                            <table class="main">
+                                <tr>
+                                    <td>
+                                        <label id="font-size">Font Size</label>
+                                    </td>
+                                    <td>
+                                        <input id="font-size" type="range" min="4" max="15" data-value="font_size" data-event-change="font_size_changed()" class="big" onchange="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input id="show-timestamps" type="checkbox" data-checked="show_message_timestamps" data-event-change="show_message_timestamps_changed()" />
+                                        <label for="show-timestamps">Show message timestamps</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <div class="tooltip">
+                                            <input id="retain-focus-after-send" type="checkbox" data-checked="retain_focus_after_send" />
+                                            <label for="retain-focus-after-send">Retain input focus after sending messages</label>
+                                            <span class="tooltiptext" style="left: 0">If this option is enabled, after sending a message you will be able to continue to type another message.</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Chat Box Tabs -->
+                        <div class="settings-group">
+                            <h3>Chat Box Tabs</h3>
+                            <div style="display: flex; font-effect: outline(1dp black); flex-direction: row; width: 100%; align-items: flex-start; flex-wrap: wrap;">
+                                <button class="default" data-for="tabs" data-class-selected="tab_index == it_index" data-event-click="tab_index = it_index; current_tab_changed()" style="min-width: 5dp;">{{it.name}}</button>
+                                <button class="default" style="min-width: 5dp;" data-event-click="add_tab()">+</button>
+                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 150dp;">Name</td>
+                                        <td><input id="tab-name" type="text" data-value="tabs[tab_index].name" style="width: 100%;" maxlength="30" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 150dp;">Send Message Type</td>
+                                        <td>
+                                            <select style="width:150dp;" data-value="tabs[tab_index].default_input_type" data-event-change="default_input_type_changed()">
+                                                <option value="-1">Do not change</option>
+                                                <option value="0">Chat</option>
+                                                <option value="1">"Whisper</option>
+                                                <option value="2">!Shout</option>
+                                                <option value="3">#Party</option>
+                                                <option value="4">@Clan</option>
+                                                <option value="5">~Group</option>
+                                                <option value="6">$Trade</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <div class="checkbox-grid">
+                                <span><input id="filter-chat" type="checkbox" data-checked="tabs[tab_index].filter.chat" data-event-change="tab_filter_changed()" /><label for="filter-chat">Chat</label></span>
+                                <span><input id="filter-shout" type="checkbox" data-checked="tabs[tab_index].filter.shout" data-event-change="tab_filter_changed()" /><label for="filter-shout">Shout</label></span>
+                                <span><input id="filter-whisper" type="checkbox" data-checked="tabs[tab_index].filter.whisper" data-event-change="tab_filter_changed()" /><label for="filter-whisper">Whisper</label></span>
+                                <span><input id="filter-trade" type="checkbox" data-checked="tabs[tab_index].filter.trade" data-event-change="tab_filter_changed()" /><label for="filter-trade">Trade</label></span>
+                                <span><input id="filter-party" type="checkbox" data-checked="tabs[tab_index].filter.party" data-event-change="tab_filter_changed()" /><label for="filter-party">Party</label></span>
+                                <span><input id="filter-group" type="checkbox" data-checked="tabs[tab_index].filter.group" data-event-change="tab_filter_changed()" /><label for="filter-group">Group</label></span>
+                                <span><input id="filter-clan" type="checkbox" data-checked="tabs[tab_index].filter.clan" data-event-change="tab_filter_changed()" /><label for="filter-clan">Clan</label></span>
+                                <span><input id="filter-quest" type="checkbox" data-checked="tabs[tab_index].filter.quest" data-event-change="tab_filter_changed()" /><label for="filter-quest">Quest</label></span>
+                                <span><input id="filter-system" type="checkbox" data-checked="tabs[tab_index].filter.system" data-event-change="tab_filter_changed()" /><label for="filter-system">System</label></span>
+                                <span class="wide"><input id="filter-clan-notification" type="checkbox" data-checked="tabs[tab_index].filter.clan_notification" data-event-change="tab_filter_changed()" /><label for="filter-clan-notification">Clan Notifications</label></span>
+                                <span class="wide"><input id="filter-social-notification" type="checkbox" data-checked="tabs[tab_index].filter.social_notification" data-event-change="tab_filter_changed()" /><label for="filter-social-notification">Social Notifications</label></span>
+                            </div>
+                            <div class="button-row">
+                                <button class="default" style="min-width: 5dp;" data-event-click="delete_tab()">Delete Tab</button>
+                            </div>
+                        </div>
+
+                        <!-- System Tab -->
+                        <div class="settings-group">
+                            <h3>System Tab</h3>
+                            <input id="show-system-tab" type="checkbox" data-checked="show_system_tab" />
+                            <label for="show-system-tab">Show System Tab</label>
+
+                            <h3 style="margin-top: 6dp">System Tab Filter</h3>
+                            <div class="checkbox-grid">
+                                <span><input id="s-filter-chat" type="checkbox" data-checked="system_tab_filter.chat" data-event-change="system_tab_filter_changed()" /><label for="s-filter-chat">Chat</label></span>
+                                <span><input id="s-filter-shout" type="checkbox" data-checked="system_tab_filter.shout" data-event-change="system_tab_filter_changed()" /><label for="s-filter-shout">Shout</label></span>
+                                <span><input id="s-filter-whisper" type="checkbox" data-checked="system_tab_filter.whisper" data-event-change="system_tab_filter_changed()" /><label for="s-filter-whisper">Whisper</label></span>
+                                <span><input id="s-filter-trade" type="checkbox" data-checked="system_tab_filter.trade" data-event-change="system_tab_filter_changed()" /><label for="s-filter-trade">Trade</label></span>
+                                <span><input id="s-filter-party" type="checkbox" data-checked="system_tab_filter.party" data-event-change="system_tab_filter_changed()" /><label for="s-filter-party">Party</label></span>
+                                <span><input id="s-filter-group" type="checkbox" data-checked="system_tab_filter.group" data-event-change="system_tab_filter_changed()" /><label for="s-filter-group">Group</label></span>
+                                <span><input id="s-filter-clan" type="checkbox" data-checked="system_tab_filter.clan" data-event-change="system_tab_filter_changed()" /><label for="s-filter-clan">Clan</label></span>
+                                <span><input id="s-filter-quest" type="checkbox" data-checked="system_tab_filter.quest" data-event-change="system_tab_filter_changed()" /><label for="s-filter-quest">Quest</label></span>
+                                <span><input id="s-filter-system" type="checkbox" data-checked="system_tab_filter.system" data-event-change="system_tab_filter_changed()" /><label for="s-filter-system">System</label></span>
+                                <span class="wide"><input id="s-filter-clan-notification" type="checkbox" data-checked="system_tab_filter.clan_notification" data-event-change="system_tab_filter_changed()" /><label for="s-filter-clan-notification">Clan Notifications</label></span>
+                                <span class="wide"><input id="s-filter-social-notification" type="checkbox" data-checked="system_tab_filter.social_notification" data-event-change="system_tab_filter_changed()" /><label for="s-filter-social-notification">Social Notifications</label></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Chat Bubbles -->
+                    <div class="settings-group">
+                        <h3>Chat Bubbles</h3>
+                        <input id="show-chat-bubbles" type="checkbox" data-checked="show_chat_bubbles" />
+                        <label for="show-chat-bubbles">Show Chat Bubbles</label>
+
+                        <h3 style="margin-top: 6dp">Chat Bubble Filter</h3>
+                        <div class="checkbox-grid">
+                            <span>
+                                <input id="b-filter-chat" type="checkbox" data-checked="chat_bubble_filter.chat" />
+                                <label for="b-filter-chat">Chat</label>
+                            </span>
+                            <span>
+                                <input id="b-filter-shout" type="checkbox" data-checked="chat_bubble_filter.shout"/>
+                                <label for="b-filter-shout">Shout</label>
+                            </span>
+                            <span>
+                                <input id="b-filter-party" type="checkbox" data-checked="chat_bubble_filter.party" />
+                                <label for="b-filter-party">Party</label>
+                            </span>
+                            <span>
+                                <input id="b-filter-group" type="checkbox" data-checked="chat_bubble_filter.group" />
+                                <label for="b-filter-group">Group</label>
+                            </span>
+                            <span>
+                                <input id="b-filter-clan" type="checkbox" data-checked="chat_bubble_filter.clan" />
+                                <label for="b-filter-clan">Clan</label>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 4dp;">
+                        <button class="default" style="min-width: 5dp;" data-event-click="reset_default()">Reset chat settings to default</button>
+                    </div>
+
+                </div>
+            </panel>
+            <!-- ===================== LOOT FILTER ===================== -->
+            <tab id="loot-filter-tab" class="default">Loot Filter</tab>
+            <panel class="content-box">
+                <div id="loot-filter-panel" class="options-panel">
+                    <div class="settings-group">
+                        <h3>Loot Filter</h3>
+                        <p class="lf-help">Type exact drop names, separated by commas. Matching drops get that colour, a glow and a bigger label.</p>
+                        <div class="lf-prof-box">
+                            <div class="lf-prof-title">Profiles</div>
+                            <div id="lf-profiles"></div>
+                            <div class="lf-prof-row">
+                                <input id="lf-prof-name" type="text" maxlength="20" value="" />
+                                <button id="lf-prof-save" class="default">Save as profile</button>
+                                <button id="lf-prof-del" class="default">Delete</button>
+                            </div>
+                        </div>
+                        <div class="lf-row"><span class="lf-name yellow">Yellow</span><input id="lf-yellow" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row"><span class="lf-name blue">Blue</span><input id="lf-blue" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row"><span class="lf-name purple">Purple</span><input id="lf-purple" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row"><span class="lf-name red">Red</span><input id="lf-red" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row"><span class="lf-name green">Green</span><input id="lf-green" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row"><span class="lf-name rainbow">Rainbow</span><input id="lf-rainbow" class="lf-input" type="text" maxlength="2000" value="" /></div>
+                        <div class="lf-row lf-only-row">
+                            <input id="lf-only" type="checkbox" />
+                            <label for="lf-only">Only show filtered drops (hides all other drop names)</label>
+                        </div>
+                        <div class="lf-row lf-only-row">
+                            <input id="lf-dim" type="checkbox" />
+                            <label for="lf-dim">Dim other drops (50% opacity)</label>
+                        </div>
+                        <div class="lf-buttons">
+                            <button id="lf-save" class="default ice-primary">Save</button>
+                            <button id="lf-reset" class="default">Clear all</button>
+                            <span id="lf-status"></span>
+                        </div>
+                    </div>
+                    <div class="settings-group lf-info">
+                        <h3>How it works</h3>
+                        <p><b>Exact names:</b> type the name exactly as it shows on the ground, including capitals and spaces (for example Purple Powder, not purple powder).</p>
+                        <p><b>Colours:</b> the lists follow item rarity, from Yellow (normal) up to Green, with Rainbow on top. If a name is in two lists, the rarer colour wins.</p>
+                        <p class="lf-warn">After Save, restart the game to update which drops glow. The two checkboxes work right away.</p>
+                        <p class="lf-warn">Keep Game &gt; Show dropped item name switched on. When the game hides drop names, it also stops updating them, so the filter has nothing to work with. Use Only show filtered drops instead to hide the other names.</p>
+                        <p><b>Only show filtered drops</b> hides every other drop name. <b>Dim other drops</b> shows them at half strength instead. Both do nothing while all lists are empty.</p>
+                        <p><b>Profiles:</b> Save as profile stores the boxes under a name. Click a profile to switch to it: instant for profiles saved before this game session, a new or changed profile needs one restart first. Save also updates the highlighted profile. Delete removes it.</p>
+                        <p><b>Clear all</b> empties the boxes; press Save to keep that. Your lists are stored in loot_filter.txt in the game folder.</p>
+                    </div>
+                </div>
+            </panel>
+            <tab id="addons-tab" class="default">Add-ons</tab>
+            <panel class="content-box">
+                <div id="addons-panel" class="options-panel">
+                    <!-- Target bar add-ons -->
+                    <div class="settings-group ta-group">
+                        <h3>Target Bar</h3>
+                        <div class="ta-row"><input id="ta-element" type="checkbox" /><label for="ta-element">Show element and counter elements</label></div>
+                        <div class="ta-row"><input id="ta-dps" type="checkbox" /><label for="ta-dps">Show DPS meter (damage per second, average, time to kill)</label></div>
+                    </div>
+                    <div class="settings-group tm-group">
+                        <h3>Target Marker</h3>
+                        <p class="tm-help">Colour of the arrows next to a selected player's name. Restart the game after changing it.</p>
+                        <div class="tm-row"><button class="tm-btn" tm="1"><img class="tm-l" sprite="ice-target-marker"/><img class="tm-r" sprite="ice-target-marker"/></button><button class="tm-btn" tm="2"><img class="tm-l" sprite="ice-target-marker-blue"/><img class="tm-r" sprite="ice-target-marker-blue"/></button><button class="tm-btn" tm="3"><img class="tm-l" sprite="ice-target-marker-green"/><img class="tm-r" sprite="ice-target-marker-green"/></button><span id="tm-status"></span></div>
+                    </div>
+                    <div class="settings-group ao-info">
+                        <h3>Other extras</h3>
+                        <p><b>Loot Filter</b> (tab above): glowing names and loot beams for chosen drops, profiles, dim or hide other drops.</p>
+                        <p><b>Target bar:</b> the target's element and the elements it is weak against, plus a DPS meter (switches above).</p>
+                        <p><b>Party and group windows:</b> the FX button turns the stun / poison / slow frames on member portraits on or off (purple = on).</p>
+                        <p><b>Item Mall:</b> click an item to try it on straight away in the preview.</p>
+                        <p><b>Inventory:</b> the small button left of the X collapses the window.</p>
+                    </div>
+                </div>
+            </panel>
+        </tabset>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>

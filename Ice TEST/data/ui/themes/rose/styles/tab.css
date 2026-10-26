@@ -1,0 +1,46 @@
+tab
+{
+    display: inline-block;
+    box-sizing: border-box;
+    cursor: hand;
+    text-align: center;
+    vertical-align: middle;
+}
+
+tab.default
+{
+    decorator: tiled-horizontal( button-l, button-c, button-r );
+    padding: 4dp 8dp;
+    min-width: 50dp;
+    height: 34dp;
+    line-height: 26dp;
+    font-effect: outline(1dp black);
+}
+
+tab.default:disabled, tab.default[disabled]
+{
+    cursor: normal;
+    decorator: tiled-horizontal( button-disabled-l, button-disabled-c, button-disabled-r );
+}
+
+tab.default:not(button[disabled]):hover
+{
+    decorator: tiled-horizontal( button-hover-l, button-hover-c, button-hover-r );
+}
+
+tab.default:not(button[disabled]):active
+{
+    decorator: tiled-horizontal( button-active-l, button-active-c, button-active-r );
+}
+
+tab.default:active
+{
+    decorator: tiled-horizontal( button-active-l, button-active-c, button-active-r );
+}
+
+tab.default:selected
+{
+    color: white;
+    font-effect: outline(1dp black), glow(1.5dp white);
+    decorator: tiled-horizontal( button-active-l, button-active-c, button-active-r );
+}

@@ -1,0 +1,427 @@
+<rml>
+    <head>
+        <title>Monster Inspector</title>
+
+        <link type="text/template" href="../templates/window-resizeable.html" />
+        <link type="text/template" href="../templates/elements/gauge.html" />
+        <link type="text/rcss" href="../styles/spritesheet_itemicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
+        <link type="text/rcss" href="../styles/item_slot.css" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_window.css" />
+
+        <style>
+            #game-monster-inspector {
+                width: 650dp;
+                height: 465dp;
+                min-width: 650dp;
+                min-height: 465dp;
+            }
+
+            .header {
+                color: rgb(255, 255, 102);
+                font-weight: bold;
+                margin: 2dp;
+            }
+
+            .center {
+                justify-content: center;
+            }
+
+            #monster-view-panel {
+                width: 40%;
+                height: 100%;
+            }
+
+            #monster-view-panel > npc-preview {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            #right-container {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                row-gap: 4dp;
+            }
+
+            #info-panel {
+                margin: 5dp;
+                height: 225dp;
+                overflow: hidden auto;
+            }
+
+            #drop-list-panel {
+                flex: 1;
+                overflow: hidden auto;
+            }
+
+            .stat-row {
+                display: flex;
+                flex-direction: row;
+                margin: 1dp;
+                font-size: 12dp;
+                color: #fff;
+            }
+
+            span.stat {
+                position: relative;
+                font-size: 13dp;
+                text-align: center;
+            }
+
+            #stats {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                column-gap: 8dp;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .drop-stats {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                column-gap: 8dp;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .stat-column {
+                display: table;
+                flex: 1 1 160dp;
+                max-width: 160dp;
+                margin: 5dp;
+            }
+
+            .stat-column-2 {
+                display: table;
+                flex: 1 1 200dp;
+                max-width: 220dp;
+                margin: 5dp;
+            }
+
+            label.custom {
+                width: 80dp;
+            }
+
+            .stat-line {
+                display: table-row;
+            }
+
+            .stat-line > .stat-name {
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+                padding-right: 8dp;
+                font-size: 12dp;
+                color: #fff;
+            }
+
+            .stat-line > .stat-value {
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .stat-row > span {
+                margin-top: 2dp;
+            }
+
+            .monster-name {
+                display: flex;
+                color: rgb(255, 255, 102);
+                font-weight: bold;
+                margin-bottom: 2dp;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                column-gap: 8dp;
+                margin-top: 3dp;
+            }
+            
+
+            #drop-list {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                column-gap: 4dp;
+                row-gap: 4dp;
+                padding: 4dp;
+            }
+
+            #drop-list > div {
+                width: 40dp;
+                height: 40dp;
+                line-height: 0;
+            }
+
+            #npc-info-panel {
+                margin: 5dp;
+                width: 100%;
+            }
+
+            #element-panel {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .element-label {
+                width: 100dp;
+                font-weight: 800;
+            }
+            
+            .eltooltip {
+                z-index: 2;
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .eltooltiptext {
+                z-index: 2;
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 100%;
+                background: rgba(0, 0, 0, 200);
+                color: #fff;
+                padding: 5dp;
+                white-space: nowrap;
+                width: 300dp;
+                clip: none;
+                text-align: left;
+                border-radius: 3dp;
+                padding: 5dp;
+                margin: 15dp;
+            }
+            
+            .eltooltip:hover .eltooltiptext {
+                z-index: 2;
+                display: block;
+            }
+            
+            .droptooltip {
+                z-index: 2;
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .droptooltiptext {
+                z-index: 2;
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 100%;
+                background: rgba(0, 0, 0, 200);
+                color: #fff;
+                padding: 5dp;
+                white-space: nowrap;
+                width: 310dp;
+                clip: none;
+                text-align: left;
+                border-radius: 3dp;
+                padding: 5dp;
+                margin: 15dp;
+            }
+            
+            .droptooltip:hover .droptooltiptext {
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                text-decoration: none;
+                font-size: 15dp;
+            }
+
+            .element-name {
+                font-size: 16dp;
+                font-weight: 800;
+            }
+
+            span.stat-title {
+                color: rgb(185, 221, 255);
+                font-size: 14dp;
+                font-weight: 800;
+            }
+
+            #health {
+                height: 22dp;
+                margin-bottom: 5dp;
+            }
+
+            .drop-rate-reduction {
+                font-weight: 800;
+            }
+
+            /* ===== ice theme ===== */
+            #game-monster-inspector #window-content { padding: 6dp; }
+            #game-monster-inspector .content-box { padding: 6dp; }
+            #game-monster-inspector .monster-name { color: rgb(30, 62, 112); font-size: 15dp; font-effect: none; }
+            #game-monster-inspector span.stat-title {
+                color: rgb(170, 100, 20);
+                font-size: 13dp;
+                font-effect: none;
+                margin-top: 4dp;
+            }
+            #game-monster-inspector .stat-row,
+            #game-monster-inspector .stat-line > .stat-name { color: rgb(70, 92, 128); font-weight: 820; font-effect: none; }
+            /* values: white pills, navy numbers */
+            #game-monster-inspector label.custom {
+                display: inline-block;
+                margin: 1dp 0dp;
+                padding: 1dp 4dp;
+                decorator: none;
+                background-color: rgb(255, 255, 255);
+                border: 1dp rgb(196, 218, 238);
+                border-radius: 5dp;
+                text-align: center;
+            }
+            #game-monster-inspector span.stat { color: rgb(30, 62, 112); font-weight: 820; font-effect: none; }
+            /* drop-rate value keeps its colour code, so it sits on a navy pill */
+            #game-monster-inspector .drop-stats label.custom { background-color: rgb(30, 52, 90); border-color: rgb(120, 160, 210); }
+            #game-monster-inspector .drop-rate-reduction { font-effect: none; }
+            /* hover tips: dark blue like the other tooltips */
+            #game-monster-inspector .eltooltiptext,
+            #game-monster-inspector .droptooltiptext {
+                background: rgba(14, 32, 62, 235);
+                border: 1dp rgb(150, 190, 225);
+                border-radius: 6dp;
+                color: rgb(255, 255, 255);
+                font-effect: outline(1dp rgb(8, 18, 36));
+            }
+            /* invisible resize grip; BR flourish in the corner (resizeable windows) */
+            #game-monster-inspector .window-resize-handle,
+            #game-monster-inspector .window-resize-handle:hover { decorator: none; z-index: 20; }
+            #game-monster-inspector .ice-fx.ice-br { right: -7dp; bottom: -30dp; }
+        </style>
+    </head>
+
+    <body id="game-monster-inspector" template="window-resizeable">
+        <div data-model="monster-inspector" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+            <div style="flex: 1; display: flex; flex-direction: row; column-gap: 4dp;">
+                <div id="monster-view-panel" class="content-box">
+                    <npc-preview data-attr-npc-id="npc_id" yaw="20"/>
+                </div>
+
+                <div id="right-container">
+                    <div id="info-panel" class="content-box">
+                        <div class="monster-name">
+                            <span>{{name}} (Lv. {{level}})</span>
+                            <div class="eltooltip" data-if="npc_element > 0">
+                                <img data-attr-sprite="element_icon" width="20dp" height="18dp"/>
+                                <div class="eltooltiptext">
+                                    <span class="element-name"><str data-attr-element-name="npc_element" data-attr-class="element_icon"/></span>
+                                    <div data-if="npc_element == 1">
+                                        <span><fc_yellow>Strong against: </fc_yellow><fc_green>Neutral, Earth, Wind, Poison</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Water, Ghost</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 2">
+                                        <span><fc_yellow>Strong against: </fc_yellow><fc_green>Earth, Ghost</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow><fc_crimson>Water, Holy, Poison</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 3">
+                                        <span><fc_yellow>Strong against: </fc_yellow><fc_green>Sorcery, Fire</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow><fc_crimson>Wind, Poison, Ghost</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 4">
+                                        <span><fc_yellow>Strong against: </fc_yellow> <fc_green>Wind, Holy</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Sorcery, Fire, Ghost</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 5">
+                                        <span><fc_yellow>Strong against: </fc_yellow> <fc_green>Water, Poison</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Sorcery, Earth, Holy</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 6">
+                                        <span><fc_yellow>Strong against: </fc_yellow> <fc_green>Neutral, Fire, Wind, Ghost</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Earth, Poison</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 7">
+                                        <span><fc_yellow>Strong against: </fc_yellow> <fc_green>Neutral, Fire, Water, Holy</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Sorcery, Wind</fc_crimson></span>
+                                    </div>
+                                    <div data-if="npc_element == 8">
+                                        <span><fc_yellow>Strong against: </fc_yellow> <fc_green>Neutral, Sorcery, Water, Earth</fc_green></span><br/>
+                                        <span><fc_yellow>Weak against: </fc_yellow> <fc_crimson>Fire, Holy</fc_crimson></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-row center">
+                            <gauge id="health" class="horizontal-lg-lg red" data-attr-gvalue="hp" data-attr-gmax="max_hp" number-format="shorten">
+                                <template src="gauge-info-vmp" />
+                            </gauge>
+                        </div>
+                        <div class="stat-row center">
+                            <span class="stat-title">Combat Stats</span>
+                        </div>
+                        <div id="stats">
+                            <div class="stat-column">
+                                <div class="stat-line"><span class="stat-name">Attack</span><span class="stat-value"><label class="custom"><span class="stat">{{attack_power}}</span></label></span></div>
+                                <div class="stat-line"><span class="stat-name">Accuracy</span><span class="stat-value"><label class="custom"><span class="stat">{{accuracy}}</span></label></span></div>
+                                <div class="stat-line"><span class="stat-name">Critical</span><span class="stat-value"><label class="custom"><span class="stat">{{critical}}</span></label></span></div>
+                                <div class="stat-line"><span class="stat-name">Defense</span><span class="stat-value"><label class="custom"><span class="stat">{{defense}}</span></label></span></div>
+                            </div>
+                            <div class="stat-column">
+                                <div class="stat-line"><span class="stat-name">Magic Defense</span><span class="stat-value"><label class="custom"><span class="stat">{{magic_defense}}</span></label></span></div>
+                                <div class="stat-line"><span class="stat-name">Dodge</span><span class="stat-value"><label class="custom"><span class="stat">{{dodge}}</span></label></span></div>
+                                <div class="stat-line"><span class="stat-name">Mov. Speed</span><span class="stat-value"><label class="custom"><span class="stat">{{mov_speed}}</span></label></span></div>
+                            </div>
+                        </div>
+                        <div class="stat-row center">
+                            <span class="stat-title">Drop Information</span>
+                        </div>
+                        <div class="drop-stats">
+                            <div class="stat-column-2">
+                                <div class="stat-line">
+                                    <span class="stat-name droptooltip" style="text-decoration: underline;">
+                                        <span>Drop Rate Reduction</span>
+                                        <div class="droptooltiptext">
+                                            <span>In <b>ROSE Online</b>, monster lower level than you </span>
+                                            <span>get a reduction in drop rate.</span> 
+                                            <span>You can blockyour XP in the character stat info.</span>
+                                            <span>&nbsp;</span> 
+                                            <span data-style-color="drop_reduction_color(00.0)">- <b>Yellow:</b> No reduction in drop chance.</span> 
+                                            <span data-style-color="drop_reduction_color(10.0)">- <b>Green:</b> 10% Reduction in drop chance.</span> 
+                                            <span data-style-color="drop_reduction_color(25.0)">- <b>Blue:</b> 25% Reduction in drop chance.</span> 
+                                            <span data-style-color="drop_reduction_color(50.0)">- <b>Light Blue:</b> 50% Reduction in drop chance.</span> 
+                                            <span data-style-color="drop_reduction_color(75.0)">- <b>Gray:</b> 75% Reduction in drop chance.</span> 
+                                        </div>
+                                    </span>
+                                        <span class="stat-value">
+                                            <label class="custom">
+                                                <span class="stat drop-rate-reduction" data-style-color="drop_reduction_color(drop_rate_reduction)">{{drop_rate_reduction}}%</span>
+                                            </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="drop-list-panel" class="content-box">
+                        <div id="drop-list">
+                            <div data-for="drop, drop_index : drops" data-if="drop.id != 0">
+                                <item-slot item-actions data-attr-id="'drop-icon-' + drop_index"
+                                    data-attr-item-id="drop.id"
+                                    data-attr-item-type="drop.type"
+                                    data-attr-item-quantity="drop.quantity"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ice-fx ice-tl"></div>
+        <div class="ice-fx ice-br"></div>
+    </body>
+</rml>
