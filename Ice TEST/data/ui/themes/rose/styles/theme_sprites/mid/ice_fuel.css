@@ -1,0 +1,15 @@
+/* Fuel dial sprites (gen_fuel.py). ice- = Ice, icd- = Midnight. */
+@spritesheet icefuel {
+    src: /data/ui/themes/rose/imgs/ice_fuel_mid.dds;
+    ice-fuel-glow: 2px 2px 168px 156px;
+    icd-fuel-glow: 2px 2px 168px 156px;
+    ice-fuel-face: 174px 2px 128px 116px;
+    ice-fuel-needle: 306px 2px 12px 42px;
+    ice-fuel-needle-low: 322px 2px 12px 42px;
+    ice-fuel-hub: 338px 2px 14px 14px;
+    icd-fuel-face: 174px 122px 128px 116px;
+    icd-fuel-needle: 306px 122px 12px 42px;
+    icd-fuel-needle-low: 322px 122px 12px 42px;
+    icd-fuel-hub: 338px 122px 14px 14px;
+}
+.ice-fuel-ok { display: block; }

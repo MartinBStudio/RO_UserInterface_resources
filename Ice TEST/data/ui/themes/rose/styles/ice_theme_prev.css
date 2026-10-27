@@ -1,0 +1,11 @@
+/* Theme preview cards (made by gen_prev.py from the real theme atlases). */
+@spritesheet icethemeprev {
+    src: /data/ui/themes/rose/imgs/ice_theme_prev.dds;
+    thp-ice-big: 2px 2px 360px 240px;
+    thp-ice: 366px 246px 240px 160px;
+    thp-dark-big: 366px 2px 360px 240px;
+    thp-dark: 610px 246px 240px 160px;
+    thp-mid-big: 2px 246px 360px 240px;
+    thp-mid: 730px 2px 240px 160px;
+}
+.ice-theme-prev-ok { display: block; }

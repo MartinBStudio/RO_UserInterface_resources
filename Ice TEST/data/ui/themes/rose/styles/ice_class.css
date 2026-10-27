@@ -1,0 +1,18 @@
+/* Class tags for party / group rows: two letters, X-button style (made by gen_tags.py). */
+@spritesheet iceclass {
+    src: /data/ui/themes/rose/imgs/ice_class.dds;
+    cls-visitor: 2px 2px 60px 44px;
+    cls-soldier: 66px 2px 60px 44px;
+    cls-knight: 130px 2px 60px 44px;
+    cls-champion: 194px 2px 60px 44px;
+    cls-muse: 2px 50px 60px 44px;
+    cls-mage: 66px 50px 60px 44px;
+    cls-cleric: 130px 50px 60px 44px;
+    cls-hawker: 194px 50px 60px 44px;
+    cls-raider: 2px 98px 60px 44px;
+    cls-scout: 66px 98px 60px 44px;
+    cls-dealer: 130px 98px 60px 44px;
+    cls-bourgeois: 194px 98px 60px 44px;
+    cls-artisan: 2px 146px 60px 44px;
+}
+.ice-class-ok { display: block; }

@@ -1,0 +1,35 @@
+/* Quickbar buttons (rotate, page switcher), ice- and icd- (dark). Made by gen_qb.py. */
+@spritesheet iceqb {
+    src: /data/ui/themes/rose/imgs/ice_qb.dds;
+    ice-qbrot-n: 0px 0px 48px 44px;
+    ice-qbrot-o: 50px 0px 48px 44px;
+    ice-qbrot-d: 100px 0px 48px 44px;
+    ice-qbpg1-n: 150px 0px 32px 68px;
+    ice-qbpgv1-n: 184px 0px 68px 32px;
+    ice-qbpg1-o: 0px 70px 32px 68px;
+    ice-qbpgv1-o: 34px 70px 68px 32px;
+    ice-qbpg2-n: 104px 70px 32px 68px;
+    ice-qbpgv2-n: 138px 70px 68px 32px;
+    ice-qbpg2-o: 208px 70px 32px 68px;
+    ice-qbpgv2-o: 0px 140px 68px 32px;
+    ice-qbpg3-n: 70px 140px 32px 68px;
+    ice-qbpgv3-n: 104px 140px 68px 32px;
+    ice-qbpg3-o: 174px 140px 32px 68px;
+    ice-qbpgv3-o: 0px 210px 68px 32px;
+    icd-qbrot-n: 70px 210px 48px 44px;
+    icd-qbrot-o: 120px 210px 48px 44px;
+    icd-qbrot-d: 170px 210px 48px 44px;
+    icd-qbpg1-n: 220px 210px 32px 68px;
+    icd-qbpgv1-n: 0px 280px 68px 32px;
+    icd-qbpg1-o: 70px 280px 32px 68px;
+    icd-qbpgv1-o: 104px 280px 68px 32px;
+    icd-qbpg2-n: 174px 280px 32px 68px;
+    icd-qbpgv2-n: 0px 350px 68px 32px;
+    icd-qbpg2-o: 70px 350px 32px 68px;
+    icd-qbpgv2-o: 104px 350px 68px 32px;
+    icd-qbpg3-n: 174px 350px 32px 68px;
+    icd-qbpgv3-n: 0px 420px 68px 32px;
+    icd-qbpg3-o: 70px 420px 32px 68px;
+    icd-qbpgv3-o: 104px 420px 68px 32px;
+}
+.ice-qb-ok { display: block; }
