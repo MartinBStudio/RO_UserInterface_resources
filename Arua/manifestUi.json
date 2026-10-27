@@ -1,9 +1,9 @@
 {
-    "name":  "Ice TEST",
+    "name":  "Arua",
     "version":  "0.0.9",
     "upload_date":  "2026-10-27T05:58:54.576+01:00",
     "createdAt":  "2026-10-27T05:58:54.576+01:00",
-    "description":  "Beta version of the Ice UI theme with cream panels, ice-blue boxes, gold highlights, a loot filter, target enhancements, and party/group improvements.",
+    "description":  "Beta version of the Arua theme with cream panels, ice-blue boxes, gold highlights, a loot filter, target enhancements, and party/group improvements.",
     "managedSubfolders":  [
                               "FILE_LIST.TXT"
                           ],
