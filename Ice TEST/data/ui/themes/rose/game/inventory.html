@@ -112,7 +112,7 @@
             body#inventory-window button.window-title-close { z-index: 20; }
             /* footer: weight and zulie stacked on the left, slightly smaller */
             body#inventory-window .inventory-footer { flex-direction: row; align-items: center; justify-content: space-between; gap: 8dp; }
-            body#inventory-window .inventory-footer .ui-currency { justify-content: flex-start; min-height: 18dp; font-size: 13dp; }
+            body#inventory-window .inventory-footer .ui-currency { justify-content: flex-start; min-height: 18dp; font-size: 13dp; flex-shrink: 0; white-space: nowrap; }
             body#inventory-window .inventory-footer .ui-currency > img,
             body#inventory-window .inventory-footer .ui-currency > button.zulie { width: 18dp; min-width: 18dp; height: 18dp; }
 
@@ -202,6 +202,8 @@
             .vehicle-stats { color: rgb(36, 58, 98); }
             .vehicle-stat span { color: rgb(170, 100, 20); }
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/inventory.css" />
     </head>
     <body template="window-fixed-size" id="inventory-window">
         <input type="checkbox" id="inv-collapse" />

@@ -85,12 +85,14 @@
             #percentage-handle-icon {
                 display: none;
                 position: absolute;
-                top: -8dp;
+                top: 0dp;
                 left: 50%;
-                width: 24dp;
-                height: 20dp;
-                decorator: tiled-vertical(scrollbar-button-t, scrollbar-button-c, scrollbar-button-b);
+                margin-left: -20dp;
+                width: 40dp;
+                height: 10dp;
+                decorator: tiled-horizontal(ice-hbar-l, ice-hbar-c, ice-hbar-r);
             }
+            percentage-handle:active > #percentage-handle-icon { decorator: tiled-horizontal(ice-hbar-hover-l, ice-hbar-hover-c, ice-hbar-hover-r); }
 
             percentage-handle:hover >  #percentage-handle-icon {
                 display: inline-block;
@@ -351,7 +353,11 @@
             #game-chat-box #input-container.ch-4 span#category-text { color: rgb(255, 222, 120); }
             #game-chat-box #input-container.ch-5 span#category-text { color: rgb(170, 185, 255); }
             #game-chat-box #input-container.ch-6 span#category-text { color: rgb(130, 232, 150); }
+            /* selected text: ice-blue highlight, white text (default was white on white) */
+            #game-chat-box input selection { background-color: rgb(58, 120, 196); color: rgb(255, 255, 255); }
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/chat_box.css" />
     </head>
 
     <body id="game-chat-box">

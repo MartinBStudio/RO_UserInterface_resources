@@ -13,6 +13,7 @@
         <link type="text/rcss" href="../styles/item_slot.css" />
         <link type="text/rcss" href="../styles/skill_slot.css" />
         <link type="text/rcss" href="../styles/ice_sprites.css" />
+        <link type="text/rcss" href="../styles/ice_qb.css" />
 
         <style>
             body#quickbar {
@@ -627,21 +628,17 @@
             }
             body.gamepad .sep-v { display: none; }
 
-            /* keybind label as a small navy pill */
+            /* keybind label: plain white text with a dark outline (no pill) */
             body.horizontal .keybind-label,
             body.vertical .keybind-label {
                 width: auto;
-                right: 3dp;
+                right: 4dp;
                 bottom: 3dp;
-                height: 12dp;
-                line-height: 12dp;
-                padding: 0dp 3dp;
-                font-size: 10dp;
+                padding: 0dp;
+                font-size: 11dp;
                 font-weight: 820;
                 color: white;
-                font-effect: none;
-                background-color: rgba(22, 62, 122, 215);
-                border-radius: 5dp;
+                font-effect: outline(1.5dp rgb(6, 16, 31));
             }
 
             /* page button: ice instead of dark slate */
@@ -662,7 +659,40 @@
                 height: 40dp;
                 decorator: image(ice-corner-tl);
             }
+            /* ice buttons (styles/ice_qb.css): rotate + page switcher. The indicator draws the
+               whole button (number between chevrons); the real button sits under it, invisible. */
+            body#quickbar .btn-rotate { width: 24dp; height: 22dp; margin-top: 26dp; margin-left: -8dp; decorator: image(ice-qbrot-n); }
+            body#quickbar .btn-rotate:not(.disabled):hover { decorator: image(ice-qbrot-o); }
+            body#quickbar .btn-rotate:not(.disabled):active { decorator: image(ice-qbrot-d); }
+            body#quickbar.vertical .btn-rotate { margin-top: -8dp; margin-left: 24dp; }
+            body#quickbar .page-arrow-up,
+            body#quickbar .page-arrow-down { display: none; }
+            body#quickbar handle.quickbar-container .page-btn,
+            body#quickbar handle.quickbar-container:hover[move_target] .page-btn {
+                left: 1dp; right: auto; top: 2dp; bottom: auto; width: 16dp; height: 34dp;
+                decorator: none; border-radius: 5dp;
+            }
+            body#quickbar .page-indicator { left: 1dp; top: 2dp; width: 16dp; height: 34dp; }
+            body#quickbar .page-indicator.page-1 { decorator: image(ice-qbpg1-n); }
+            body#quickbar .page-indicator.page-2 { decorator: image(ice-qbpg2-n); }
+            body#quickbar .page-indicator.page-3 { decorator: image(ice-qbpg3-n); }
+            body#quickbar .page-btn:hover + .page-indicator.page-1 { decorator: image(ice-qbpg1-o); }
+            body#quickbar .page-btn:hover + .page-indicator.page-2 { decorator: image(ice-qbpg2-o); }
+            body#quickbar .page-btn:hover + .page-indicator.page-3 { decorator: image(ice-qbpg3-o); }
+            body#quickbar.vertical handle.quickbar-container .page-btn,
+            body#quickbar.vertical handle.quickbar-container:hover[move_target] .page-btn {
+                left: 2dp; top: 1dp; width: 34dp; height: 16dp;
+            }
+            body#quickbar.vertical .page-indicator { left: 2dp; top: 1dp; width: 34dp; height: 16dp; }
+            body#quickbar.vertical .page-indicator.page-1 { decorator: image(ice-qbpgv1-n); }
+            body#quickbar.vertical .page-indicator.page-2 { decorator: image(ice-qbpgv2-n); }
+            body#quickbar.vertical .page-indicator.page-3 { decorator: image(ice-qbpgv3-n); }
+            body#quickbar.vertical .page-btn:hover + .page-indicator.page-1 { decorator: image(ice-qbpgv1-o); }
+            body#quickbar.vertical .page-btn:hover + .page-indicator.page-2 { decorator: image(ice-qbpgv2-o); }
+            body#quickbar.vertical .page-btn:hover + .page-indicator.page-3 { decorator: image(ice-qbpgv3-o); }
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/quickbar.css" />
     </head>
 
     <!-- The owning widget attaches this document to the "quickbar" or "quickbar-ext" data model. -->

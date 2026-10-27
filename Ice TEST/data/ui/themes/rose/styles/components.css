@@ -67,7 +67,7 @@ body #window-content {
     height: 21dp;
     flex-shrink: 0;
 }
-.ui-currency > span { min-width: 0; word-break: break-word; }
+.ui-currency > span { min-width: 0; white-space: nowrap; }   /* amounts never wrap (big UI scale) */
 .ui-footer {
     margin-top: 8dp;
     padding-top: 8dp;

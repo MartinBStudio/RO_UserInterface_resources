@@ -11,6 +11,8 @@
              * Width = 5 frame + 8 panel + 194 map (190 + 2x2 border) + 8 panel + 5 frame. */
             body {
                 width: 220dp;
+                min-width: 220dp;
+                max-width: 330dp;
             }
 
             .hidden {
@@ -19,14 +21,14 @@
 
             #minimap-root {
                 position: relative;
-                width: 220dp;
+                width: 100%;
             }
 
             /* ── Shared ice frame ── */
             #minimap-minimized,
             #minimap-normal {
                 position: relative;
-                width: 220dp;
+                width: 100%;
                 box-sizing: border-box;
                 decorator: tiled-box(
                     ice-mini-tl, ice-mini-t, ice-mini-tr,
@@ -359,8 +361,131 @@
             #mm-map-wrap #time-area { right: 6dp; top: 6dp; }
             #mm-map-wrap #time-tooltip { top: 20dp; }
             .btn-minimize, .day-night-icon { z-index: 20; }
+            /* title band: day/night + minimize nudged to the band's centre */
+            .btn-minimize, #minimap-minimized .btn-restore { top: 4.5dp; right: 8dp; }
+            .day-night-icon { right: 28dp; top: 3dp; width: 22dp; height: 22dp; }
+
+            /* resize: drag corner bottom right; view size set by the script below */
+            #mm-grip { position: absolute; left: 2dp; bottom: 2dp; width: 13dp; height: 13dp; z-index: 30; drag: drag; cursor: resize; opacity: 0.35; }
+            #mm-grip:hover, #mm-grip:active { opacity: 0.9; }
+            #mm-grip div { position: absolute; width: 2.5dp; height: 2.5dp; border-radius: 1.25dp; background-color: rgb(90, 120, 160); pointer-events: none; }
+            .mm-probe { position: absolute; left: 0; top: 0; width: 100dp; height: 1dp; opacity: 0; pointer-events: none; }
+            .mm-tick { position: absolute; left: 0; top: 0; width: 1dp; height: 1dp; opacity: 0; pointer-events: none; }
+            @keyframes mm-tick-a { from { opacity: 0; } to { opacity: 0.01; } }
+            @keyframes mm-tick-b { from { opacity: 0; } to { opacity: 0.01; } }
 
         </style>
+        <script>
+-- Minimap size: the dot grip (bottom left) sets the window width, growing to the left; the map view becomes a square of
+-- (width - 30dp), 190..300dp. The game centres the map for a 190dp view, so the map layer is
+-- shifted by half the extra size. Size is remembered as minimap_size in sp_addons.txt.
+pcall(function()
+    local doc = document
+    local FLAGS, KEY, BASE, MAXV = 'sp_addons.txt', 'minimap_size', 190, 300
+    local NL = string.char(10)
+    local probe = doc:AppendChild(doc:CreateElement('div'))
+    probe:SetClass('mm-probe', true)
+    local last, saved, stable = nil, nil, 0
+    local function read_saved()
+        local v = nil
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, n = line:match('^%s*([%w_]+)%s*=%s*(%d+)')
+                if k == KEY then v = tonumber(n) end
+            end
+            f:close()
+        end)
+        return v
+    end
+    local function write_saved(n)
+        pcall(function()
+            local lines, found = {}, false
+            local f = io.open(FLAGS, 'r')
+            if f then
+                for line in f:lines() do
+                    local k = line:match('^%s*([%w_]+)%s*=')
+                    if k == KEY then lines[#lines + 1] = KEY .. '=' .. n; found = true
+                    elseif line ~= '' then lines[#lines + 1] = line end
+                end
+                f:close()
+            end
+            if not found then lines[#lines + 1] = KEY .. '=' .. n end
+            local w = io.open(FLAGS, 'w')
+            if w then w:write(table.concat(lines, NL), NL); w:close() end
+        end)
+    end
+    local function apply()
+        local vp = doc:GetElementById('minimap-viewport')
+        local map = doc:GetElementById('minimap-map')
+        local pw = probe.offset_width
+        if not vp or not map or not pw or pw == 0 then return end
+        local dp = pw / 100
+        local w = doc.offset_width / dp
+        local view = math.floor(math.max(BASE, math.min(MAXV, w - 30)) + 0.5)
+        if view ~= last then
+            last = view
+            stable = 0
+            vp.style.width = view .. 'dp'
+            vp.style.height = view .. 'dp'
+            local off = (view - BASE) / 2
+            map.style['margin-left'] = off .. 'dp'
+            map.style['margin-top'] = off .. 'dp'
+        else
+            stable = stable + 1
+            if stable == 4 and view ~= saved then
+                saved = view
+                write_saved(view)
+            end
+        end
+    end
+    saved = read_saved()
+    if saved then
+        saved = math.max(BASE, math.min(MAXV, saved))
+        doc.style.width = (saved + 30) .. 'dp'
+    end
+    -- grip drag: width = start width - mouse dx; left moves with it so the right edge stays put.
+    -- Start values are taken on the first drag event (safer than dragstart); no move if a value is missing.
+    local st = nil
+    local function num(v) return type(v) == 'number' and v or tonumber(v) end
+    local grip = doc:GetElementById('mm-grip')
+    if grip then
+        local function stop() st = nil end
+        grip:AddEventListener('dragend', stop)
+        grip:AddEventListener('mouseup', stop)
+        grip:AddEventListener('drag', function(ev)
+            pcall(function()
+                local dp = probe.offset_width / 100
+                local mx = num(ev.parameters['mouse_x'])
+                if not mx or dp == 0 then return end
+                if not st then
+                    local left = num(doc.offset_left)
+                    if not left then return end
+                    st = { x = mx / dp, w = doc.offset_width / dp, l = left / dp }
+                end
+                local nw = math.max(BASE + 30, math.min(MAXV + 30, st.w - (mx / dp - st.x)))
+                doc.style.width = nw .. 'dp'
+                doc.style.left = (st.l + st.w - nw) .. 'dp'
+            end)
+        end)
+    end
+    local tick = doc:AppendChild(doc:CreateElement('div'))
+    tick:SetClass('mm-tick', true)
+    local flip = false
+    local function arm()
+        flip = not flip
+        tick.style.animation = '0.15s linear 1 ' .. (flip and 'mm-tick-a' or 'mm-tick-b')
+    end
+    tick:AddEventListener('animationend', function()
+        pcall(apply)
+        arm()
+    end)
+    arm()
+end)
+        </script>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/minimap.css" />
     </head>
 
     <body id="game-minimap">
@@ -488,6 +613,9 @@
                     </div>
 
                 </div>
+
+                <!-- Resize corner -->
+                <div id="mm-grip"><div style="left: 1dp; bottom: 1dp;"></div><div style="left: 5dp; bottom: 1dp;"></div><div style="left: 9dp; bottom: 1dp;"></div><div style="left: 1dp; bottom: 5dp;"></div><div style="left: 5dp; bottom: 5dp;"></div><div style="left: 1dp; bottom: 9dp;"></div></div>
 
                 <!-- Corner flourishes -->
                 <div class="ice-fx" id="ice-corner-tl"></div>

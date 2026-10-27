@@ -10,6 +10,7 @@
         <link type="text/rcss" href="../styles/scrollbar.css" />
         <link type="text/rcss" href="../styles/ice_sprites.css" />
         <link type="text/rcss" href="../styles/ice_gauges.css" />
+        <link type="text/rcss" href="../styles/ice_fuel.css" />
         <link type="text/rcss" href="../styles/spritesheet_socketgem.css" />
         <link type="text/rcss" href="../styles/item_slot.css" />
         <link type="text/rcss" href="../styles/spritesheet_inventory.css" />
@@ -192,7 +193,7 @@
             #hud b.weight { color: rgb(170, 100, 20); }
             .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
             #ice-corner-tl { left: -2dp; top: -14dp; width: 52dp; height: 45dp; decorator: image(ice-corner-tl); }
-            #ice-corner-br { right: -1dp; bottom: -10dp; width: 50dp; height: 43dp; decorator: image(ice-corner-br); }
+            #ice-corner-br { right: -1dp; bottom: -10dp; width: 50dp; height: 43dp; decorator: image(ice-corner-br); z-index: 16; } /* above the weapon box (15) */
 
             /* v3: wider box with the equipped weapon / ammo (idea + data binding from Zurn's hud) */
             /* v4: tile spans HP top -> EXP bottom (26 + 3 + 26 + 3 + 12 = 70dp); level + class in the title */
@@ -237,7 +238,22 @@
             #hud div.footer > span.right { flex-grow: 2; }
             #hud .ft-ico { width: 14dp; height: 14dp; margin: 0dp 2dp 0dp 7dp; }
             #hud b.money { color: rgb(170, 100, 20); }
+            /* ===== cart fuel dial (sprites: ice_fuel.css) ===== */
+            .fuel-dial { position: relative; width: 64dp; height: 58dp; }
+            .fuel-dial > div { position: absolute; pointer-events: none; }
+            .fd-glow { left: -10dp; top: -10dp; width: 84dp; height: 78dp; decorator: image(ice-fuel-glow); opacity: 0; }
+            .fuel-dial.fuel-low .fd-glow { animation: 1.1s ease-in-out infinite alternate fd-pulse; }
+            @keyframes fd-pulse { from { opacity: 0.15; } to { opacity: 1; } }
+            .fd-face { left: 0dp; top: 0dp; width: 64dp; height: 58dp; decorator: image(ice-fuel-face); }
+            .fd-needle { left: 29dp; top: 17dp; width: 6dp; height: 21dp; decorator: image(ice-fuel-needle); transform-origin: 50% 90.5% 0; transition: transform 0.8s cubic-out; }
+            .fuel-dial.fuel-low .fd-needle { decorator: image(ice-fuel-needle-low); }
+            .fd-hub { left: 28.5dp; top: 32.5dp; width: 7dp; height: 7dp; decorator: image(ice-fuel-hub); }
+            .fd-pct { left: 16dp; top: 43dp; width: 32dp; height: 11dp; line-height: 11dp; text-align: center; white-space: nowrap;
+                      font-size: 9dp; font-weight: bold; color: rgb(30, 62, 112); }
+            .fuel-dial.fuel-low .fd-pct { color: rgb(220, 50, 46); }
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/hud.css" />
     </head>
 
     <body id="hud" onclick="self-target">
@@ -286,7 +302,9 @@
                     data-attr-item-life="equipped_weapon.life"
                     data-attr-item-durability="equipped_weapon.durability"
                     data-attr-item-appraisal="equipped_weapon.appraisal_no"
-                    data-attr-item-refine-color="equipped_weapon.refine_color" />
+                    data-attr-item-refine-color="equipped_weapon.refine_color"
+                    data-attr-item-socket-count="equipped_weapon.socket_count"
+                    data-attr-item-gem="equipped_weapon.gem_no" />
 
                 <item-slot data-if="equipped_shot_item.id != 0"
                     data-attr-item-key="equipped_shot_item.key"
@@ -298,10 +316,14 @@
             <!-- PAT Fuel --->
             <div onclick="ignore" data-model="pat">
                 <div class="pat-fuel">
-                    <gauge data-if="show" id="fuel" class="horizontal-sm-md green" data-attr-gvalue="fuel"
-                        data-attr-gmax="max_fuel">
-                        <span><label id="percent" />%</span>
-                    </gauge>
+                    <div data-if="show" id="fuel-dial" class="fuel-dial"
+                        data-class-fuel-low="max_fuel * 15 &gt; fuel * 100">
+                        <div class="fd-glow"></div>
+                        <div class="fd-face"></div>
+                        <div class="fd-needle" data-style-transform="max_fuel &gt; 0 ? ('rotate(' + (fuel * 180 / max_fuel - 90) + 'deg)') : 'rotate(-90deg)'"></div>
+                        <div class="fd-hub"></div>
+                        <div class="fd-pct" id="fd-pct">{{ (max_fuel &gt; 0 ? fuel * 100 / max_fuel : 0) | format(0) }}%</div>
+                    </div>
                 </div>
             </div>
         </div>

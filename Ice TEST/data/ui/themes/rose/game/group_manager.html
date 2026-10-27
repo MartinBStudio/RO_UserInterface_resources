@@ -62,6 +62,8 @@
         #group-manager button.gm-danger { color: rgb(170, 40, 40); }
         #group-manager button.gm-danger[disabled] { color: rgb(170, 140, 140); }
     </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/group_manager.css" />
 </head>
 <body template="window-fixed-size" id="group-manager">
     <div data-model="game-arena" class="group-columns">
@@ -70,7 +72,7 @@
             <div class="ui-list-row gm-columns"><span class="group-leader" /><span class="group-name"><str string-id="992">Name</str></span><span class="group-job"><str string-id="993">Class</str></span><span class="group-level">Lv</span></div>
             <div id="arena-member-list" class="group-scroll">
                 <div class="group-empty ui-status" data-if="!has_group"><str string-id="1063">Not in a group</str><br/>Invite a player to start a group.</div>
-                <div class="ui-list-row group-row" data-for="member : members" data-attr-id="'arena-member-' + member.tag" data-attr-onclick="'member:' + member.tag" data-class-selected="selected_member == member.tag">
+                <div class="ui-list-row group-row" data-for="member : members" data-attr-gm-name="member.name" data-attr-gm-job="member.job" data-attr-id="'arena-member-' + member.tag" data-attr-onclick="'member:' + member.tag" data-class-selected="selected_member == member.tag">
                     <span class="group-leader"><span data-if="member.leader">&#9733;</span></span><span class="group-name">{{member.name}}</span><span class="group-job">{{member.job}}</span><span class="group-level">{{member.level}}</span>
                 </div>
             </div>

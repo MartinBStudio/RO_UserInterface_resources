@@ -1,6 +1,7 @@
 <rml>
     <head>
         <link type="text/template" href="../templates/window-fixed.html" />
+        <link type="text/rcss" href="../styles/ice_sprites.css" />
         <link type="text/rcss" href="../styles/ice_menu.css" />
 
         <style>
@@ -132,13 +133,32 @@
             str {
                 color: #8393ca;
             }
+            /* ===== ice: menu-tray = one tray behind the square tiles (sprites in ice_menu.css) ===== */
+            #button-container {
+                decorator: tiled-box(
+                    ice-traybox-tl, ice-traybox-t, ice-traybox-tr,
+                    ice-traybox-l,  ice-traybox-c, ice-traybox-r,
+                    ice-traybox-bl, ice-traybox-b, ice-traybox-br
+                );
+            }
+            #item-mall, #gamearena-scoreboard { margin-top: 4dp; }
+            #button-container.expanded { height: 381dp; }
+            #button-container.expanded-premium { height: 411dp; }
+            #button-container.expanded-scoreboard { height: 427dp; }
+            #button-container.expanded-premium-scoreboard { height: 457dp; }
+            .ice-fx { position: absolute; pointer-events: none; z-index: 10; }
+            #menu-fx-tl { left: 2dp; top: -10dp; width: 24dp; height: 17.5dp; decorator: image(ice-menu-leaf); z-index: 0; }
+            #button-container { position: relative; z-index: 1; }   /* tray in front of the leaves */
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/menu.css" />
     </head>
 
     <body
         id="game-menu-hud"
         data-model="menu"
     >
+        <div class="ice-fx" id="menu-fx-tl" data-if="expanded"></div>
         <div id="button-container" data-class-expanded="expanded && !has_premium_storage && !has_gamearena_scoreboard" data-class-expanded-premium="expanded && has_premium_storage && !has_gamearena_scoreboard"
             data-class-expanded-scoreboard="expanded && has_gamearena_scoreboard && !has_premium_storage"
             data-class-expanded-premium-scoreboard="expanded && has_premium_storage && has_gamearena_scoreboard">

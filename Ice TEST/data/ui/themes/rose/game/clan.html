@@ -171,6 +171,10 @@
             /* inactive members (offline 7+ / 30+ days) */
             #game-clan listbox-item.cl-away-week .last-seen { color: rgb(205, 125, 30); font-weight: 820; }
             #game-clan listbox-item.cl-away-month .last-seen { color: rgb(190, 50, 50); font-weight: 820; }
+            /* hover / selected win over the white zebra rows and the "you" row, same for online and offline */
+            #game-clan listbox-item:not([disabled]):hover { background-color: rgb(196, 222, 248); }
+            #game-clan listbox-item:not([disabled])[selected] { background-color: rgb(255, 236, 180); }
+            #game-clan listbox-item:not([disabled])[selected] .clan-member-name { color: rgb(170, 100, 20); font-weight: 820; }
             /* footer: capacity gauge (same glossy style as HP/MP) + online count */
             #game-clan .cl-footer { flex: 1; padding-left: 4dp; display: flex; flex-direction: row; align-items: center; gap: 10dp; }
             #game-clan .cl-label { color: rgb(90, 115, 150); font-weight: 820; }
@@ -179,6 +183,13 @@
             #game-clan .cl-online { color: rgb(30, 130, 60); font-weight: 820; }
             #game-clan .cl-dot { color: rgb(60, 190, 80); }
             #game-clan button.cl-danger { color: rgb(170, 40, 40); }
+            /* small window: list shrinks (scrolls), footer keeps its height and stays on one line */
+            #game-clan .cl-list { min-height: 0dp; overflow: hidden; }
+            #game-clan .cl-bar { flex-shrink: 0; flex-wrap: nowrap; margin-top: 2dp; }
+            #game-clan .cl-footer { min-width: 0dp; white-space: nowrap; }
+            #game-clan .cl-footer > * { flex-shrink: 0; }
+            #game-clan .cl-bar > button { flex-shrink: 0; white-space: nowrap; }
+            #game-clan gauge#cl-capacity { width: 150dp; }
             #game-clan button.cl-danger[disabled] { color: rgb(170, 140, 140); }
         </style>
         <script>
@@ -206,6 +217,8 @@ document:AddEventListener('mouseover', count_online)
 document:AddEventListener('click', count_online)
 count_online()
         </script>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/clan.css" />
     </head>
 
     <body id="game-clan" template="window-resizeable">
@@ -317,10 +330,10 @@ count_online()
                             </table>
                         </div>
 
-                        <div style="flex: 1;" class="content-box">
+                        <div style="flex: 1;" class="content-box cl-list">
                             <div style="overflow: hidden scroll; width: 100%; height: 100%">
                                 <listbox data-event-change="selected_member_index = members.size > 0 ? ev.value : 0">
-                                    <listbox-item data-for="member, member_index : members" data-value="member_index" data-class-offline="member.channel == 255" data-class-cl-me="member.name == avatar_name" data-class-cl-away-week="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 604800 &amp;&amp; current_time - member.last_seen &lt; 2592000" data-class-cl-away-month="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 2592000">
+                                    <listbox-item data-for="member, member_index : members" data-value="member_index" data-attr-cj-name="member.name" data-attr-cj-job="member.job_id" data-class-offline="member.channel == 255" data-class-cl-me="member.name == avatar_name" data-class-cl-away-week="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 604800 &amp;&amp; current_time - member.last_seen &lt; 2592000" data-class-cl-away-month="member.channel == 255 &amp;&amp; current_time - member.last_seen &gt;= 2592000">
                                         <td class="clan-member-icon"><img data-attr-sprite="member.channel == 255 ? 'clan-member-offline' : 'clan-member-online'" /></td>
                                         <td class="clan-member-name">{{member.name}}<br/></td>
                                         <td class="clan-member-rank"><str data-attr-clan-rank="member.rank" /></td>
@@ -336,7 +349,7 @@ count_online()
                             </div>
                         </div>
 
-                        <div style="display: flex; align-items: center">
+                        <div class="cl-bar" style="display: flex; align-items: center">
                             <div class="cl-footer">
                                 <span class="cl-label">Members</span>
                                 <gauge id="cl-capacity" class="horizontal-lg-lg" animation-enabled="false" data-attr-gvalue="members.size" data-attr-gmax="max_members">

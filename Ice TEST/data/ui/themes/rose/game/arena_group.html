@@ -131,6 +131,22 @@
             #arena-group.gr-1 #group-settings-panel button.gr-btn[gr="1"],
             #arena-group.gr-2 #group-settings-panel button.gr-btn[gr="2"],
             #arena-group.gr-3 #group-settings-panel button.gr-btn[gr="3"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+            /* Group Options > Columns: Auto (game layout) / 2 (fixed 2 columns, cards placed row by row by the script below) */
+            #group-settings-panel button.gr-btn.gl-btn { width: 44dp; }
+            #arena-group.gl-0 #group-settings-panel button.gl-btn[gl="0"],
+            #arena-group.gl-2 #group-settings-panel button.gl-btn[gl="2"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+            #arena-group.gl-2 .group-columns { display: block; position: relative; }
+            #arena-group.gl-2 .group-column { position: absolute; left: 0; top: 0; height: 0; }
+            #arena-group.gl-2 .group-member { position: absolute; width: 10em; margin-bottom: 0; }
+            .gl-tick { position: absolute; left: 0; top: 0; width: 1dp; height: 1dp; opacity: 0; pointer-events: none; }
+            /* Experimental: class badge for group members (script below, sprites in ice_class.css) */
+            img.cls-badge { display: none; position: absolute; top: 0.08em; left: 0.12em; width: 1.82em; height: 1.34em; pointer-events: none; z-index: 3; }
+            img.cls-badge.cls-on { display: block; }
+            img.cls-badge.cls-on ~ .rip-badge,
+            img.cls-badge.cls-on ~ .far-badge { left: 2.1em; margin-left: 2dp; }
+            .cls-tick { position: absolute; left: 0; top: 0; width: 1dp; height: 1dp; opacity: 0; pointer-events: none; }
+            @keyframes cls-tick-a { from { opacity: 0; } to { opacity: 0.01; } }
+            @keyframes cls-tick-b { from { opacity: 0; } to { opacity: 0.01; } }
         </style>
         <script>
 -- Group Options > Buff rows: 1 / 2 / 3 rows of status icons per member card.
@@ -158,28 +174,249 @@ pcall(function()
         local body = doc:GetElementById('arena-group') or doc
         for i = 1, 3 do body:SetClass('gr-' .. i, i == n) end
     end
-    local function save(n)
+    local function save(n, key)
+        key = key or 'group_rows'
         local t, order = read_all()
-        if t.group_rows == nil then order[#order + 1] = 'group_rows' end
-        t.group_rows = tostring(n)
+        if t[key] == nil then order[#order + 1] = key end
+        t[key] = tostring(n)
         local f = io.open(FLAGS, 'w')
         if not f then return end
         for _, k in ipairs(order) do f:write(k, '=', t[k], '\n') end
         f:close()
     end
+    -- Member rows: 0 = the game's own columns, 2 = fixed 2-row grid (cards placed here, left to right)
+    local function apply_layout(m)
+        local body = doc:GetElementById('arena-group') or doc
+        body:SetClass('gl-0', m ~= 2)
+        body:SetClass('gl-2', m == 2)
+    end
+    local function plain(cls)
+        local out = {}
+        local list = doc:GetElementsByTagName('div')
+        for i = 1, #list do
+            local e = list[i]
+            if e and e:IsClassSet(cls) and not e:HasAttribute('data-for') then out[#out + 1] = e end
+        end
+        return out
+    end
+    local function layout()
+        local body = doc:GetElementById('arena-group')
+        local wrap = plain('group-columns')[1]
+        if not body or not wrap then return end
+        local mem = plain('group-member')
+        if not body:IsClassSet('gl-2') then
+            -- back to the game's layout: clear every offset we set
+            for i = 1, #mem do
+                if mem[i]:GetAttribute('gl-pos') then
+                    mem[i].style.left = '0em'; mem[i].style.top = '0em'
+                    mem[i]:RemoveAttribute('gl-pos')
+                end
+            end
+            if wrap:GetAttribute('gl-sz') then
+                wrap.style.width = 'auto'; wrap.style.height = 'auto'
+                wrap:RemoveAttribute('gl-sz')
+            end
+            return
+        end
+        local col = plain('group-column')[1]
+        local n = #mem
+        if not col or n == 0 then return end
+        local cw = col.offset_width
+        if cw == nil or cw == 0 then return end
+        -- everything in em (the column is 10em wide), so UI scale / dp never matter
+        local h = 0
+        for i = 1, n do
+            local oh = mem[i].offset_height or 0
+            if oh > h then h = oh end
+        end
+        local hem = math.floor(h * 10 / cw * 100 + 0.5) / 100
+        local px, py = 10.4, hem + 0.3
+        for i = 1, n do
+            local k = i - 1
+            local rr = math.floor(k / 2)
+            local c = k - rr * 2
+            local L, T = c * px, rr * py
+            local key = L .. ',' .. T
+            if mem[i]:GetAttribute('gl-pos') ~= key then
+                mem[i].style.left = L .. 'em'; mem[i].style.top = T .. 'em'
+                mem[i]:SetAttribute('gl-pos', key)
+            end
+        end
+        local nc = 2
+        if n == 1 then nc = 1 end
+        local nr = math.ceil(n / 2)
+        local W, H = nc * 10 + (nc - 1) * 0.4, nr * py
+        local sz = W .. ',' .. H
+        if wrap:GetAttribute('gl-sz') ~= sz then
+            wrap.style.width = W .. 'em'; wrap.style.height = H .. 'em'
+            wrap:SetAttribute('gl-sz', sz)
+        end
+    end
     local t = read_all()
     local n = tonumber(t.group_rows or '') or 3
     if n ~= 1 and n ~= 2 then n = 3 end
     apply(n)
+    apply_layout(tonumber(t.group_layout or '') or 0)
     doc:AddEventListener('click', function(event)
         pcall(function()
             local el = event.target_element
             local v = el and tonumber(el:GetAttribute('gr') or '')
             if v then apply(v); save(v) end
+            local g = el and tonumber(el:GetAttribute('gl') or '')
+            if g then apply_layout(g); save(g, 'group_layout'); pcall(layout) end
         end)
     end)
+    local tick = doc:AppendChild(doc:CreateElement('div'))
+    tick:SetClass('gl-tick', true)
+    local flip = false
+    local function arm()
+        flip = not flip
+        tick.style.animation = '0.15s linear 1 ' .. (flip and 'cls-tick-a' or 'cls-tick-b')
+    end
+    tick:AddEventListener('animationend', function()
+        pcall(layout)
+        arm()
+    end)
+    arm()
 end)
         </script>
+        <link type="text/rcss" href="../styles/ice_class.css" />
+        <script>
+-- Experimental (Options > Add-ons): class badge next to group members. Classes come from the
+-- Group Manager list (rows tagged gm-name / gm-job) and are remembered in sp_clan_classes.txt.
+pcall(function()
+    local doc = document
+    local FLAGS, CACHE = 'sp_addons.txt', 'sp_clan_classes.txt'
+    local NL = string.char(10)
+    local JOB = { [0] = 'visitor', [111] = 'soldier', [121] = 'knight', [122] = 'champion',
+        [211] = 'muse', [221] = 'mage', [222] = 'cleric', [311] = 'hawker', [321] = 'raider', [322] = 'scout',
+        [411] = 'dealer', [421] = 'bourgeois', [422] = 'artisan' }
+    local BASE = { [1] = 'soldier', [2] = 'muse', [3] = 'hawker', [4] = 'dealer' }
+    local known, saved, enabled = {}, nil, false
+    local NAMES = {}
+    for _, v in pairs(JOB) do NAMES[v] = true end
+    local function sprite_for(id)
+        local n = tonumber(id)
+        local j
+        if n then j = JOB[n] or BASE[math.floor(n / 100)]
+        else
+            j = string.lower(tostring(id or '')):gsub('%s', '')
+            if not NAMES[j] then j = nil end
+        end
+        return j and ('cls-' .. j) or nil
+    end
+    local function read_flag()
+        local on = false
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d)')
+                if k == 'class_icons' then on = (v == '1') end
+            end
+            f:close()
+        end)
+        return on
+    end
+    local function load_cache()
+        pcall(function()
+            local f = io.open(CACHE, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local n, id = line:match('^(.-)=(%w+)%s*$')
+                if n and n ~= '' then known[n] = id end
+            end
+            f:close()
+        end)
+    end
+    local function save_cache()
+        local names = {}
+        for n in pairs(known) do names[#names + 1] = n end
+        table.sort(names)
+        local parts = {}
+        for _, n in ipairs(names) do parts[#parts + 1] = n .. '=' .. known[n] end
+        local s = table.concat(parts, NL)
+        if s == saved then return end
+        saved = s
+        pcall(function()
+            local f = io.open(CACHE, 'w')
+            if f then f:write(s, NL); f:close() end
+        end)
+    end
+    local function gm_doc()
+        local found
+        pcall(function()
+            local docs = doc.context.documents
+            found = docs['group-manager']
+            if not found then
+                for _, d in pairs(docs) do
+                    if d.id == 'group-manager' then found = d; break end
+                end
+            end
+        end)
+        return found
+    end
+    local function scan_gm()
+        local gd = gm_doc()
+        if not gd then return end
+        local rows = gd:GetElementsByTagName('div')
+        for i = 1, #rows do
+            local r = rows[i]
+            if r and not r:HasAttribute('data-for') then
+                local n = r:GetAttribute('gm-name')
+                local j = r:GetAttribute('gm-job')
+                if n and n ~= '' and j and sprite_for(j) then
+                    known[tostring(n)] = string.lower(tostring(j)):gsub('%s', '')
+                end
+            end
+        end
+    end
+    local function paint()
+        local imgs = doc:GetElementsByTagName('img')
+        for i = 1, #imgs do
+            local im = imgs[i]
+            if im and im:IsClassSet('cls-badge') then
+                local n = im:GetAttribute('cn')
+                local sp = nil
+                if enabled and n ~= nil and known[tostring(n)] then sp = sprite_for(known[tostring(n)]) end
+                if sp then
+                    if im:GetAttribute('sprite') ~= sp then im:SetAttribute('sprite', sp) end
+                    if not im:IsClassSet('cls-on') then im:SetClass('cls-on', true) end
+                elseif im:IsClassSet('cls-on') then
+                    im:SetClass('cls-on', false)
+                end
+            end
+        end
+    end
+    local ticks = 0
+    local function update()
+        ticks = ticks + 1
+        if ticks % 6 == 1 then
+            enabled = read_flag()
+            if enabled then
+                pcall(scan_gm)
+                pcall(save_cache)
+            end
+        end
+        pcall(paint)
+    end
+    load_cache()
+    local tick = doc:AppendChild(doc:CreateElement('div'))
+    tick:SetClass('cls-tick', true)
+    local flip = false
+    local function arm()
+        flip = not flip
+        tick.style.animation = '0.5s linear 1 ' .. (flip and 'cls-tick-a' or 'cls-tick-b')
+    end
+    tick:AddEventListener('animationend', function()
+        pcall(update)
+        arm()
+    end)
+    arm()
+end)
+        </script>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/arena_group.css" />
     </head>
     <body template="window-fixed-size" id="arena-group" data-model="arena-group" data-class-collapsed="collapsed">
         <div id="arena-group-panel" data-model="arena-group">
@@ -207,6 +444,10 @@ end)
                         <span>Buff rows</span>
                         <div class="gr-buttons"><button class="gr-btn" gr="1">1</button><button class="gr-btn" gr="2">2</button><button class="gr-btn" gr="3">3</button></div>
                     </div>
+                    <div class="gr-row">
+                        <span>Columns</span>
+                        <div class="gr-buttons"><button class="gr-btn gl-btn" gl="0">Auto</button><button class="gr-btn gl-btn" gl="2">2</button></div>
+                    </div>
                 </div>
             </div>
             <input type="checkbox" id="cc-toggle" />
@@ -214,7 +455,7 @@ end)
                 <div class="group-columns">
                     <div class="group-column" data-for="column : columns">
                         <div class="group-member ui-roster-member" data-for="member : column.members" data-attr-id="'group-member-' + member.tag" data-attr-onclick="'select:' + member.tag" data-class-leader="member.leader">
-                            <gauge class="group-health ui-vitals horizontal-sm-md red" data-attr-gvalue="member.hp_percent" gmax="100"><span class="group-name ui-roster-name">{{member.name}}</span></gauge>
+                            <img class="cls-badge" sprite="cls-visitor" data-attr-cn="member.name" /><gauge class="group-health ui-vitals horizontal-sm-md red" data-attr-gvalue="member.hp_percent" gmax="100"><span class="group-name ui-roster-name">{{member.name}}</span></gauge>
                             <gauge class="group-mana ui-vitals horizontal-sm-sm blue" data-attr-gvalue="member.mp_percent" gmax="100" /><div class="ice-click"></div>
                             <div class="group-statuses ui-status-icons">
                                 <span class="group-status" data-for="status : member.statuses" data-attr-id="'group-status-' + member.tag + '-' + status.key" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.key" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.key" /></span>

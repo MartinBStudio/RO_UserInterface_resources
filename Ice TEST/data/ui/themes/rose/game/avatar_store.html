@@ -53,7 +53,10 @@
             /* fixed heights everywhere, so every shop opens at the same size
                (the game re-centres the window whenever its height changes) */
             #store-company { height: 18dp; line-height: 18dp; margin-bottom: 4dp; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .shop-selection { height: 46dp; box-sizing: border-box; overflow: hidden; }
+            /* name left (wraps to 2 lines), price right, both centred vertically (as the dev layout) */
+            .shop-selection { height: 46dp; box-sizing: border-box; overflow: hidden; display: flex; flex-direction: row; align-items: center; gap: 8dp; }
+            #selected-name { flex: 1; min-width: 0dp; white-space: normal; text-overflow: clip; word-break: break-word; line-height: 15dp; max-height: 30dp; overflow: hidden; }
+            .shop-price { flex-shrink: 0; white-space: nowrap; }
             #store-state { height: 34dp; line-height: 17dp; overflow: hidden; }
         
             /* zulie: close-button style Z icon (atlas2) */
@@ -73,6 +76,8 @@
                 text-overflow: ellipsis;
             }
         </style>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/avatar_store.css" />
     </head>
     <body id="game-avatar-store" template="window-fixed-size">
         <div data-model="avatar-store">

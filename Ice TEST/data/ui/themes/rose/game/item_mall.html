@@ -17,8 +17,9 @@
 
         /* points badge in the title band: white pill, gold edge */
         #mall-balance {
-            top: -36dp; right: 42dp;
-            padding: 2dp 10dp;
+            top: -33dp; right: 42dp;
+            height: 24dp; min-height: 0dp; box-sizing: border-box;
+            padding: 0dp 10dp;
             background-color: rgb(255, 255, 255);
             border: 1dp rgb(214, 166, 60);
             border-radius: 12dp;
@@ -155,6 +156,8 @@ document:AddEventListener('click', function(event)
     end)
 end)
     </script>
+        <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
+        <link type="text/rcss" href="../styles/dark/item_mall.css" />
 </head>
 <body id="item-mall" template="window-fixed-size">
     <div id="mall-balance" class="ui-currency content-box"><img sprite="mall-points" /><b id="mall-points">0</b><span>PTS</span></div>
