@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ROSE UI Workshop</title><link rel="stylesheet" href="workshop.css">
+</head>
+<body>
+  <aside>
+    <div class="brand"><span class="rose">✳</span><div><strong>ROSE UI</strong><small>LOCAL WORKSHOP</small></div><span class="offline">OFFLINE</span></div>
+    <label for="theme-search">THEME LIBRARY <span id="theme-count"></span></label>
+    <input id="theme-search" type="search" placeholder="Find a theme…">
+    <select id="theme" size="12" aria-label="Theme"></select>
+    <div id="description"></div>
+    <label for="window">WINDOW</label><select id="window"></select>
+    <label for="preset">SAMPLE STATE</label>
+    <select id="preset"><option value="normal">Adventuring</option><option value="low-health">Low health & fuel</option><option value="full">Full health & fuel</option><option value="empty">Empty inventory & party</option></select>
+    <p class="hint">Theme files override the base UI. Save a file in your editor to refresh the preview.</p>
+    <div class="base-info"><span class="dot"></span><span id="base-status">Finding base assets…</span></div>
+  </aside>
+  <main>
+    <header><div><div class="eyebrow">PREVIEW CANVAS</div><h1 id="heading">UI Workshop</h1></div><div class="tools">
+      <label class="live"><input id="live" type="checkbox" checked> Live reload</label>
+      <button id="debug">Inspect UI</button><button id="reload">↻ Reload</button>
+    </div></header>
+    <div class="display-controls">
+      <label>Resolution <select id="resolution" aria-label="Resolution">
+        <option value="auto">Available space</option><option value="1024x768">1024 × 768 · 4:3</option>
+        <option value="1280x720">1280 × 720 · HD</option><option value="1280x800">1280 × 800 · 16:10</option>
+        <option value="1366x768">1366 × 768 · Laptop</option><option value="1600x900">1600 × 900</option>
+        <option value="1920x1080">1920 × 1080 · Full HD</option><option value="1920x1200">1920 × 1200 · 16:10</option>
+        <option value="2560x1440">2560 × 1440 · QHD</option><option value="2560x1080">2560 × 1080 · Ultrawide</option>
+        <option value="3440x1440">3440 × 1440 · Ultrawide</option><option value="3840x2160">3840 × 2160 · 4K</option>
+        <option value="custom">Custom</option>
+      </select></label>
+      <div id="custom-resolution" hidden><input id="viewport-width" aria-label="Viewport width" type="number" min="320" max="7680" step="1" value="1920"><span>×</span><input id="viewport-height" aria-label="Viewport height" type="number" min="240" max="4320" step="1" value="1080"></div>
+      <label>UI scale <select id="scale" aria-label="UI scale"><option value="0.5">50%</option><option value="0.75">75%</option><option value="0.8">80%</option><option value="0.9">90%</option><option value="1" selected>100%</option><option value="1.1">110%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="1.75">175%</option><option value="2">200%</option><option value="2.5">250%</option><option value="3">300%</option><option value="custom">Custom</option></select></label>
+      <label id="custom-scale" hidden><input id="scale-percent" aria-label="Custom UI scale" type="number" min="25" max="400" value="100">%</label>
+      <label>View <select id="view" aria-label="Preview view"><option value="fit">Fit to screen</option><option value="actual">Actual pixels (scroll)</option></select></label>
+      <span id="display-summary" aria-live="polite"></span>
+    </div>
+    <div class="canvas-wrap"><div id="viewport-scroll"><div id="screen"><iframe id="preview" title="RmlUi window preview"></iframe></div></div><div id="loading">Starting the RmlUi renderer…</div><span class="canvas-note">RmlUi · WebGL 2 · sample game data</span></div>
+    <div id="resource-warning" hidden style="padding:10px 0;color:#e5b67a;font-size:11px">Some shared textures are missing. The preview is incomplete; see source & diagnostics for their paths.</div>
+    <footer><span id="status">Preparing preview</span><button id="source-toggle">View source & diagnostics</button></footer>
+    <section id="details" hidden><div class="detail-head"><strong id="source-path">Source</strong><button id="copy-path">Copy path</button></div><div class="detail-columns"><pre id="source"></pre><div><strong>Renderer diagnostics</strong><pre id="diagnostics">No messages.</pre></div></div></section>
+  </main>
+  <script type="module" src="workshop.js"></script>
+</body>
+</html>

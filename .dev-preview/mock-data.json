@@ -1,0 +1,34 @@
+{
+  "defaults": {
+    "name": "AruaExplorer", "level": 120, "job": 221, "job_name": "Knight",
+    "health": 4200, "max_health": 5600, "health_percent": 75, "hp_percent": 75,
+    "mana": 1850, "max_mana": 2400, "mana_percent": 77,
+    "experience": 6500, "max_experience": 10000, "experience_percent": 65,
+    "money": 1234567, "zulie": 1234567, "weight": "248 / 1,200", "weight_percent": 21,
+    "enabled": true, "available": true, "show": true, "visible": true,
+    "mode": 1, "tab_index": 0, "overweight": false, "collapsed": false,
+    "is_leader": true, "can_entrust": true, "can_kick": true,
+    "members_font_size": 15, "members_min_height": 80, "members_max_height": 360,
+    "fuel": 72, "max_fuel": 100, "channel": 1, "zone_name": "Junon Polis", "zone": "Junon Polis",
+    "tooltip_visible": false, "show_system_tab": true, "chat_blocked": false, "chat_input_category": 0,
+    "strip_width": 240, "strip_max_width": 400,
+    "equipped_weapon": {"id":0,"key":0}, "equipped_shot_item": {"id":0,"key":0},
+    "tabs": [{"name":"All"},{"name":"Party"},{"name":"Clan"},{"name":"Trade"}],
+    "members": [
+      {"name":"AruaExplorer","tag":1,"leader":true,"selected":false,"available":true,"hp_percent":85,"statuses":[]},
+      {"name":"LunaCleric","tag":2,"leader":false,"selected":true,"available":true,"hp_percent":62,"statuses":[]},
+      {"name":"JunonScout","tag":3,"leader":false,"selected":false,"available":true,"hp_percent":94,"statuses":[]}
+    ],
+    "entries": [], "groups": [], "statuses": [], "items": [], "quests": [], "skills": [], "friends": []
+  },
+  "models": {
+    "party": {"level": 24},
+    "inventory-window": {"operation":"Drag items to equip them"}
+  },
+  "presets": {
+    "normal": {},
+    "low-health": {"health":560,"health_percent":10,"hp_percent":10,"mana":240,"mana_percent":10,"fuel":8},
+    "full": {"health":5600,"health_percent":100,"hp_percent":100,"mana":2400,"mana_percent":100,"experience":10000,"experience_percent":100,"fuel":100},
+    "empty": {"members":[],"items":[],"entries":[],"money":0,"zulie":0,"weight":"0 / 1,200"}
+  }
+}
