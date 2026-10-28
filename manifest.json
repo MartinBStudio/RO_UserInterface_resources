@@ -1,8 +1,8 @@
 {
   "name": "RO_UserInterface_resources",
-  "version": "1.2.3",
-  "timestamp": "2026-08-31T23:40:03.170-04:00",
-  "description": "Added .dev preview server for testing and development of the RO_UserInterface resources.",
+  "version": "1.2.4",
+  "timestamp": "2026-10-28T10:44:03.170-04:00",
+  "description": "Removed .dev preview tool, added to separate repository.",
   "author": "MartinBStudio",
   "repository": "https://github.com/MartinBStudio/RO_UserInterface_resources"
 }
