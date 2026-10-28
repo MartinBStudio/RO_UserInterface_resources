@@ -1,10 +1,45 @@
 import { dimensions, fitScale } from './display.mjs';
+import { createEditor } from './editor.js';
 const $ = id => document.getElementById(id);
 let catalog, windows = [], currentTheme = localStorage.getItem('rose-theme') || 'Arua';
 let diagnostics = [], revision = 0, sourceRequest = 0;
 let sampleControls = {};
 const frame = $('preview');
 const themeSelect = $('theme'), windowSelect = $('window');
+const editor = createEditor({
+  getContext:() => ({theme:currentTheme,path:windowSelect.value}),
+  getToken:() => catalog?.editToken,
+  onPreview:() => {
+    if (previewReady) {
+      diagnostics = []; $('diagnostics').textContent = 'No messages.'; $('resource-warning').hidden = true;
+      frame.contentWindow.postMessage({type:'reload',path:windowSelect.value},location.origin);
+    } else if (catalog && windowSelect.value) reload();
+  },
+  onSaved:() => loadSource().catch(e => error(e.message))
+});
+const split = $('workspace-split'), splitter = $('splitter');
+let panePercent = Math.max(25,Math.min(75,Number(localStorage.getItem('rose-pane-percent')) || 55));
+function resizePanes(percent) {
+  panePercent = Math.max(25,Math.min(75,percent));
+  split.style.setProperty('--preview-share',panePercent+'%');
+  splitter.setAttribute('aria-valuenow',String(Math.round(panePercent)));
+  localStorage.setItem('rose-pane-percent',String(panePercent));
+}
+resizePanes(panePercent);
+splitter.addEventListener('pointerdown',event => { splitter.setPointerCapture(event.pointerId); split.classList.add('resizing'); });
+splitter.addEventListener('pointermove',event => {
+  if (!splitter.hasPointerCapture(event.pointerId)) return;
+  const bounds = split.getBoundingClientRect(); resizePanes(100*(event.clientX-bounds.left)/bounds.width);
+});
+const endResize = () => split.classList.remove('resizing');
+splitter.addEventListener('pointerup',endResize); splitter.addEventListener('lostpointercapture',endResize);
+splitter.addEventListener('keydown',event => {
+  if (['ArrowLeft','ArrowRight'].includes(event.key)) { event.preventDefault(); resizePanes(panePercent+(event.key === 'ArrowLeft' ? -2 : 2)); }
+});
+$('editor-toggle').addEventListener('click',() => {
+  const hidden = split.classList.toggle('editor-hidden');
+  $('editor-toggle').textContent = hidden ? 'Show code' : 'Hide code'; $('editor-toggle').setAttribute('aria-expanded',String(!hidden));
+});
 const displayKeys = ['resolution','viewport-width','viewport-height','scale','scale-percent','view'];
 for (const id of displayKeys) {
   const saved = localStorage.getItem('rose-display-'+id);
@@ -65,10 +100,10 @@ async function chooseTheme() {
   reload();
 }
 function reload(extra = {}) {
-  if (!windowSelect.value) { error('This theme has no UI windows and no base assets were found. See .dev-preview/README.md.'); return; }
+  if (!windowSelect.value) { error(catalog.base ? 'No previewable windows were found. Windows that require live game content are hidden.' : 'This theme has no UI windows and no base assets were found. See .dev-preview/README.md.'); return; }
   if (!catalog.engine) { error('The renderer is missing. Run .dev-preview/build.ps1 once; see .dev-preview/README.md.'); return; }
   sampleControls = {...sampleControls,...extra};
-  const params = new URLSearchParams({theme:currentTheme,window:windowSelect.value,preset:$('preset').value,scale:uiScale(),...sampleControls});
+  const params = new URLSearchParams({theme:currentTheme,window:windowSelect.value,preset:$('preset').value,scale:uiScale(),draft:editor.draftId,...sampleControls});
   localStorage.setItem('rose-window',windowSelect.value);
   $('heading').textContent = `${currentTheme} / ${windowSelect.selectedOptions[0]?.textContent.replace(/^[●○] /,'')}`;
   diagnostics = []; $('diagnostics').textContent = 'No messages.';
@@ -77,6 +112,7 @@ function reload(extra = {}) {
   previewReady = false;
   $('status').textContent = 'Loading…'; frame.src = '/preview.html?'+params;
   loadSource().catch(e => { $('source').textContent = e.message; });
+  editor.openContext();
 }
 async function loadSource() {
   const request = ++sourceRequest;
@@ -116,6 +152,7 @@ events.onmessage = event => {
   const update = JSON.parse(event.data);
   if (revision === update.revision) return;
   revision = update.revision;
+  editor.refreshDisk();
   if ($('live').checked) { reload(); $('status').textContent = `Reloading after change: ${update.file}`; }
 };
 events.onerror = () => { $('status').textContent = 'Server connection interrupted — reconnecting…'; };

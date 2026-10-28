@@ -11,7 +11,7 @@
     <input id="theme-search" type="search" placeholder="Find a theme…">
     <select id="theme" size="12" aria-label="Theme"></select>
     <div id="description"></div>
-    <label for="window">WINDOW</label><select id="window"></select>
+    <label for="window">WINDOW</label><select id="window" title="Only windows with previewable sample content are listed."></select>
     <label for="preset">SAMPLE STATE</label>
     <select id="preset"><option value="normal">Adventuring</option><option value="low-health">Low health & fuel</option><option value="full">Full health & fuel</option><option value="empty">Empty inventory & party</option></select>
     <p class="hint">Theme files override the base UI. Save a file in your editor to refresh the preview.</p>
@@ -20,6 +20,7 @@
   <main>
     <header><div><div class="eyebrow">PREVIEW CANVAS</div><h1 id="heading">UI Workshop</h1></div><div class="tools">
       <label class="live"><input id="live" type="checkbox" checked> Live reload</label>
+      <button id="editor-toggle" aria-expanded="true">Hide code</button>
       <button id="debug">Inspect UI</button><button id="reload">↻ Reload</button>
     </div></header>
     <div class="display-controls">
@@ -38,9 +39,22 @@
       <label>View <select id="view" aria-label="Preview view"><option value="fit">Fit to screen</option><option value="actual">Actual pixels (scroll)</option></select></label>
       <span id="display-summary" aria-live="polite"></span>
     </div>
+    <div id="workspace-split">
+    <div class="preview-pane">
     <div class="canvas-wrap"><div id="viewport-scroll"><div id="screen"><iframe id="preview" title="RmlUi window preview"></iframe></div></div><div id="loading">Starting the RmlUi renderer…</div><span class="canvas-note">RmlUi · WebGL 2 · sample game data</span></div>
     <div id="resource-warning" hidden style="padding:10px 0;color:#e5b67a;font-size:11px">Some shared textures are missing. The preview is incomplete; see source & diagnostics for their paths.</div>
     <footer><span id="status">Preparing preview</span><button id="source-toggle">View source & diagnostics</button></footer>
+    </div>
+    <div id="splitter" role="separator" aria-label="Resize preview and code panes" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="75" aria-valuenow="55" tabindex="0"></div>
+    <section id="editor-pane" aria-label="Live code editor">
+      <div class="editor-heading"><strong>LIVE CODE</strong><span id="editor-dirty">All changes saved</span></div>
+      <select id="editor-file" aria-label="Source file"></select>
+      <div id="editor-path"></div><div id="editor-layer"></div>
+      <div class="code-area"><pre id="editor-lines" aria-hidden="true">1</pre><textarea id="code-editor" aria-label="UI source code" spellcheck="false" wrap="off" disabled></textarea></div>
+      <div class="editor-actions"><span>Preview as you type · Ctrl+S to save</span><button id="editor-discard" disabled>Discard</button><button id="editor-save" disabled>Save to theme</button></div>
+      <div id="editor-status" role="status">Choose a window to edit its source.</div>
+    </section>
+    </div>
     <section id="details" hidden><div class="detail-head"><strong id="source-path">Source</strong><button id="copy-path">Copy path</button></div><div class="detail-columns"><pre id="source"></pre><div><strong>Renderer diagnostics</strong><pre id="diagnostics">No messages.</pre></div></div></section>
   </main>
   <script type="module" src="workshop.js"></script>

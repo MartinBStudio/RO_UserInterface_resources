@@ -8,6 +8,50 @@ import { decodeDDS } from '../textures.mjs';
 import { contained, createPreviewServer, findBase, listenAvailable, root } from '../server.mjs';
 import http from 'node:http';
 import { dimensions, fitScale } from '../public/display.mjs';
+import { bundledBase } from '../base-assets.mjs';
+import { gzipSync } from 'node:zlib';
+
+test('portable installation extracts and reuses its included shared base assets',t => {
+  const cache = path.join(root,'.dev-preview','.cache');
+  fs.mkdirSync(cache,{recursive:true});
+  const fixture = fs.mkdtempSync(path.join(cache,'portable-base-'));
+  t.after(() => { assert.equal(path.dirname(fixture),cache); fs.rmSync(fixture,{recursive:true,force:true}); });
+  const relative = 'data/ui/themes/rose/templates/window-box.html';
+  fs.writeFileSync(path.join(fixture,'base-ui.json.gz'),gzipSync(JSON.stringify({files:{[relative]:Buffer.from('<template/>').toString('base64')}})));
+  const base = bundledBase(fixture);
+  assert.equal(fs.readFileSync(path.join(base,relative),'utf8'),'<template/>');
+  const modified = fs.statSync(path.join(base,relative)).mtimeMs;
+  assert.equal(bundledBase(fixture),base);
+  assert.equal(fs.statSync(path.join(base,relative)).mtimeMs,modified);
+  fs.writeFileSync(path.join(fixture,'base-ui.json.gz'),gzipSync(JSON.stringify({files:{'data/../../outside':'bad'}})));
+  assert.throws(() => bundledBase(fixture),/Invalid bundled/);
+});
+
+test('finds neighboring downloaded repositories, renamed folders, and ZIP wrappers',t => {
+  const cache = path.join(root,'.dev-preview','.cache');
+  fs.mkdirSync(cache,{recursive:true});
+  const fixture = fs.mkdtempSync(path.join(cache,'base-discovery-'));
+  t.after(() => {
+    assert.equal(path.dirname(fixture),cache);
+    fs.rmSync(fixture,{recursive:true,force:true});
+  });
+  const repository = path.join(fixture,'RO_UserInterface_resources-main');
+  fs.mkdirSync(repository);
+  assert.equal(findBase(undefined,repository),null);
+  function addBase(relative) {
+    const base = path.join(fixture,relative);
+    const templates = path.join(base,'data/ui/themes/rose/templates');
+    fs.mkdirSync(templates,{recursive:true}); fs.writeFileSync(path.join(templates,'window-box.html'),'<template/>');
+    return base;
+  }
+  const wrapped = addBase('download/rednim-rose-ui-public-main/assets');
+  assert.equal(findBase(undefined,repository),wrapped);
+  const renamed = addBase('my-base-files/assets');
+  assert.equal(findBase(undefined,repository),renamed);
+  const downloaded = addBase('rednim-rose-ui-public-main/assets');
+  assert.equal(findBase(undefined,repository),downloaded);
+  assert.equal(findBase(path.join(fixture,'download'),repository),wrapped);
+});
 
 test('startup skips an occupied port and reports the actual reachable address',async t => {
   const occupied = http.createServer();

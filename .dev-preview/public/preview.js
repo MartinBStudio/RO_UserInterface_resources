@@ -26,6 +26,11 @@ try {
     if (e.origin !== location.origin || e.source !== parent) return;
     if (e.data.type === 'debug') engine._preview_debug();
     if (e.data.type === 'display' && Number.isFinite(e.data.scale)) { scale = Math.max(0.25,Math.min(4,e.data.scale)); resize(); }
+    if (e.data.type === 'reload' && typeof e.data.path === 'string') {
+      const loaded = engine.ccall('preview_load','number',['string'],[e.data.path]);
+      if (loaded) send('ready',{width:innerWidth,height:innerHeight});
+      else send('error',{message:'The edited window could not be loaded. Check the code and renderer diagnostics.'});
+    }
   });
   const mods = e => (e.ctrlKey?1:0)|(e.shiftKey?2:0)|(e.altKey?4:0)|(e.metaKey?8:0);
   canvas.addEventListener('pointermove',e => engine._preview_mouse(e.offsetX,e.offsetY,mods(e)));
