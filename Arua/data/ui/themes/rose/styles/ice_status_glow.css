@@ -35,8 +35,11 @@
 }
 
 /* priority (user): flame > sleep/stun (disable) > taunt > silence > poison > acid > slow */
-.cc-frame[cc="22"] { z-index: 17; border-color: rgb(110, 50, 170); }
-.cc-frame[cc="22"] > .cc-inner { border-color: rgb(200, 115, 255); }
+/* icon 22: stun (and unknown ids) = white; sleep / daze / charm = purple (frame k = status id) */
+.cc-frame[cc="22"] { z-index: 17; border-color: rgb(255, 255, 255); }
+.cc-frame[cc="22"] > .cc-inner { border-color: rgb(255, 255, 255); }
+.cc-frame[cc="22"][k="31"], .cc-frame[cc="22"][k="140"], .cc-frame[cc="22"][k="141"] { border-color: rgb(110, 50, 170); }
+.cc-frame[cc="22"][k="31"] > .cc-inner, .cc-frame[cc="22"][k="140"] > .cc-inner, .cc-frame[cc="22"][k="141"] > .cc-inner { border-color: rgb(200, 115, 255); }
 .cc-frame[cc="23"] { z-index: 15; border-color: rgb(160, 40, 120); }
 .cc-frame[cc="23"] > .cc-inner { border-color: rgb(255, 105, 205); }
 .cc-frame[cc="62"] { z-index: 18; border-color: rgb(170, 80, 10); }
