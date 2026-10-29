@@ -70,7 +70,8 @@ listbox-item:not([disabled]):hover .clan-member-name { color: rgb(194, 212, 237)
 #game-clan .clan-member-header td { color: rgb(194, 212, 237); }
 #game-clan listbox-item { color: rgb(201, 215, 235); }
 #game-clan listbox-item:nth-child(even) { background-color: rgb(28, 41, 59); }
-#game-clan listbox-item:not(.offline) .clan-member-name { color: rgb(171, 237, 191); }
+#game-clan listbox-item:not(.offline) .clan-member-name { color: rgb(160, 248, 186); }
+#game-clan listbox-item.offline .clan-member-name { color: rgb(178, 112, 112); }
 #game-clan .clan-member-contribution { color: rgb(246, 206, 159); }
 #game-clan listbox-item.cl-me { background-color: rgb(86, 73, 37); }
 #game-clan listbox-item.cl-me .clan-member-name { color: rgb(246, 206, 159); }
@@ -78,7 +79,6 @@ listbox-item:not([disabled]):hover .clan-member-name { color: rgb(194, 212, 237)
 #game-clan listbox-item.cl-away-month .last-seen { color: rgb(229, 149, 149); }
 #game-clan listbox-item:not([disabled]):hover { background-color: rgb(37, 55, 79); }
 #game-clan listbox-item:not([disabled])[selected] { background-color: rgb(86, 73, 37); }
-#game-clan listbox-item:not([disabled])[selected] .clan-member-name { color: rgb(246, 206, 159); }
 #game-clan .cl-label { color: rgb(172, 186, 206); }
 #game-clan gauge#cl-capacity { decorator: image(icd-gauge-bg); }
 #game-clan gauge#cl-capacity > span { color: rgb(255, 255, 255); }

@@ -101,7 +101,7 @@
                     <gauge class="member-health ui-vitals horizontal-sm-md red" data-class-unavailable="!member.available" data-attr-gvalue="member.hp_percent" gmax="100"><span class="member-name ui-roster-name">{{member.name}}</span></gauge>
                     <span class="rip-badge" data-if="member.available && member.hp_percent <= 0">RIP</span><span class="far-badge" data-if="!member.available">Far</span>
                     <div class="member-statuses ui-status-icons" data-if="member.available && member.statuses.size > 0">
-                        <span class="member-status" data-for="status : member.statuses" data-attr-id="'status-' + member.tag + '-' + status.state_id" data-class-blink="status.blink" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.state_id" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.state_id" /></span>
+                        <span class="member-status" data-for="status : member.statuses" data-attr-id="'status-' + member.tag + '-' + status.state_id" data-class-blink="status.blink" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.state_id" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon" data-attr-k="status.state_id"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.state_id" /></span>
                     </div>
                 </div>
             </div>

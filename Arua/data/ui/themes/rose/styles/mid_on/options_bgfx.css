@@ -81,6 +81,9 @@ body[id] scrollbarvertical sliderbar:hover, body[id] scrollbarvertical sliderbar
 #addons-panel button.tm-btn:hover { border-color: rgb(159, 165, 176); }
 #addons-panel button.tm-btn.tm-on { background-color: rgb(55, 59, 68); border: 2dp rgb(159, 165, 176); }
 #addons-panel #tm-status { color: rgb(233, 234, 237); }
+#addons-panel button.pb-btn .pb-name { color: rgb(210, 214, 221); }
+#addons-panel button.pb-btn.tm-on .pb-name { color: rgb(233, 234, 237); }
+#addons-panel #pb-status { color: rgb(233, 234, 237); }
 #addons-panel button.th-btn { decorator: none; }
 #addons-panel button.th-btn.th-card { decorator: none; background-color: rgba(0, 0, 0, 0); border: 2dp rgba(0, 0, 0, 0); }
 #addons-panel button.th-btn:hover { border-color: rgb(159, 165, 176); }
