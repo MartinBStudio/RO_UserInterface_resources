@@ -309,6 +309,8 @@
             }
             #game-quest-tracker input[type="range"] sliderarrowdec,
             #game-quest-tracker input[type="range"] sliderarrowinc { width: 0dp; height: 0dp; decorator: none; }
+            /* collapsed: take the quest list out of the layout, so no invisible space keeps the tracker from the screen corner */
+            #game-quest-tracker #quest-list.hidden { display: none; }
         </style>
         <link type="text/rcss" href="../styles/ice_sprites_dark.css" />
         <link type="text/rcss" href="../styles/dark/quest_tracker.css" />

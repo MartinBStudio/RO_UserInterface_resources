@@ -621,6 +621,98 @@ pcall(function()
 end)
         </script>
         <script>
+-- Add-ons > Party Bars: the HP/MP bars the game draws over group members' heads. The game picks the
+-- pictures by sprite name, so this rewrites styles/ice_nameplate_gauges.css to point them at the
+-- normal or faded (25%) art (imgs/ice_np_bars.dds). Read at start -> restart. Saved as party_bars=1/2 (3 = old Thin -> Normal).
+pcall(function()
+    local FLAGS = 'sp_addons.txt'
+    local CSS = 'data/ui/themes/rose/styles/ice_nameplate_gauges.css'
+    local NAMES = { [1] = 'normal', [2] = 'faded' }
+    local function sheet(n)
+        if n == 1 then
+            return '    src: /data/ui/themes/rose/imgs/iceinv.dds;\n'
+                .. '    gauge-bg-sm-md: 160px 394px 200px 26px;\n'
+                .. '    gauge-red-sm-md: 2px 532px 200px 26px;\n'
+                .. '    gauge-bg-sm-sm: 160px 394px 200px 26px;\n'
+                .. '    gauge-blue-sm-sm: 206px 532px 200px 26px;\n'
+        end
+        local y0 = 2
+        return '    src: /data/ui/themes/rose/imgs/ice_np_bars.dds;\n'
+            .. '    gauge-bg-sm-md: 2px ' .. y0 .. 'px 200px 26px;\n'
+            .. '    gauge-red-sm-md: 2px ' .. (y0 + 30) .. 'px 200px 26px;\n'
+            .. '    gauge-bg-sm-sm: 2px ' .. y0 .. 'px 200px 26px;\n'
+            .. '    gauge-blue-sm-sm: 2px ' .. (y0 + 60) .. 'px 200px 26px;\n'
+    end
+    local function read_all()
+        local t, order = {}, {}
+        pcall(function()
+            local f = io.open(FLAGS, 'r')
+            if not f then return end
+            for line in f:lines() do
+                local k, v = line:match('^%s*([%w_]+)%s*=%s*(%d+)')
+                if k then
+                    if t[k] == nil then order[#order + 1] = k end
+                    t[k] = v
+                end
+            end
+            f:close()
+        end)
+        return t, order
+    end
+    local function mark(n)
+        local p = document:GetElementById('pb-row')
+        local c = p and p.first_child
+        while c do
+            local v = tonumber(c:GetAttribute('pb') or '')
+            if v then c:SetClass('tm-on', v == n) end
+            c = c.next_sibling
+        end
+    end
+    local function write_css(n)
+        local f = io.open(CSS, 'w')
+        if not f then return false end
+        f:write('/* Nameplate bars: the native nameplate layer draws these sprite NAMES directly,\n')
+        f:write(' * so they are remapped onto the ice art (only linked from character_nameplates.html).\n')
+        f:write(' * Party Bars: ' .. NAMES[n] .. ' (Options > Add-ons). */\n')
+        f:write('@spritesheet ice-nameplate\n{\n')
+        f:write(sheet(n))
+        f:write('}\n')
+        f:write('@spritesheet ice-nameplate-keep\n{\n')
+        f:write('    src: /data/ui/themes/rose/imgs/gauge.dds;\n')
+        f:write('    gauge-purple-sm-sm: 1px 52px 99px 4px;\n')
+        f:write('}\n')
+        f:close()
+        return true
+    end
+    local function current()
+        local n = tonumber(read_all().party_bars or '') or 1
+        if not NAMES[n] then n = 1 end
+        return n
+    end
+    document:AddEventListener('click', function(event)
+        pcall(function()
+            local el = event.target_element
+            local n = el and tonumber(el:GetAttribute('pb') or '')
+            if not n or not NAMES[n] then return end
+            local t, order = read_all()
+            if t.party_bars == nil then order[#order + 1] = 'party_bars' end
+            t.party_bars = tostring(n)
+            local f = io.open(FLAGS, 'w')
+            if f then
+                for _, k in ipairs(order) do f:write(k, '=', t[k], '\n') end
+                f:close()
+            end
+            local ok = write_css(n)
+            mark(n)
+            local st = document:GetElementById('pb-status')
+            if st then st.inner_rml = ok and 'Saved. Restart the game to see it.' or 'Could not write the bars file.' end
+        end)
+    end)
+    document:AddEventListener('show', function() pcall(function() mark(current()) end) end)
+    mark(current())
+end)
+        </script>
+        <script>
 -- Interface > Target Bar: element/counters + DPS meter switches, saved in sp_addons.txt (key=1/0)
 pcall(function()
     local FLAGS = 'sp_addons.txt'
@@ -1020,6 +1112,10 @@ end)
             #addons-panel button.tm-btn:hover { border-color: rgb(214, 166, 60); }
             #addons-panel button.tm-btn.tm-on { background-color: rgb(255, 238, 190); border: 2dp rgb(214, 166, 60); }
             #addons-panel #tm-status { color: rgb(150, 92, 20); font-weight: 820; margin-left: 6dp; }
+            /* text sits in a span: bare text in the flex button does not render */
+            #addons-panel button.pb-btn .pb-name { display: block; pointer-events: none; font-size: 13dp; font-weight: 820; line-height: 30dp; color: rgb(30, 62, 112); }
+            #addons-panel button.pb-btn.tm-on .pb-name { color: rgb(150, 92, 20); }
+            #addons-panel #pb-status { display: block; height: 18dp; margin: 4dp 0 0 2dp; color: rgb(150, 92, 20); font-weight: 820; }
             /* Add-ons > Theme */
             #addons-panel button.th-btn {
                 width: 110dp; height: 32dp; line-height: 30dp; padding: 0; text-align: center;
@@ -2400,6 +2496,11 @@ end)
                         <p class="tm-help">Colour of the arrows next to a selected player's name. Restart the game after changing it.</p>
                         <div class="tm-row"><button class="tm-btn" tm="1"><img class="tm-l" sprite="ice-target-marker"/><img class="tm-r" sprite="ice-target-marker"/></button><button class="tm-btn" tm="2"><img class="tm-l" sprite="ice-target-marker-blue"/><img class="tm-r" sprite="ice-target-marker-blue"/></button><button class="tm-btn" tm="3"><img class="tm-l" sprite="ice-target-marker-green"/><img class="tm-r" sprite="ice-target-marker-green"/></button><span id="tm-status"></span></div>
                     </div>
+                    <div class="settings-group tm-group">
+                        <h3>Party Bars</h3>
+                        <p class="tm-help">HP and MP bars above group members' heads. Faded = 25% visible. Restart the game after changing it.</p>
+                        <div class="tm-row" id="pb-row"><button class="tm-btn pb-btn" pb="1"><span class="pb-name">Normal</span></button><button class="tm-btn pb-btn" pb="2"><span class="pb-name">Faded</span></button></div><div id="pb-status"></div>
+                    </div>
                     <div class="settings-group ta-group">
                         <h3>Experimental</h3>
                         <p class="tm-help">Work in progress. May change or go away.</p>
@@ -2417,7 +2518,7 @@ end)
                         <input type="checkbox" id="ao-about-t" />
                         <span class="ao-about-btn">About this UI</span>
                         <div class="ao-about-box">
-                            <div class="ab-title">Ice UI theme</div>
+                            <div class="ab-title">Arua theme</div>
                             <div class="ab-by">made by griff_gg</div>
                             <p>Designer of the first loot beams in ROSE Online.</p>
                         </div>

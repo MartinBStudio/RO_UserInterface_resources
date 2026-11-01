@@ -305,3 +305,4 @@ data\ui\themes\rose\styles\theme_sprites\mid\ice_fuel.css
 data\ui\themes\rose\styles\theme_sprites\mid\ice_menu.css
 data\ui\themes\rose\styles\theme_sprites\mid\ice_qb.css
 data\ui\themes\rose\styles\theme_sprites\mid\ice_sprites_dark.css
+data\ui\themes\rose\imgs\ice_np_bars.dds

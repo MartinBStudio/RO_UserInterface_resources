@@ -163,7 +163,8 @@
             #game-clan .clan-member-header td { color: rgb(30, 62, 112); font-weight: 820; font-effect: none; }
             #game-clan listbox-item { color: rgb(36, 58, 98); font-effect: none; }
             #game-clan listbox-item:nth-child(even) { background-color: rgb(255, 255, 255); }
-            #game-clan listbox-item:not(.offline) .clan-member-name { color: rgb(30, 130, 60); font-weight: 820; }
+            #game-clan listbox-item:not(.offline) .clan-member-name { color: rgb(16, 158, 58); font-weight: 820; }
+            #game-clan listbox-item.offline .clan-member-name { color: rgb(178, 112, 112); }   /* offline: muted red */
             #game-clan .clan-member-contribution { color: rgb(170, 100, 20); }
             /* you */
             #game-clan listbox-item.cl-me { background-color: rgb(255, 238, 190); }
@@ -174,7 +175,7 @@
             /* hover / selected win over the white zebra rows and the "you" row, same for online and offline */
             #game-clan listbox-item:not([disabled]):hover { background-color: rgb(196, 222, 248); }
             #game-clan listbox-item:not([disabled])[selected] { background-color: rgb(255, 236, 180); }
-            #game-clan listbox-item:not([disabled])[selected] .clan-member-name { color: rgb(170, 100, 20); font-weight: 820; }
+            #game-clan listbox-item:not([disabled])[selected] .clan-member-name { font-weight: 820; }   /* selected keeps the online / offline / you name colour */
             /* footer: capacity gauge (same glossy style as HP/MP) + online count */
             #game-clan .cl-footer { flex: 1; padding-left: 4dp; display: flex; flex-direction: row; align-items: center; gap: 10dp; }
             #game-clan .cl-label { color: rgb(90, 115, 150); font-weight: 820; }

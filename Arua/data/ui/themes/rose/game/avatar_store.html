@@ -9,13 +9,14 @@
         <link type="text/rcss" href="../styles/ice_sprites2.css" />
         <link type="text/rcss" href="../styles/ice_window.css" />
         <style>
-            body { width: 320dp; max-width: 96vw; }
-            #game-avatar-store #window-content { height: auto; padding: 10dp; max-height: 80vh; overflow: visible; }
+            body { width: 320dp; }
+            #game-avatar-store #window-content { height: auto; padding: 10dp; overflow: visible; }
             #store-company { color: #ccc; margin-bottom: 6dp; word-break: break-word; }
             .shop-tabs { display: flex; gap: 4dp; margin-bottom: 8dp; }
             .shop-tabs button { flex: 1; min-width: 0; box-sizing: border-box; }
             .shop-tabs button.active { color: yellow; decorator: tiled-horizontal(button-active-l, button-active-c, button-active-r); }
-            .shop-grid { display: flex; flex-wrap: wrap; width: 272dp; gap: 4dp; margin: 0 auto; }
+            /* 6 slots of 40dp + 1dp border each side (42dp) + 5 gaps of 3dp = 267dp in a 272dp grid: 5dp spare so pixel rounding at UI scales like 1.5-2.0 cannot push the 6th slot to a new row. (No border-box: the item picture follows the outer box, the empty-slot art the inner one -> offset.) */
+            .shop-grid { display: flex; flex-wrap: wrap; width: 272dp; gap: 3dp; margin: 0 auto; padding-left: 2.5dp; }   /* half the 5dp spare on the left, so the row is centred */
             .shop-grid item-slot { width: 40dp; height: 40dp; flex: 0 0 40dp; border: 1dp transparent; }
             .shop-grid item-slot.selected { border-color: yellow; }
             .shop-selection { height: 42dp; margin-top: 8dp; }

@@ -28,8 +28,8 @@ gauge#target-health, #monster-nameplates gauge.monster-health { decorator: image
 /* from link ../styles/ice_status_glow.css */
 .cc-frame { border: 2dp rgb(0, 0, 0); }
 .cc-frame > .cc-inner { border: 2dp rgb(34, 53, 79); }
-.cc-frame[cc="22"] { border-color: rgb(110, 50, 170); }
-.cc-frame[cc="22"] > .cc-inner { border-color: rgb(49, 76, 114); }
+.cc-frame[cc="22"][k="31"], .cc-frame[cc="22"][k="140"], .cc-frame[cc="22"][k="141"] { border-color: rgb(110, 50, 170); }
+.cc-frame[cc="22"][k="31"] > .cc-inner, .cc-frame[cc="22"][k="140"] > .cc-inner, .cc-frame[cc="22"][k="141"] > .cc-inner { border-color: rgb(49, 76, 114); }
 .cc-frame[cc="23"] { border-color: rgb(160, 40, 120); }
 .cc-frame[cc="23"] > .cc-inner { border-color: rgb(50, 77, 116); }
 .cc-frame[cc="62"] { border-color: rgb(170, 80, 10); }

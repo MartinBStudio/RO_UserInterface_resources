@@ -130,11 +130,11 @@
             #group-settings-panel button.gr-btn:hover { border-color: rgb(214, 166, 60); color: rgb(150, 92, 20); }
             #arena-group.gr-1 #group-settings-panel button.gr-btn[gr="1"],
             #arena-group.gr-2 #group-settings-panel button.gr-btn[gr="2"],
-            #arena-group.gr-3 #group-settings-panel button.gr-btn[gr="3"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+            #arena-group.gr-3 #group-settings-panel button.gr-btn[gr="3"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(150, 92, 20); }
             /* Group Options > Columns: Auto (game layout) / 2 (fixed 2 columns, cards placed row by row by the script below) */
             #group-settings-panel button.gr-btn.gl-btn { width: 44dp; }
             #arena-group.gl-0 #group-settings-panel button.gl-btn[gl="0"],
-            #arena-group.gl-2 #group-settings-panel button.gl-btn[gl="2"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(120, 70, 10); }
+            #arena-group.gl-2 #group-settings-panel button.gl-btn[gl="2"] { background-color: rgb(255, 238, 190); border-color: rgb(214, 166, 60); color: rgb(150, 92, 20); }
             #arena-group.gl-2 .group-columns { display: block; position: relative; }
             #arena-group.gl-2 .group-column { position: absolute; left: 0; top: 0; height: 0; }
             #arena-group.gl-2 .group-member { position: absolute; width: 10em; margin-bottom: 0; }
@@ -458,7 +458,7 @@ end)
                             <img class="cls-badge" sprite="cls-visitor" data-attr-cn="member.name" /><gauge class="group-health ui-vitals horizontal-sm-md red" data-attr-gvalue="member.hp_percent" gmax="100"><span class="group-name ui-roster-name">{{member.name}}</span></gauge>
                             <gauge class="group-mana ui-vitals horizontal-sm-sm blue" data-attr-gvalue="member.mp_percent" gmax="100" /><div class="ice-click"></div>
                             <div class="group-statuses ui-status-icons">
-                                <span class="group-status" data-for="status : member.statuses" data-attr-id="'group-status-' + member.tag + '-' + status.key" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.key" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.key" /></span>
+                                <span class="group-status" data-for="status : member.statuses" data-attr-id="'group-status-' + member.tag + '-' + status.key" data-attr-onmouseover="'status-tooltip:' + member.tag + ':' + status.key" onmouseout="hide-tooltip"><img data-attr-sprite="'stateicon-' + status.icon" /><div class="cc-frame" data-attr-cc="status.icon" data-attr-k="status.state_id"><div class="cc-inner" /></div><div class="cc-word" data-attr-cc="status.icon" data-attr-k="status.state_id" /></span>
                             </div>
                         </div>
                     </div>
