@@ -1,0 +1,27 @@
+{
+  "name": "Junon Clan Field",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.327+07:00",
+  "createdAt": "2026-11-05T01:57:25.327+07:00",
+  "description": "Jet-black panels in thick signal-red frames, with a cobalt pressed state. Square and loud.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=junon-clan-field",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:planets",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:red",
+    "color:blue",
+    "mood:fierce",
+    "mood:sleek",
+    "cursors"
+  ]
+}

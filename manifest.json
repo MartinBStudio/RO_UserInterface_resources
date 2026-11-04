@@ -1,6 +1,6 @@
 {
   "name": "RO_UserInterface_resources",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "timestamp": "2026-10-28T10:44:03.170-04:00",
   "description": "Removed .dev preview tool, added to separate repository.",
   "author": "MartinBStudio",

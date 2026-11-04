@@ -1,0 +1,27 @@
+{
+  "name": "Deutan Safe",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.268+07:00",
+  "createdAt": "2026-11-05T01:57:25.268+07:00",
+  "description": "Navy panels, sky-blue frames and an amber pressed state, tuned for deuteranopia (green-blind).",
+  "url": "https://roseonlinetoolbox.com/mods?mod=deutan-safe",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thick",
+    "color:blue",
+    "color:orange",
+    "mood:calm",
+    "a11y:colorblind",
+    "cursors"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Peridot Glass",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.306+07:00",
+  "createdAt": "2026-11-05T01:57:25.306+07:00",
+  "description": "ROSE's own glass art cut in bright lime peridot.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=peridot-glass",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:gems",
+    "made:ai",
+    "status:beta",
+    "style:tint",
+    "corners:rounded",
+    "border:thin",
+    "color:green",
+    "mood:calm",
+    "cursors"
+  ]
+}

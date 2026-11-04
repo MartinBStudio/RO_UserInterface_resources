@@ -1,0 +1,28 @@
+{
+  "name": "Monochrome",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.261+07:00",
+  "createdAt": "2026-11-05T01:57:25.261+07:00",
+  "description": "Black, white and gray only, with bevels that sink when pressed: every state reads by brightness and shape.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=monochrome",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:white",
+    "color:gray",
+    "mood:sleek",
+    "a11y:high-contrast",
+    "a11y:colorblind",
+    "cursors"
+  ]
+}

@@ -42,7 +42,7 @@ Usage notes
 <!-- rose-online-toolbox:start -->
 ROSE Online Toolbox themes
 --------------------------
-204 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
+219 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
 `scripts/export-ui-resources.ts`. They restyle the game windows, minimap and HUD (data/ui/themes/rose)
 and recolor the cursors (res/) to match. Each folder's manifestUi.json links to the theme's page, and
 .preview/ holds a screenshot.
@@ -56,12 +56,12 @@ themes with drawn art. Folders with recolored cursors also carry `cursors`.
 - Whimsical themes: JellybeanJamboree, CandyKingdom, CloudNine, MushroomHollow, KittyCafe, BubbleLagoon, DreamySlumber, RainbowUnicorn, GingerbreadCottage
 - OG ROSE themes: SevenHearts2002, KROSE2004, PreEvo2005, Evolution2006, NaROSEAzure, WarpPortalEra
 - Classic colorways: ClassicRosePetal, ClassicMintBreeze, ClassicLemonDrop, ClassicLilacDream, ClassicPeachSunset, ClassicSkyBlue, ClassicSilverMoon, ClassicCocoaCream, ClassicCrimsonKnight, ClassicForestRanger
-- Essentials: FlatDark, HighContrast, SoftSlate, EmberGlass, RoseQuartzGlass, JadeGlass, MidnightBlue, DuskMauve, Mocha, TrueBlack, WarmNight, ColorblindSafe
-- Planet themes: JunonVerdant, KenjiBeach, LunaFrost, EucarArcana, EldeonWildwood, MarshOfGhosts, OrloDunes, AruasRadiance, HebarnsEclipse, ZantCanyon, PolisRoyal, LunaAurora, LunarGlass, AnimaLake, AdventurersPlains, SnowValley, GoblinCave, ElVerloonDesert, SikukuRuins, ForgottenTemple, SunshineCoast, BirthIsland, BreezyHills, ForestOfWisdom, LuxemTower, DesertOfTheDead, GorgeOfSilence, CaveOfUlverick, ManaSnowfields, ArumicValley, ShadyJungle, ForestOfWandering, DesertCityOfMuris, TheWasteland, DraconisPeaks, OblivionTemple, SeaOfDawn, GardenOfAru, AkramArena, SikukuCatacombs, CrystalDefenders, LunaClanField, FossilSanctuary
+- Essentials: FlatDark, HighContrast, SoftSlate, EmberGlass, RoseQuartzGlass, JadeGlass, MidnightBlue, DuskMauve, Mocha, TrueBlack, WarmNight, ColorblindSafe, HighContrastDark, HighContrastCyan, Monochrome, DeutanSafe, ProtanSafe, TritanSafe
+- Planet themes: JunonVerdant, KenjiBeach, LunaFrost, EucarArcana, EldeonWildwood, MarshOfGhosts, OrloDunes, AruasRadiance, HebarnsEclipse, ZantCanyon, PolisRoyal, LunaAurora, LunarGlass, AnimaLake, AdventurersPlains, SnowValley, GoblinCave, ElVerloonDesert, SikukuRuins, ForgottenTemple, SunshineCoast, BirthIsland, BreezyHills, ForestOfWisdom, LuxemTower, DesertOfTheDead, GorgeOfSilence, CaveOfUlverick, ManaSnowfields, ArumicValley, ShadyJungle, ForestOfWandering, DesertCityOfMuris, TheWasteland, DraconisPeaks, OblivionTemple, SeaOfDawn, GardenOfAru, AkramArena, SikukuCatacombs, CrystalDefenders, LunaClanField, FossilSanctuary, DolphinIsland, BlackScarab, SikukuPrison, GoldenColosseum, JunonClanField
 - Retro themes: Retro98, TavernLeather, HeroMenuBlue, PhosphorTerminal, AmberCRT, PocketDot, InkParchment, ArcadeMarquee, StoneKeep, ComicPanel, TextMode, VaporMall, PixelCastle, FilmNoir, SepiaPhotograph, HiFiStereo, VHSTape, Blueprint, Chalkboard, FantasyConsole, 16BitTwilight, Typewriter
 - Futuristic themes: NeonGrid, HoloCyan, CastleGear, CarbonStrike, Biohazard, VoidChrome, SolarFlare, SakuraCircuit, DeepSeaSonar, MarsColony, QuantumPrism, NightOps, GoldChrome, Glitch, SynthwaveSunset, PlasmaCore, OrbitalStation, StarlightNav
 - Job class themes: KnightsBulwark, ChampionsFury, MagesArcana, ClericsGrace, RaidersShade, ScoutsTrail, BourgeoisVelvet, ArtisansWorkshop, SoldiersSteel, MusesStarlight, HawkersWind, DealersLedger
 - Fantasy RPG themes: GothicCathedral, ElvenGrove, DwarvenForge, PirateCove, RoyalGuard, WitchsHut, CrystalMenu, NecromancersCrypt, PaladinsLight, DruidsCircle, DragonsHoard, FrostGiant, SunkenTemple, VampireCourt, DesertSultan, VikingHall, ShrineGate, AlchemistsLab, GolemStone, MonasteryOfWinds, BasaltSteps, PhoenixRoost, WizardsLibrary, HauntedManor
-- Seasonal themes: PumpkinNight, WinterFestival, SpringBlossom, SummerLanterns, LunarNewYear, HeartsDay, AutumnLeaves, FireworksNight, EggHunt, SantaPlanetoid, MarigoldNight
-- Gemstone themes: RubyGlass, SapphireGlass, AquamarineGlass, Emerald, Amethyst, Onyx, Pearl, Garnet, Diamond
+- Seasonal themes: PumpkinNight, WinterFestival, SpringBlossom, SummerLanterns, LunarNewYear, HeartsDay, AutumnLeaves, FireworksNight, EggHunt, SantaPlanetoid, MarigoldNight, MagicIsEverywhere, ROSEAnniversary, CaptainPegLeg
+- Gemstone themes: RubyGlass, SapphireGlass, AquamarineGlass, Emerald, Amethyst, Onyx, Pearl, Garnet, Diamond, PeridotGlass
 <!-- rose-online-toolbox:end -->

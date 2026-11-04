@@ -1,0 +1,28 @@
+{
+  "name": "High Contrast Dark",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.249+07:00",
+  "createdAt": "2026-11-05T01:57:25.249+07:00",
+  "description": "Near-black panels in thick yellow frames, with a solid white pressed state.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=high-contrast-dark",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:yellow",
+    "color:black",
+    "color:white",
+    "mood:sleek",
+    "a11y:high-contrast",
+    "cursors"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Tritan Safe",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.281+07:00",
+  "createdAt": "2026-11-05T01:57:25.281+07:00",
+  "description": "Plum-black panels with teal frames and a rose pressed state, tuned for tritanopia (blue-blind).",
+  "url": "https://roseonlinetoolbox.com/mods?mod=tritan-safe",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:teal",
+    "color:pink",
+    "mood:calm",
+    "a11y:colorblind",
+    "cursors"
+  ]
+}
