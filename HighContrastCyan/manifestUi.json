@@ -1,0 +1,26 @@
+{
+  "name": "High Contrast Cyan",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.255+07:00",
+  "createdAt": "2026-11-05T01:57:25.255+07:00",
+  "description": "Pure black panels with cyan frames and a cyan pressed state, for players who find yellow hard to tell from white.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=high-contrast-cyan",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:teal",
+    "mood:sleek",
+    "a11y:high-contrast",
+    "cursors"
+  ]
+}

@@ -1,6 +1,12 @@
+data\ui\themes\rose\imgs\rtb-controls.dds
 data\ui\themes\rose\imgs\rtb-premium-classic-rose-petal.dds
 data\ui\themes\rose\styles\html.css
 data\ui\themes\rose\styles\window.css
+data\ui\themes\rose\templates\window-box.html
+data\ui\themes\rose\templates\window-fixed-size.html
+data\ui\themes\rose\templates\window-fixed.html
+data\ui\themes\rose\templates\window-resizeable.html
+data\ui\themes\rose\templates\window-small.html
 res\appraisalstatextract.cur
 res\appraisalstattransfer.cur
 res\attack.cur

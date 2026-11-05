@@ -1,0 +1,27 @@
+{
+  "name": "Protan Safe",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.274+07:00",
+  "createdAt": "2026-11-05T01:57:25.274+07:00",
+  "description": "Charcoal panels with gold bevels and a sky-blue pressed state, tuned for protanopia (red-blind).",
+  "url": "https://roseonlinetoolbox.com/mods?mod=protan-safe",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:essentials",
+    "made:ai",
+    "status:beta",
+    "style:bevel",
+    "corners:square",
+    "border:thick",
+    "color:yellow",
+    "color:blue",
+    "mood:sleek",
+    "a11y:colorblind",
+    "cursors"
+  ]
+}

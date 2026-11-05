@@ -1,0 +1,28 @@
+{
+  "name": "Black Scarab",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.293+07:00",
+  "createdAt": "2026-11-05T01:57:25.293+07:00",
+  "description": "ROSE's own glass art with the oil-slick sheen of Kepris' Black Scarab legion.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=black-scarab",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:planets",
+    "made:ai",
+    "status:beta",
+    "style:tint",
+    "corners:rounded",
+    "border:thin",
+    "color:teal",
+    "color:yellow",
+    "color:purple",
+    "mood:regal",
+    "mood:mystic",
+    "cursors"
+  ]
+}

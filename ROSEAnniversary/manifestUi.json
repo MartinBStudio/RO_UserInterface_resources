@@ -1,0 +1,28 @@
+{
+  "name": "ROSE Anniversary",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.333+07:00",
+  "createdAt": "2026-11-05T01:57:25.333+07:00",
+  "description": "Square rose-pink frames on deep wine panels, with anniversary gold. Bold and bright.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=rose-anniversary",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:seasons",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thick",
+    "color:pink",
+    "color:purple",
+    "color:orange",
+    "mood:cute",
+    "mood:sleek",
+    "cursors"
+  ]
+}

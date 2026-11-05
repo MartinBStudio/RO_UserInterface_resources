@@ -1,0 +1,27 @@
+{
+  "name": "Magic is Everywhere",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.300+07:00",
+  "createdAt": "2026-11-05T01:57:25.300+07:00",
+  "description": "ROSE's own glass art in lilac and candy pink, for August's friendliest event.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=magic-is-everywhere",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:seasons",
+    "made:ai",
+    "status:beta",
+    "style:tint",
+    "corners:rounded",
+    "border:thin",
+    "color:purple",
+    "color:yellow",
+    "color:pink",
+    "mood:cute",
+    "cursors"
+  ]
+}

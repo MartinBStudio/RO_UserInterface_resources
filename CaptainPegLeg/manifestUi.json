@@ -1,0 +1,26 @@
+{
+  "name": "Captain Peg Leg",
+  "version": "1.0.0",
+  "upload_date": "2026-11-05T01:57:25.339+07:00",
+  "createdAt": "2026-11-05T01:57:25.339+07:00",
+  "description": "Tar-black panels traced in parrot-scarlet lines, with an emerald pressed state and doubloon-gold scrollbars.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=captain-peg-leg",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:seasons",
+    "made:ai",
+    "status:beta",
+    "style:neon",
+    "corners:square",
+    "border:thin",
+    "color:red",
+    "color:green",
+    "mood:fierce",
+    "cursors"
+  ]
+}
