@@ -1,0 +1,37 @@
+<!-- A window that is moveable and sizeable. -->
+<template name="window-resizeable" content="window-content">
+    <head>
+        <link type="text/rcss" href="../styles/html.css" />
+        <link type="text/rcss" href="../styles/spritesheet_elementicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_glassui.css" />
+        <link type="text/rcss" href="../styles/spritesheet_gauge.css" />
+        <link type="text/rcss" href="../styles/spritesheet_icons.css" />
+        <link type="text/rcss" href="../styles/spritesheet_stateicon.css" />
+        <link type="text/rcss" href="../styles/spritesheet_targetmark.css" />
+
+        <link type="text/rcss" href="../styles/button.css" />
+        <link type="text/rcss" href="../styles/colors.css" />
+        <link type="text/rcss" href="../styles/details.css" />
+        <link type="text/rcss" href="../styles/gauge.css" />
+        <link type="text/rcss" href="../styles/input.css" />
+        <link type="text/rcss" href="../styles/label.css" />
+        <link type="text/rcss" href="../styles/listbox.css" />
+        <link type="text/rcss" href="../styles/scrollbar.css" />
+        <link type="text/rcss" href="../styles/tab.css" />
+        <link type="text/rcss" href="../styles/tooltip.css" />
+        <link type="text/rcss" href="../styles/video.css" />
+        <link type="text/rcss" href="../styles/window.css" />
+    </head>
+
+    <body class="window-resizeable">
+        <handle class="window-title" move_target="#document" id="window-title-text"></handle>
+        <button class="window-title-close" onclick="close"></button>
+
+        <div id="window-content"></div>
+
+        <handle size_target="#document" class="window-resize-handle"></handle>
+
+        <!-- ROSE Toolbox premium theme: corner ornaments, drawn by its window.css; empty without it. -->
+        <div class="rtb-orn rtb-orn-tl"></div><div class="rtb-orn rtb-orn-tr"></div><div class="rtb-orn rtb-orn-bl"></div><div class="rtb-orn rtb-orn-br"></div>
+    </body>
+</rml>
