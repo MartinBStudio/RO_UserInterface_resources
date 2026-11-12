@@ -1,0 +1,32 @@
+{
+  "name": "Yellow Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.553+07:00",
+  "createdAt": "2026-11-13T02:11:36.553+07:00",
+  "description": "Dark panels edged in yellow like its coat, the Yellow Tigris prowling over every title bar with lightning crackling round it, its striped coat and white ruff along every corner and buttons that press into yellow.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=yellow-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:stone",
+    "title:plaque",
+    "buttons:hex",
+    "color:yellow",
+    "color:brown",
+    "mood:fierce",
+    "mood:techy",
+    "cursors"
+  ]
+}

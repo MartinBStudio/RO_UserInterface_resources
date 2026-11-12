@@ -1,0 +1,32 @@
+{
+  "name": "Stone Golem",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.951+07:00",
+  "createdAt": "2026-11-13T02:11:34.951+07:00",
+  "description": "Grey granite and blue rune light: a golem head between boulder shoulders over every title bar, a rune keystone below and stacked boulders on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=stone-golem",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:boulder",
+    "edge:stone",
+    "title:plaque",
+    "buttons:plate",
+    "color:gray",
+    "color:teal",
+    "color:blue",
+    "mood:mystic",
+    "cursors"
+  ]
+}

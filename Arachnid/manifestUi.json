@@ -1,0 +1,32 @@
+{
+  "name": "Arachnid",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.261+07:00",
+  "createdAt": "2026-11-13T02:11:36.261+07:00",
+  "description": "Black panels in an orange-banded rim, the Arachnid crouched over every title bar in its fiery ruff with its fangs bared, its thorned, banded legs reaching along every corner and pointed buttons that press into ember orange.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=arachnid",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:arachnid",
+    "edge:metal",
+    "title:bracket",
+    "buttons:hex",
+    "color:orange",
+    "color:red",
+    "mood:spooky",
+    "mood:fierce",
+    "cursors"
+  ]
+}

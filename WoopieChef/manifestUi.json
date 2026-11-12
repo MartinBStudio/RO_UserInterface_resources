@@ -1,0 +1,33 @@
+{
+  "name": "Woopie Chef",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.201+07:00",
+  "createdAt": "2026-11-13T02:11:36.201+07:00",
+  "description": "Copper and warm brown: a Woopie in its chef's hat waving a wooden spoon over every title bar beside a steaming pot, a rack of ladle, whisk and spatula below and a copper pan on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=woopie-chef",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:sausage",
+    "edge:metal",
+    "title:plaque",
+    "buttons:soft",
+    "color:brown",
+    "color:orange",
+    "color:red",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

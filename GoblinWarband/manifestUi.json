@@ -1,0 +1,31 @@
+{
+  "name": "Goblin Warband",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.803+07:00",
+  "createdAt": "2026-11-13T02:11:34.803+07:00",
+  "description": "Rusted iron and mossy green from the goblin caves: a grinning goblin in a riveted helmet over every title bar, a thong of fangs below and a round wooden shield on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=goblin-warband",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:tusk",
+    "edge:metal",
+    "title:plaque",
+    "buttons:plate",
+    "color:green",
+    "color:gray",
+    "mood:fierce",
+    "cursors"
+  ]
+}

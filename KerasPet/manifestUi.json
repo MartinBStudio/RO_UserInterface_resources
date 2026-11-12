@@ -1,0 +1,32 @@
+{
+  "name": "Kera's Pet",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.176+07:00",
+  "createdAt": "2026-11-13T02:11:37.176+07:00",
+  "description": "Dark wood panels in a bone rim with rounded corners, Kera's Pet over every title bar in its carved mask with its bone spikes raised, carved beams along every corner and tab buttons that press into eye magenta.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=keras-pet",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:keras-pet",
+    "edge:stone",
+    "title:plaque",
+    "buttons:tab",
+    "color:brown",
+    "color:white",
+    "color:blue",
+    "mood:mystic",
+    "cursors"
+  ]
+}

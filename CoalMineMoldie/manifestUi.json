@@ -1,0 +1,33 @@
+{
+  "name": "Coal Mine Moldie",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.103+07:00",
+  "createdAt": "2026-11-13T02:11:36.103+07:00",
+  "description": "Coal black and miner blue: a Coal Mine Moldie digging up through every title bar under its lit helmet lamp, an oil lantern hanging below and its satchel on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=coal-mine-moldie",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:track",
+    "edge:metal",
+    "title:plaque",
+    "buttons:soft",
+    "color:orange",
+    "color:yellow",
+    "color:blue",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

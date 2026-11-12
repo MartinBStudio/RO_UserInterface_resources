@@ -1,0 +1,33 @@
+{
+  "name": "Chicken Monster",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.731+07:00",
+  "createdAt": "2026-11-13T02:11:36.731+07:00",
+  "description": "Charcoal panels in a feather-white rim with curved-in corners, the Chicken Monster over every title bar with its huge tail fanned, its feathers along every corner and tab buttons that press into snood red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=chicken-monster",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:chicken-monster",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:tab",
+    "color:white",
+    "color:blue",
+    "color:gray",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

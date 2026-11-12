@@ -678,7 +678,7 @@ button.default:not(button[disabled]):hover, button.default:not(button[disabled])
     decorator: none;
     background-color: rgba(94, 26, 42, 255);
     border-color: rgba(240, 184, 154, 255);
-    color: rgba(255, 244, 240, 255);
+    color: rgba(255, 208, 168, 255);
 }
 
 button.default:not(button[disabled]):active, button.default:active, button.default.selected:not(button[disabled]), button.default.selected, body .ui-tabs > button.default.active:not([disabled]), body .ui-tabs > button.default.selected:not([disabled])
@@ -686,7 +686,7 @@ button.default:not(button[disabled]):active, button.default:active, button.defau
     decorator: none;
     background-color: rgba(200, 40, 62, 255);
     border-color: rgba(255, 208, 168, 255);
-    color: rgba(255, 208, 168, 255);
+    color: rgba(255, 244, 240, 255);
 }
 
 tab.default
@@ -715,7 +715,7 @@ tab.default:not(button[disabled]):hover, tab.default:not(button[disabled]):focus
     decorator: none;
     background-color: rgba(94, 26, 42, 255);
     border-color: rgba(240, 184, 154, 255);
-    color: rgba(255, 244, 240, 255);
+    color: rgba(255, 208, 168, 255);
 }
 
 tab.default:not(button[disabled]):active, tab.default:active, tab.default:selected
@@ -723,7 +723,7 @@ tab.default:not(button[disabled]):active, tab.default:active, tab.default:select
     decorator: none;
     background-color: rgba(200, 40, 62, 255);
     border-color: rgba(255, 208, 168, 255);
-    color: rgba(255, 208, 168, 255);
+    color: rgba(255, 244, 240, 255);
 }
 
 .ui-tabs > button.default, button.default.ui-compact
@@ -759,7 +759,7 @@ body .ui-tab.selected, body .ui-tab.selected:hover, body .ui-tab.active, body .u
     background-color: rgba(200, 40, 62, 255);
     border-color: rgba(255, 208, 168, 255);
     border-bottom-color: rgba(200, 40, 62, 255);
-    color: rgba(255, 208, 168, 255);
+    color: rgba(255, 244, 240, 255);
 }
 
 body .ui-tab[disabled], body .ui-tab[disabled]:hover, body .ui-tab[disabled]:focus
@@ -1048,15 +1048,6 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(255, 208, 168, 255);
 }
 
-body#game-minimap #minimap-normal
-{
-    box-sizing: border-box;
-    decorator: none;
-    background-color: rgba(42, 12, 18, 242);
-    border: 2dp rgba(240, 184, 154, 255);
-    border-radius: 8dp;
-}
-
 body#game-minimap #minimap-frame
 {
     decorator: none;
@@ -1071,11 +1062,19 @@ body#game-minimap #minimap-frame
 
 body#game-minimap #minimap-normal handle.title
 {
+    box-sizing: border-box;
+    width: 168dp;
     height: 34dp;
     margin: 0dp;
+    padding-top: 6dp;
     decorator: vertical-gradient(rgba(122, 26, 42, 242) rgba(54, 8, 18, 242));
     border-bottom: 1dp rgba(240, 184, 154, 255);
     border-radius: 8dp 8dp 0dp 0dp;
+}
+
+body#game-minimap #minimap-minimized
+{
+    padding-right: 38dp;
 }
 
 body#game-minimap #coordinates-text, body#game-minimap #time-area
@@ -1098,7 +1097,7 @@ body#game-minimap #zone-name, body#game-minimap #zone-name-min
     color: rgba(255, 240, 238, 255);
 }
 
-body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
 {
     image-color: rgba(255, 196, 164, 255);
 }
@@ -1320,7 +1319,7 @@ body #mall-toolbar .mall-layout .ui-tab:not([disabled]):active, body #mall-toolb
 
 body #mall-toolbar .mall-layout .ui-tab.active i
 {
-    background-color: rgba(255, 208, 168, 255);
+    background-color: rgba(255, 244, 240, 255);
 }
 
 body #mall-toolbar .mall-layout .ui-tab:not([disabled]):hover i
@@ -1330,7 +1329,7 @@ body #mall-toolbar .mall-layout .ui-tab:not([disabled]):hover i
 
 body #mall-toolbar .mall-layout .ui-tab.active:not([disabled]):hover i
 {
-    background-color: rgba(255, 208, 168, 255);
+    background-color: rgba(255, 244, 240, 255);
 }
 
 body #mall-purchases-side.active:not([disabled]), body #mall-purchases-side.active:not([disabled]):not([disabled]):active
@@ -1338,7 +1337,7 @@ body #mall-purchases-side.active:not([disabled]), body #mall-purchases-side.acti
     decorator: none;
     background-color: rgba(200, 40, 62, 255);
     border-color: rgba(255, 208, 168, 255);
-    color: rgba(255, 208, 168, 255);
+    color: rgba(255, 244, 240, 255);
 }
 
 body .mall-nav-row:hover
@@ -1356,6 +1355,48 @@ body .mall-nav-row.active
 body .mall-card.selected
 {
     border-color: rgba(255, 208, 168, 255);
+}
+
+body#game-clan table.clan-member-header
+{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body#game-clan listbox
+{
+    width: 100%;
+}
+
+body#game-clan .clan-member-name
+{
+    width: 20.6%;
+}
+
+body#game-clan .clan-member-rank
+{
+    width: 12.3%;
+}
+
+body#game-clan .clan-member-level
+{
+    width: 6.9%;
+}
+
+body#game-clan .clan-member-job
+{
+    width: 13.5%;
+}
+
+body#game-clan .clan-member-contribution
+{
+    width: 18.4%;
+}
+
+body#game-clan .clan-member-last-seen
+{
+    width: auto;
+    min-width: 100dp;
 }
 
 @spritesheet rtb-premium
@@ -1395,15 +1436,6 @@ body .mall-card.selected
     rtb-btn-d-l: 150px 66px 15px 30px;
     rtb-btn-d-c: 174px 66px 1px 30px;
     rtb-btn-d-r: 183px 66px 15px 30px;
-    rtb-title9-tl: 92px 0px 30px 13px;
-    rtb-title9-t: 156px 0px 1px 13px;
-    rtb-title9-tr: 190px 0px 30px 13px;
-    rtb-title9-l: 92px 13px 30px 1px;
-    rtb-title9-c: 156px 13px 1px 1px;
-    rtb-title9-r: 190px 13px 30px 1px;
-    rtb-title9-bl: 92px 13px 30px 13px;
-    rtb-title9-b: 156px 13px 1px 13px;
-    rtb-title9-br: 190px 13px 30px 13px;
     rtb-tab-n-l: 382px 206px 12px 24px;
     rtb-tab-n-c: 396px 206px 1px 24px;
     rtb-tab-n-r: 398px 206px 12px 24px;
@@ -1504,6 +1536,28 @@ body .mall-card.selected
     rtb-sep-b: 502px 186px 4px 6px;
     rtb-orn-tl: 256px 0px 124px 124px;
     rtb-orn-bl: 382px 0px 124px 124px;
+    rtb-mm-ring: 0px 512px 368px 368px;
+    rtb-mm-cart-l: 370px 596px 14px 28px;
+    rtb-mm-cart-c: 400px 596px 1px 28px;
+    rtb-mm-cart-r: 416px 596px 14px 28px;
+    rtb-mm-name-tl: 0px 906px 20px 12px;
+    rtb-mm-name-t: 32px 906px 1px 12px;
+    rtb-mm-name-tr: 44px 906px 20px 12px;
+    rtb-mm-name-l: 0px 922px 20px 1px;
+    rtb-mm-name-c: 32px 922px 1px 1px;
+    rtb-mm-name-r: 44px 922px 20px 1px;
+    rtb-mm-name-bl: 0px 926px 20px 12px;
+    rtb-mm-name-b: 32px 926px 1px 12px;
+    rtb-mm-name-br: 44px 926px 20px 12px;
+    rtb-plate-tl: 454px 512px 8px 8px;
+    rtb-plate-t: 466px 512px 1px 8px;
+    rtb-plate-tr: 470px 512px 8px 8px;
+    rtb-plate-l: 454px 524px 8px 1px;
+    rtb-plate-c: 466px 524px 1px 1px;
+    rtb-plate-r: 470px 524px 8px 1px;
+    rtb-plate-bl: 454px 528px 8px 8px;
+    rtb-plate-b: 466px 528px 1px 8px;
+    rtb-plate-br: 470px 528px 8px 8px;
 }
 
 .window-fixed-size, .window-resizeable, .window-fixed, .window-box, .window-small
@@ -1573,17 +1627,21 @@ body#hud div.footer
     border-radius: 0dp;
 }
 
-body#game-minimap #minimap-normal, body#game-minimap #minimap-minimized
+body#inventory-window > .window-title
 {
-    decorator: tiled-box(rtb-frame-tl, rtb-frame-t, rtb-frame-tr, rtb-frame-l, rtb-frame-c, rtb-frame-r, rtb-frame-bl, rtb-frame-b, rtb-frame-br);
+    width: 100%;
+}
+
+body#game-minimap #minimap-normal
+{
+    decorator: none;
     background-color: transparent;
     border-width: 0dp;
     border-radius: 0dp;
 }
 
-body#game-minimap #minimap-normal handle.title
+body#game-minimap #minimap-minimized, body#game-minimap #minimap-normal handle.title
 {
-    decorator: tiled-box(rtb-title9-tl, rtb-title9-t, rtb-title9-tr, rtb-title9-l, rtb-title9-c, rtb-title9-r, rtb-title9-bl, rtb-title9-b, rtb-title9-br);
     background-color: transparent;
     border-width: 0dp;
     border-radius: 0dp;
@@ -2287,7 +2345,17 @@ button.window-title-close, .window-resize-handle
     z-index: 1;
 }
 
-body.window-fixed-size > .window-title, body.window-resizeable > .window-title
+body.window-fixed-size > .window-title, body.window-resizeable > .window-title, body#game-crafting .window-title
+{
+    padding-left: 17dp;
+}
+
+body#party #party-window > .window-title, body#arena-group #arena-group-window > .window-title
+{
+    padding-left: 17dp;
+}
+
+body#hud > #window-title-text
 {
     padding-left: 17dp;
 }
@@ -2295,4 +2363,166 @@ body.window-fixed-size > .window-title, body.window-resizeable > .window-title
 body.window-box .rtb-orn, body.window-small .rtb-orn, body.waiting .rtb-orn
 {
     display: none;
+}
+
+body#game-minimap #minimap-frame
+{
+    decorator: image(rtb-mm-ring);
+    left: 12dp;
+    top: 12dp;
+    width: 184dp;
+    height: 184dp;
+    border-width: 0dp;
+    border-radius: 0dp;
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap #minimap-minimized, body#game-minimap #minimap-normal handle.title
+{
+    decorator: tiled-box(rtb-mm-name-tl, rtb-mm-name-t, rtb-mm-name-tr, rtb-mm-name-l, rtb-mm-name-c, rtb-mm-name-r, rtb-mm-name-bl, rtb-mm-name-b, rtb-mm-name-br) content-box;
+}
+
+body#game-minimap #coordinates-text, body#game-minimap #time-area
+{
+    decorator: tiled-horizontal(rtb-mm-cart-l, rtb-mm-cart-c, rtb-mm-cart-r);
+    background-color: transparent;
+    border-radius: 0dp;
+}
+
+body#game-minimap .btn-zoomin
+{
+    decorator: image(rtb-plus-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-zoomin:hover
+{
+    decorator: image(rtb-plus-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-zoomin:active
+{
+    decorator: image(rtb-plus-h);
+    image-color: rgb(205, 205, 205);
+}
+
+body#game-minimap .btn-zoomout
+{
+    decorator: image(rtb-minus-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-zoomout:hover
+{
+    decorator: image(rtb-minus-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-zoomout:active
+{
+    decorator: image(rtb-minus-h);
+    image-color: rgb(205, 205, 205);
+}
+
+body#game-minimap .btn-minimize
+{
+    decorator: image(rtb-minus-n contain);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-minimize:hover
+{
+    decorator: image(rtb-minus-h contain);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap .btn-minimize:active
+{
+    decorator: image(rtb-minus-h contain);
+    image-color: rgb(205, 205, 205);
+}
+
+body#game-minimap #minimap-minimized .btn-restore
+{
+    decorator: image(rtb-plus-n contain);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap #minimap-minimized .btn-restore:hover
+{
+    decorator: image(rtb-plus-h contain);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap #minimap-minimized .btn-restore:active
+{
+    decorator: image(rtb-plus-h contain);
+    image-color: rgb(205, 205, 205);
+}
+
+body#game-minimap .minimap-tooltip
+{
+    decorator: tiled-box(rtb-plate-tl, rtb-plate-t, rtb-plate-tr, rtb-plate-l, rtb-plate-c, rtb-plate-r, rtb-plate-bl, rtb-plate-b, rtb-plate-br);
+    background-color: transparent;
+}
+
+button.default
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+button.default:not(button[disabled]):hover, button.default:not(button[disabled]):focus
+{
+    color: rgba(255, 208, 168, 255);
+}
+
+button.default:not(button[disabled]):active, button.default:active, button.default.selected:not(button[disabled]), button.default.selected, body .ui-tabs > button.default.active:not([disabled]), body .ui-tabs > button.default.selected:not([disabled])
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+tab.default
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+tab.default:not(button[disabled]):hover, tab.default:not(button[disabled]):focus
+{
+    color: rgba(255, 208, 168, 255);
+}
+
+tab.default:not(button[disabled]):active, tab.default:active, tab.default:selected
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+body .ui-tabs > button.default:not([disabled])
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+body .ui-tab
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+body .ui-tab:not([disabled]):hover
+{
+    color: rgba(255, 208, 168, 255);
+}
+
+body .ui-tab.selected, body .ui-tab.selected:hover, body .ui-tab.active, body .ui-tab.active:hover, body .ui-tab:selected, body .ui-tab:selected:hover
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+body #options-tabs > tabs > .ui-tab:selected
+{
+    color: rgba(255, 244, 240, 255);
+}
+
+body #mall-purchases-side.active:not([disabled]), body #mall-purchases-side.active:not([disabled]):not([disabled]):active
+{
+    color: rgba(255, 244, 240, 255);
 }

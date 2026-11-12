@@ -1,0 +1,32 @@
+{
+  "name": "Devourer",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.797+07:00",
+  "createdAt": "2026-11-13T02:11:36.797+07:00",
+  "description": "Dark hide-brown panels in a bone rim with notched corners, the Devourer over every title bar bristling with horns, its horned back along every corner and tab buttons that press into eye red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=devourer",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:devourer",
+    "edge:stone",
+    "title:bracket",
+    "buttons:tab",
+    "color:brown",
+    "color:red",
+    "color:orange",
+    "mood:fierce",
+    "cursors"
+  ]
+}

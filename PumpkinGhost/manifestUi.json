@@ -1,0 +1,32 @@
+{
+  "name": "Pumpkin Ghost",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.903+07:00",
+  "createdAt": "2026-11-13T02:11:34.903+07:00",
+  "description": "A pale pumpkin lit with ghost fire on deep violet: a carved ghostly jack-o'-lantern over every title bar, a little one below and a spectral lantern on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=pumpkin-ghost",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:pumpkin",
+    "edge:metal",
+    "title:scroll",
+    "buttons:soft",
+    "color:purple",
+    "color:green",
+    "mood:spooky",
+    "mood:mystic",
+    "cursors"
+  ]
+}

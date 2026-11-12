@@ -1,0 +1,31 @@
+{
+  "name": "Woodlands Candle Ghost",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.014+07:00",
+  "createdAt": "2026-11-13T02:11:36.014+07:00",
+  "description": "Void-dark windows edged in green wisp-light, a Candle Ghost in its green Woodlands robe over every title bar with leaves on its hood and hem and fireflies round it, the ghost and its bone necklace in every corner and hood-topped buttons that press into green flame.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=woodlands-candle-ghost",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thick",
+    "premium",
+    "ornament:candle",
+    "edge:glow",
+    "title:plaque",
+    "buttons:tab",
+    "color:green",
+    "mood:spooky",
+    "mood:cute",
+    "cursors"
+  ]
+}

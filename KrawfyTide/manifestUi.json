@@ -1,0 +1,32 @@
+{
+  "name": "Krawfy Tide",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.851+07:00",
+  "createdAt": "2026-11-13T02:11:34.851+07:00",
+  "description": "Coral-red shell on deep sea teal: a Krawfy raising both claws over every title bar, its fanned tail below and a claw holding sea glass on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=krawfy-tide",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:shell",
+    "edge:metal",
+    "title:scroll",
+    "buttons:soft",
+    "color:teal",
+    "color:orange",
+    "color:red",
+    "mood:calm",
+    "cursors"
+  ]
+}

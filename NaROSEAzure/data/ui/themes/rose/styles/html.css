@@ -211,150 +211,6 @@ body.ui-world-layer .shop-selection
     border-color: rgba(95, 216, 255, 255);
 }
 
-body#game-menu-hud #character:hover
-{
-    decorator: image(GEN_MENUBTN19), image(GEN_MENUBTN19);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #character:active
-{
-    decorator: image(GEN_MENUBTN19), image(GEN_MENUBTN19);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #inventory:hover
-{
-    decorator: image(GEN_MENUBTN16), image(GEN_MENUBTN16);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #inventory:active
-{
-    decorator: image(GEN_MENUBTN16), image(GEN_MENUBTN16);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #skill-list:hover
-{
-    decorator: image(GEN_MENUBTN13), image(GEN_MENUBTN13);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #skill-list:active
-{
-    decorator: image(GEN_MENUBTN13), image(GEN_MENUBTN13);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #quest-list:hover
-{
-    decorator: image(GEN_MENUBTN10), image(GEN_MENUBTN10);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #quest-list:active
-{
-    decorator: image(GEN_MENUBTN10), image(GEN_MENUBTN10);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #clan:hover
-{
-    decorator: image(GEN_MENUBTN04), image(GEN_MENUBTN04);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #clan:active
-{
-    decorator: image(GEN_MENUBTN04), image(GEN_MENUBTN04);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #mail:hover
-{
-    decorator: image(GEN_MENUBTN07), image(GEN_MENUBTN07);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #mail:active
-{
-    decorator: image(GEN_MENUBTN07), image(GEN_MENUBTN07);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #friend-list:hover
-{
-    decorator: image(GEN_MENUBTN34), image(GEN_MENUBTN34);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #friend-list:active
-{
-    decorator: image(GEN_MENUBTN34), image(GEN_MENUBTN34);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #party-finder:hover
-{
-    decorator: image(GEN_MENUBTN37), image(GEN_MENUBTN37);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #party-finder:active
-{
-    decorator: image(GEN_MENUBTN37), image(GEN_MENUBTN37);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #game-arena:hover
-{
-    decorator: image(GEN_MENUBTN28), image(GEN_MENUBTN28);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #game-arena:active
-{
-    decorator: image(GEN_MENUBTN28), image(GEN_MENUBTN28);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #premium-storage:hover
-{
-    decorator: image(GEN_MENUBTN31), image(GEN_MENUBTN31);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #premium-storage:active
-{
-    decorator: image(GEN_MENUBTN31), image(GEN_MENUBTN31);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #system:hover
-{
-    decorator: image(GEN_MENUBTN22), image(GEN_MENUBTN22);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #system:active
-{
-    decorator: image(GEN_MENUBTN22), image(GEN_MENUBTN22);
-    image-color: rgba(67, 151, 179, 255);
-}
-
-body#game-menu-hud #group-manager-menu:hover
-{
-    decorator: image(button-group-manager-n), image(button-group-manager-n);
-    image-color: rgba(95, 216, 255, 255);
-}
-
-body#game-menu-hud #group-manager-menu:active
-{
-    decorator: image(button-group-manager-n), image(button-group-manager-n);
-    image-color: rgba(67, 151, 179, 255);
-}
-
 body[id=focused-target] [id=focused-target-root]
 {
     background-color: rgba(10, 14, 20, 150);
@@ -380,4 +236,457 @@ body[id=game-zone-notice] [id=zone-name]
 {
     color: rgba(255, 255, 255, 255);
     font-effect: outline(1dp black), glow(0dp 5dp 0dp 0dp rgba(57, 130, 153, 170));
+}
+
+/* The theme's own HUD menu (round buttons) */
+@spritesheet rtb-menu
+{
+    src: /data/ui/themes/rose/imgs/rtb-menu-og-narose-azure.dds;
+    resolution: 2x;
+
+    rtb-menu-character-n: 0px 0px 68px 60px;
+    rtb-menu-character-h: 70px 0px 68px 60px;
+    rtb-menu-character-a: 140px 0px 68px 60px;
+    rtb-menu-inventory-n: 210px 0px 68px 60px;
+    rtb-menu-inventory-h: 280px 0px 68px 60px;
+    rtb-menu-inventory-a: 350px 0px 68px 60px;
+    rtb-menu-skill-list-n: 420px 0px 68px 60px;
+    rtb-menu-skill-list-h: 0px 62px 68px 60px;
+    rtb-menu-skill-list-a: 70px 62px 68px 60px;
+    rtb-menu-quest-list-n: 140px 62px 68px 60px;
+    rtb-menu-quest-list-h: 210px 62px 68px 60px;
+    rtb-menu-quest-list-a: 280px 62px 68px 60px;
+    rtb-menu-clan-n: 350px 62px 68px 60px;
+    rtb-menu-clan-h: 420px 62px 68px 60px;
+    rtb-menu-clan-a: 0px 124px 68px 60px;
+    rtb-menu-mail-n: 70px 124px 68px 60px;
+    rtb-menu-mail-h: 140px 124px 68px 60px;
+    rtb-menu-mail-a: 210px 124px 68px 60px;
+    rtb-menu-friend-list-n: 280px 124px 68px 60px;
+    rtb-menu-friend-list-h: 350px 124px 68px 60px;
+    rtb-menu-friend-list-a: 420px 124px 68px 60px;
+    rtb-menu-party-finder-n: 0px 186px 68px 60px;
+    rtb-menu-party-finder-h: 70px 186px 68px 60px;
+    rtb-menu-party-finder-a: 140px 186px 68px 60px;
+    rtb-menu-game-arena-n: 210px 186px 68px 60px;
+    rtb-menu-game-arena-h: 280px 186px 68px 60px;
+    rtb-menu-game-arena-a: 350px 186px 68px 60px;
+    rtb-menu-premium-storage-n: 420px 186px 68px 60px;
+    rtb-menu-premium-storage-h: 0px 248px 68px 60px;
+    rtb-menu-premium-storage-a: 70px 248px 68px 60px;
+    rtb-menu-system-n: 140px 248px 68px 60px;
+    rtb-menu-system-h: 210px 248px 68px 60px;
+    rtb-menu-system-a: 280px 248px 68px 60px;
+    rtb-menu-group-manager-menu-n: 350px 248px 68px 60px;
+    rtb-menu-group-manager-menu-h: 420px 248px 68px 60px;
+    rtb-menu-group-manager-menu-a: 0px 310px 68px 60px;
+    rtb-menu-item-mall-n: 0px 372px 86px 86px;
+    rtb-menu-item-mall-h: 88px 372px 86px 86px;
+    rtb-menu-item-mall-a: 176px 372px 86px 86px;
+    rtb-menu-menu-toggle-n: 264px 372px 106px 50px;
+    rtb-menu-menu-toggle-h: 372px 372px 106px 50px;
+    rtb-menu-menu-toggle-a: 264px 424px 106px 50px;
+    rtb-menu-mm-worldmap-n: 0px 478px 86px 86px;
+    rtb-menu-mm-worldmap-h: 88px 478px 86px 86px;
+    rtb-menu-mm-worldmap-a: 176px 478px 86px 86px;
+    rtb-menu-mm-gift-n: 264px 478px 86px 86px;
+    rtb-menu-mm-gift-h: 352px 478px 86px 86px;
+    rtb-menu-mm-gift-a: 0px 566px 86px 86px;
+    rtb-menu-mm-gift-lit: 88px 566px 86px 86px;
+    rtb-menu-mm-arena-n: 176px 566px 60px 60px;
+    rtb-menu-mm-arena-h: 238px 566px 60px 60px;
+    rtb-menu-mm-arena-a: 300px 566px 60px 60px;
+    rtb-menu-mm-zoomin-n: 362px 566px 40px 40px;
+    rtb-menu-mm-zoomin-h: 404px 566px 40px 40px;
+    rtb-menu-mm-zoomin-a: 446px 566px 40px 40px;
+    rtb-menu-mm-zoomout-n: 0px 654px 40px 40px;
+    rtb-menu-mm-zoomout-h: 42px 654px 40px 40px;
+    rtb-menu-mm-zoomout-a: 84px 654px 40px 40px;
+}
+
+body#game-menu-hud #button-container
+{
+    decorator: none;
+    background-color: transparent;
+    border-width: 0dp;
+}
+
+body#game-menu-hud #button-container button#character
+{
+    decorator: image(rtb-menu-character-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#character:hover
+{
+    decorator: image(rtb-menu-character-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#character:active
+{
+    decorator: image(rtb-menu-character-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#inventory
+{
+    decorator: image(rtb-menu-inventory-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#inventory:hover
+{
+    decorator: image(rtb-menu-inventory-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#inventory:active
+{
+    decorator: image(rtb-menu-inventory-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#skill-list
+{
+    decorator: image(rtb-menu-skill-list-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#skill-list:hover
+{
+    decorator: image(rtb-menu-skill-list-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#skill-list:active
+{
+    decorator: image(rtb-menu-skill-list-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#quest-list
+{
+    decorator: image(rtb-menu-quest-list-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#quest-list:hover
+{
+    decorator: image(rtb-menu-quest-list-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#quest-list:active
+{
+    decorator: image(rtb-menu-quest-list-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#clan
+{
+    decorator: image(rtb-menu-clan-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#clan:hover
+{
+    decorator: image(rtb-menu-clan-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#clan:active
+{
+    decorator: image(rtb-menu-clan-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#mail
+{
+    decorator: image(rtb-menu-mail-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#mail:hover
+{
+    decorator: image(rtb-menu-mail-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#mail:active
+{
+    decorator: image(rtb-menu-mail-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#friend-list
+{
+    decorator: image(rtb-menu-friend-list-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#friend-list:hover
+{
+    decorator: image(rtb-menu-friend-list-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#friend-list:active
+{
+    decorator: image(rtb-menu-friend-list-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#party-finder
+{
+    decorator: image(rtb-menu-party-finder-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#party-finder:hover
+{
+    decorator: image(rtb-menu-party-finder-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#party-finder:active
+{
+    decorator: image(rtb-menu-party-finder-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#game-arena
+{
+    decorator: image(rtb-menu-game-arena-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#game-arena:hover
+{
+    decorator: image(rtb-menu-game-arena-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#game-arena:active
+{
+    decorator: image(rtb-menu-game-arena-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#premium-storage
+{
+    decorator: image(rtb-menu-premium-storage-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#premium-storage:hover
+{
+    decorator: image(rtb-menu-premium-storage-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#premium-storage:active
+{
+    decorator: image(rtb-menu-premium-storage-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#system
+{
+    decorator: image(rtb-menu-system-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#system:hover
+{
+    decorator: image(rtb-menu-system-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#system:active
+{
+    decorator: image(rtb-menu-system-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#group-manager-menu
+{
+    decorator: image(rtb-menu-group-manager-menu-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#group-manager-menu:hover
+{
+    decorator: image(rtb-menu-group-manager-menu-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#group-manager-menu:active
+{
+    decorator: image(rtb-menu-group-manager-menu-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#item-mall
+{
+    decorator: image(rtb-menu-item-mall-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#item-mall:hover
+{
+    decorator: image(rtb-menu-item-mall-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud #button-container button#item-mall:active
+{
+    decorator: image(rtb-menu-item-mall-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud button#menu-toggle
+{
+    decorator: image(rtb-menu-menu-toggle-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud button#menu-toggle:hover
+{
+    decorator: image(rtb-menu-menu-toggle-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-menu-hud button#menu-toggle:active
+{
+    decorator: image(rtb-menu-menu-toggle-a);
+    image-color: rgb(255, 255, 255);
+}
+
+/* The theme's own minimap buttons */
+body#game-minimap button.btn-worldmap
+{
+    decorator: image(rtb-menu-mm-worldmap-n);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-worldmap:hover
+{
+    decorator: image(rtb-menu-mm-worldmap-h);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-worldmap:active
+{
+    decorator: image(rtb-menu-mm-worldmap-a);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-gamearena
+{
+    decorator: image(rtb-menu-mm-arena-n);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-gamearena:hover
+{
+    decorator: image(rtb-menu-mm-arena-h);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-gamearena:active
+{
+    decorator: image(rtb-menu-mm-arena-a);
+    image-color: rgb(255, 255, 255);
+    opacity: 1;
+}
+
+body#game-minimap button.btn-itemmall
+{
+    decorator: image(rtb-menu-item-mall-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-itemmall:hover
+{
+    decorator: image(rtb-menu-item-mall-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-itemmall:active
+{
+    decorator: image(rtb-menu-item-mall-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-giftbox
+{
+    decorator: image(rtb-menu-mm-gift-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-giftbox:hover
+{
+    decorator: image(rtb-menu-mm-gift-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-giftbox:active
+{
+    decorator: image(rtb-menu-mm-gift-a);
+    image-color: rgb(255, 255, 255);
+}
+
+@keyframes rtb-mm-gift-blink
+{
+    0% { decorator: image(rtb-menu-mm-gift-n); }
+    50% { decorator: image(rtb-menu-mm-gift-lit); }
+    100% { decorator: image(rtb-menu-mm-gift-n); }
+}
+
+body#game-minimap button.btn-giftbox.blink
+{
+    decorator: image(rtb-menu-mm-gift-lit);
+    animation: rtb-mm-gift-blink 1s infinite;
+}
+
+body#game-minimap button.btn-zoomin
+{
+    decorator: image(rtb-menu-mm-zoomin-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-zoomin:hover
+{
+    decorator: image(rtb-menu-mm-zoomin-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-zoomin:active
+{
+    decorator: image(rtb-menu-mm-zoomin-a);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-zoomout
+{
+    decorator: image(rtb-menu-mm-zoomout-n);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-zoomout:hover
+{
+    decorator: image(rtb-menu-mm-zoomout-h);
+    image-color: rgb(255, 255, 255);
+}
+
+body#game-minimap button.btn-zoomout:active
+{
+    decorator: image(rtb-menu-mm-zoomout-a);
+    image-color: rgb(255, 255, 255);
 }

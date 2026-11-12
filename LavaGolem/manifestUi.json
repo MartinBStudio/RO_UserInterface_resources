@@ -1,0 +1,32 @@
+{
+  "name": "Lava Golem",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.976+07:00",
+  "createdAt": "2026-11-13T02:11:34.976+07:00",
+  "description": "Black basalt split by molten orange: a lava golem head between smouldering boulders over every title bar, a glowing keystone below and stacked boulders on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=lava-golem",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:boulder",
+    "edge:stone",
+    "title:plaque",
+    "buttons:plate",
+    "color:orange",
+    "color:brown",
+    "color:gray",
+    "mood:fierce",
+    "cursors"
+  ]
+}

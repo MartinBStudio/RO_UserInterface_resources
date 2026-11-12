@@ -1,0 +1,32 @@
+{
+  "name": "Antares",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.679+07:00",
+  "createdAt": "2026-11-13T02:11:36.679+07:00",
+  "description": "Deep red panels in a crimson rim with curved-in corners, the Antares over every title bar with its pincers raised and its gem-tipped tail up, a jointed pincer along every corner and buttons that press into its glowing yellow.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=antares",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:antares",
+    "edge:metal",
+    "title:plaque",
+    "buttons:soft",
+    "color:red",
+    "color:yellow",
+    "color:brown",
+    "mood:fierce",
+    "cursors"
+  ]
+}

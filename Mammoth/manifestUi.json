@@ -1,0 +1,33 @@
+{
+  "name": "Mammoth",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.318+07:00",
+  "createdAt": "2026-11-13T02:11:36.318+07:00",
+  "description": "Warm brown panels in a gold rim with soft corners, the Mammoth over every title bar with its tusks out and its orange braids hanging, a braid along every corner and round buttons that press into mohawk orange.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=mammoth",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:mammoth",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:pill",
+    "color:orange",
+    "color:yellow",
+    "color:brown",
+    "mood:cozy",
+    "mood:fierce",
+    "cursors"
+  ]
+}

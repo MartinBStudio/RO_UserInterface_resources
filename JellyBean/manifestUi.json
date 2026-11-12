@@ -1,0 +1,32 @@
+{
+  "name": "Jelly Bean",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.046+07:00",
+  "createdAt": "2026-11-13T02:11:36.046+07:00",
+  "description": "Jelly green on deep jade: a scowling Jelly Bean in its red headband over every title bar, the headband's ribbon tied round a gold coin below and a Mini-Jelly Bean on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=jelly-bean",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:bean",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:pill",
+    "color:green",
+    "color:yellow",
+    "color:red",
+    "mood:cute",
+    "cursors"
+  ]
+}

@@ -686,7 +686,7 @@ button.default:not(button[disabled]):hover, button.default:not(button[disabled])
 {
     decorator: none;
     background-color: rgba(56, 42, 34, 255);
-    color: rgba(251, 242, 222, 255);
+    color: rgba(240, 204, 106, 255);
 }
 
 button.default:not(button[disabled]):active, button.default:active, button.default.selected:not(button[disabled]), button.default.selected, body .ui-tabs > button.default.active:not([disabled]), body .ui-tabs > button.default.selected:not([disabled])
@@ -730,7 +730,7 @@ tab.default:not(button[disabled]):hover, tab.default:not(button[disabled]):focus
 {
     decorator: none;
     background-color: rgba(56, 42, 34, 255);
-    color: rgba(251, 242, 222, 255);
+    color: rgba(240, 204, 106, 255);
 }
 
 tab.default:not(button[disabled]):active, tab.default:active, tab.default:selected
@@ -1080,9 +1080,22 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(240, 204, 106, 255);
 }
 
+@spritesheet rtb-controls-hd
+{
+    src: ../imgs/rtb-controls.dds;
+    resolution: 2x;
+
+    rtb-mm-band: 204px 204px 308px 308px;
+}
+
 body#game-minimap #minimap-frame
 {
     image-color: rgba(255, 217, 132, 255);
+}
+
+#game-minimap #minimap-frame
+{
+    decorator: image(rtb-mm-band scale-none 41.538% 41.538%), image(GEN_MINIMAP09);
 }
 
 body#game-minimap #minimap-minimized
@@ -1097,7 +1110,7 @@ body#game-minimap #zone-name, body#game-minimap #zone-name-min
     color: rgba(244, 236, 200, 255);
 }
 
-body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
 {
     image-color: rgba(255, 217, 132, 255);
 }
@@ -1360,4 +1373,46 @@ body .mall-nav-row.active
 body .mall-card.selected
 {
     border-color: rgba(240, 204, 106, 255);
+}
+
+body#game-clan table.clan-member-header
+{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body#game-clan listbox
+{
+    width: 100%;
+}
+
+body#game-clan .clan-member-name
+{
+    width: 20.6%;
+}
+
+body#game-clan .clan-member-rank
+{
+    width: 12.3%;
+}
+
+body#game-clan .clan-member-level
+{
+    width: 6.9%;
+}
+
+body#game-clan .clan-member-job
+{
+    width: 13.5%;
+}
+
+body#game-clan .clan-member-contribution
+{
+    width: 18.4%;
+}
+
+body#game-clan .clan-member-last-seen
+{
+    width: auto;
+    min-width: 100dp;
 }

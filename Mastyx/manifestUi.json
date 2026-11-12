@@ -1,0 +1,30 @@
+{
+  "name": "Mastyx",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.289+07:00",
+  "createdAt": "2026-11-13T02:11:36.289+07:00",
+  "description": "Dark hide-brown panels in a crimson rim with stepped corners, the Mastyx prowling over every title bar with its plates raised, a run of its plated spine along every corner and plate-shaped buttons that press into crimson.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=mastyx",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:mastyx",
+    "edge:metal",
+    "title:plaque",
+    "buttons:plate",
+    "color:red",
+    "mood:fierce",
+    "cursors"
+  ]
+}

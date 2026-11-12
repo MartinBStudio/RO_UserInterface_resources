@@ -1,0 +1,32 @@
+{
+  "name": "Heburkal's Pet",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.144+07:00",
+  "createdAt": "2026-11-13T02:11:37.144+07:00",
+  "description": "Black panels in a double red rim, Heburkal's Pet over every title bar with its legs arched high, cobwebs in every corner and plate buttons that press into carapace red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=heburkals-pet",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:heburkals-pet",
+    "edge:double",
+    "title:bracket",
+    "buttons:plate",
+    "color:brown",
+    "color:red",
+    "color:purple",
+    "mood:spooky",
+    "cursors"
+  ]
+}

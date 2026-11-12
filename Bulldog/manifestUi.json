@@ -1,0 +1,32 @@
+{
+  "name": "Bulldog",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.213+07:00",
+  "createdAt": "2026-11-13T02:11:37.213+07:00",
+  "description": "Charcoal panels in a double tan rim with rounded corners, the Bulldog over every title bar with its tongue lolling over the edge, its scarred back along every corner and tab buttons that press into tongue red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=bulldog",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:bulldog",
+    "edge:double",
+    "title:plaque",
+    "buttons:tab",
+    "color:orange",
+    "color:yellow",
+    "color:black",
+    "mood:fierce",
+    "cursors"
+  ]
+}

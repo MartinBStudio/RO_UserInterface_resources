@@ -42,7 +42,7 @@ Usage notes
 <!-- rose-online-toolbox:start -->
 ROSE Online Toolbox themes
 --------------------------
-219 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
+273 UI themes from [ROSE Online Toolbox](https://roseonlinetoolbox.com/mods), one folder each, exported by its
 `scripts/export-ui-resources.ts`. They restyle the game windows, minimap and HUD (data/ui/themes/rose)
 and recolor the cursors (res/) to match. Each folder's manifestUi.json links to the theme's page, and
 .preview/ holds a screenshot.
@@ -52,7 +52,9 @@ except a few bare words: `style:flat|bevel|tint|neon`, `color:<name>` (up to thr
 `corners:square|rounded`, `border:thin|thick`, `series:<series>`, `made:ai|handmade`, and `premium` for
 themes with drawn art. Folders with recolored cursors also carry `cursors`.
 
-- Premium themes: RoyalRegalia, MoonsilverGrove, Dragonforge, ArcanePrism, CelestialObservatory, SakuraLacquer, ArumicNexus, JadeDynasty, FerrellGuild, RighteousCrusader, IkanessMech, LunaWolf, Pantharis, ThankfulHarvest, JunonPolisInvasion, FrozenSentinel, EucarJudge, Terrasaurus, BoneSpider, LunaShamanist, LeprechaunRun, HeartCandyExpress, GrandBallroom, LunaLuau, Valedictorian, QueenBibisHive, RubberDuckin, TwilightCandleGhost
+- Costume sets: AkramSet, RoyalSet
+- Monster themes: GoblinWarband, GrandGoblinKing, KrawfyTide, KrawfyKing, PumpkinPatch, PumpkinGhost, StoneGolem, LavaGolem, JunonPolisInvasion, Terrasaurus, BoneSpider, QueenBibisHive, TwilightCandleGhost, CandleGhost, BlazingCandleGhost, MidnightCandleGhost, SmokeyCandleGhost, WoodlandsCandleGhost, JellyBean, JellyKing, CoalMineMoldie, CaptainMoldie, Choropy, SpottedChoropy, WoopieChef, WoopieKing, Arachnid, Mastyx, Mammoth, Sabertooth, RoaringPantharis, WhiteTigris, BlueTigris, GreenTigris, PinkTigris, PurpleTigris, YellowTigris, SnarlingLunaWolf, Scorpio, Snapper, Antares, ArmoredAntares, ChickenMonster, ScubaMoldie, Devourer, SoaringFrozenSentinel, ArcaneRiftGuardian, Dreadnaught, RedDragon, BlueDragon, LunarDragon, EldeonDragon, OrloDragon, HeburkalsPet, KerasPet, Bulldog
+- Premium themes: RoyalRegalia, MoonsilverGrove, Dragonforge, ArcanePrism, CelestialObservatory, SakuraLacquer, ArumicNexus, JadeDynasty, FerrellGuild, RighteousCrusader, IkanessMech, LunaWolf, Pantharis, ThankfulHarvest, FrozenSentinel, EucarJudge, LunaShamanist, LeprechaunRun, HeartCandyExpress, GrandBallroom, LunaLuau, Valedictorian, RubberDuckin, LunaGlacier
 - Whimsical themes: JellybeanJamboree, CandyKingdom, CloudNine, MushroomHollow, KittyCafe, BubbleLagoon, DreamySlumber, RainbowUnicorn, GingerbreadCottage
 - OG ROSE themes: SevenHearts2002, KROSE2004, PreEvo2005, Evolution2006, NaROSEAzure, WarpPortalEra
 - Classic colorways: ClassicRosePetal, ClassicMintBreeze, ClassicLemonDrop, ClassicLilacDream, ClassicPeachSunset, ClassicSkyBlue, ClassicSilverMoon, ClassicCocoaCream, ClassicCrimsonKnight, ClassicForestRanger

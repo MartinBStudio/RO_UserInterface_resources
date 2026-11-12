@@ -1,0 +1,31 @@
+{
+  "name": "Green Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.465+07:00",
+  "createdAt": "2026-11-13T02:11:36.465+07:00",
+  "description": "Dark panels edged in green like its coat, the Green Tigris prowling over every title bar with jungle leaves blowing round it, its striped coat and white ruff along every corner and buttons that press into green.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=green-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:metal",
+    "title:plaque",
+    "buttons:plate",
+    "color:green",
+    "mood:fierce",
+    "mood:cozy",
+    "cursors"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "White Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.422+07:00",
+  "createdAt": "2026-11-13T02:11:36.422+07:00",
+  "description": "Dark panels edged in white like its coat, the White Tigris prowling over every title bar with snowflakes drifting round it, its striped coat and white ruff along every corner and buttons that press into white.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=white-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:double",
+    "title:scroll",
+    "buttons:soft",
+    "color:blue",
+    "color:white",
+    "color:gray",
+    "mood:calm",
+    "mood:regal",
+    "cursors"
+  ]
+}

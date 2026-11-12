@@ -1,8 +1,8 @@
 {
   "name": "RO_UserInterface_resources",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "timestamp": "2026-10-28T10:44:03.170-04:00",
-  "description": "Various updates by ivqo.",
+  "description": "54 new ROSE Online Toolbox themes (a Monsters series), every theme drawing its own HUD menu buttons, and a free-standing minimap on premium themes.",
   "author": "MartinBStudio",
   "repository": "https://github.com/MartinBStudio/RO_UserInterface_resources"
 }
