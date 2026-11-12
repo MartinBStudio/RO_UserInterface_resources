@@ -1,0 +1,32 @@
+{
+  "name": "Royal Set",
+  "version": "1.1.4",
+  "upload_date": "2026-11-13T02:11:34.784+07:00",
+  "createdAt": "2026-11-13T02:11:34.784+07:00",
+  "description": "Violet and gold from the Royal costume: a tall violet hat before a gold halo over every title bar, gold pauldrons on the sides and a gold fan below.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=royal-set",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:costume",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:scroll",
+    "edge:metal",
+    "title:scroll",
+    "buttons:plate",
+    "color:purple",
+    "color:yellow",
+    "color:blue",
+    "mood:regal",
+    "cursors"
+  ]
+}

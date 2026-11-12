@@ -1,0 +1,33 @@
+{
+  "name": "Roaring Pantharis",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.383+07:00",
+  "createdAt": "2026-11-13T02:11:36.383+07:00",
+  "description": "Slate panels in a golden rim with curved-in corners, the Pantharis roaring over every title bar in its great shaggy mane, its mane along every corner and plate buttons that press into roaring red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=roaring-pantharis",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:pantharis",
+    "edge:stone",
+    "title:scroll",
+    "buttons:plate",
+    "color:orange",
+    "color:gray",
+    "color:red",
+    "mood:fierce",
+    "mood:regal",
+    "cursors"
+  ]
+}

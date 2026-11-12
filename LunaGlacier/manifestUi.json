@@ -1,0 +1,32 @@
+{
+  "name": "Luna Glacier",
+  "version": "1.0.2",
+  "upload_date": "2026-11-13T02:11:38.184+07:00",
+  "createdAt": "2026-11-13T02:11:38.184+07:00",
+  "description": "Luna Frost's night-blue ice set in frosted silver, with ice crystals at every corner and crystal medallions on the HUD.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=luna-glacier",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:premium",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:crystal",
+    "edge:double",
+    "title:bar",
+    "buttons:soft",
+    "color:blue",
+    "color:teal",
+    "mood:calm",
+    "mood:mystic",
+    "cursors"
+  ]
+}

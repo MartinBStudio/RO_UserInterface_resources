@@ -1049,9 +1049,22 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(255, 47, 209, 255);
 }
 
+@spritesheet rtb-controls-hd
+{
+    src: ../imgs/rtb-controls.dds;
+    resolution: 2x;
+
+    rtb-mm-band: 204px 204px 308px 308px;
+}
+
 body#game-minimap #minimap-frame
 {
     image-color: rgba(255, 47, 209, 255);
+}
+
+#game-minimap #minimap-frame
+{
+    decorator: image(rtb-mm-band scale-none 41.538% 41.538%), image(GEN_MINIMAP09);
 }
 
 body#game-minimap #minimap-minimized
@@ -1067,7 +1080,7 @@ body#game-minimap #zone-name, body#game-minimap #zone-name-min
     font-effect: outline(1dp black), glow(0dp 4dp 0dp 0dp rgba(255, 47, 209, 200));
 }
 
-body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
 {
     image-color: rgba(255, 47, 209, 255);
 }
@@ -1325,4 +1338,46 @@ body .mall-nav-row.active
 body .mall-card.selected
 {
     border-color: rgba(255, 47, 209, 255);
+}
+
+body#game-clan table.clan-member-header
+{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body#game-clan listbox
+{
+    width: 100%;
+}
+
+body#game-clan .clan-member-name
+{
+    width: 20.6%;
+}
+
+body#game-clan .clan-member-rank
+{
+    width: 12.3%;
+}
+
+body#game-clan .clan-member-level
+{
+    width: 6.9%;
+}
+
+body#game-clan .clan-member-job
+{
+    width: 13.5%;
+}
+
+body#game-clan .clan-member-contribution
+{
+    width: 18.4%;
+}
+
+body#game-clan .clan-member-last-seen
+{
+    width: auto;
+    min-width: 100dp;
 }

@@ -1,0 +1,33 @@
+{
+  "name": "Pumpkin Patch",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:34.885+07:00",
+  "createdAt": "2026-11-13T02:11:34.885+07:00",
+  "description": "Candlelit orange on dark earth: a carved jack-o'-lantern among vine leaves over every title bar, a little lantern pumpkin below and an iron lantern on each side.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=pumpkin-patch",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:pumpkin",
+    "edge:metal",
+    "title:scroll",
+    "buttons:soft",
+    "color:brown",
+    "color:gray",
+    "color:orange",
+    "mood:cozy",
+    "mood:spooky",
+    "cursors"
+  ]
+}

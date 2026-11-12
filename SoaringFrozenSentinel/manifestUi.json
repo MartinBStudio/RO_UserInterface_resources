@@ -1,0 +1,32 @@
+{
+  "name": "Soaring Frozen Sentinel",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.827+07:00",
+  "createdAt": "2026-11-13T02:11:36.827+07:00",
+  "description": "Deep indigo panels in a double silver rim with cut corners, the Frozen Sentinel hovering over every title bar with its crystal wings spread, a wing along every corner and hex buttons that press into wing mauve.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=soaring-frozen-sentinel",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:sentinel",
+    "edge:double",
+    "title:bracket",
+    "buttons:hex",
+    "color:blue",
+    "color:white",
+    "color:orange",
+    "mood:fierce",
+    "cursors"
+  ]
+}

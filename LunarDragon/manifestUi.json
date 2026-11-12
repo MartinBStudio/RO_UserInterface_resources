@@ -1,0 +1,32 @@
+{
+  "name": "Lunar Dragon",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.047+07:00",
+  "createdAt": "2026-11-13T02:11:37.047+07:00",
+  "description": "Night-blue panels in a double moonlit rim with rounded corners, the Lunar Dragon over every title bar with a crescent moon glowing through its wing, its plated back along every corner and soft buttons that press into salmon.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=lunar-dragon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:dragon",
+    "edge:double",
+    "title:scroll",
+    "buttons:soft",
+    "color:blue",
+    "color:red",
+    "color:yellow",
+    "mood:mystic",
+    "cursors"
+  ]
+}

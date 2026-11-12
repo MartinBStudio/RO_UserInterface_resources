@@ -1,0 +1,32 @@
+{
+  "name": "Arcane Rift Guardian",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.860+07:00",
+  "createdAt": "2026-11-13T02:11:36.860+07:00",
+  "description": "Deep lapis panels in a double gold rim, the Arcane Rift Guardian over every title bar in its banded headdress and tall gold crown, its forked staff along every corner and plate buttons that press into collar red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=arcane-rift-guardian",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:rift-guardian",
+    "edge:double",
+    "title:scroll",
+    "buttons:plate",
+    "color:blue",
+    "color:yellow",
+    "color:red",
+    "mood:regal",
+    "cursors"
+  ]
+}

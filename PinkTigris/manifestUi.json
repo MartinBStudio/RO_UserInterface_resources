@@ -1,0 +1,32 @@
+{
+  "name": "Pink Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.491+07:00",
+  "createdAt": "2026-11-13T02:11:36.491+07:00",
+  "description": "Dark panels edged in pink like its coat, the Pink Tigris prowling over every title bar with blossoms swirling round it, its striped coat and white ruff along every corner and buttons that press into pink.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=pink-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:pill",
+    "color:pink",
+    "color:purple",
+    "mood:cute",
+    "mood:fierce",
+    "cursors"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Eldeon Dragon",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.081+07:00",
+  "createdAt": "2026-11-13T02:11:37.081+07:00",
+  "description": "Jungle-green panels in a stone rim with curved-in corners, the Eldeon Dragon over every title bar between hanging vines, its plated back along every corner and tab buttons that press into lavender.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=eldeon-dragon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:scallop",
+    "border:thin",
+    "premium",
+    "ornament:dragon",
+    "edge:stone",
+    "title:ribbon",
+    "buttons:tab",
+    "color:green",
+    "color:purple",
+    "mood:calm",
+    "cursors"
+  ]
+}

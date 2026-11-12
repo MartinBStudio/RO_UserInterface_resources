@@ -1,4 +1,5 @@
 data\ui\themes\rose\imgs\rtb-controls.dds
+data\ui\themes\rose\imgs\rtb-menu-autumn-leaves.dds
 data\ui\themes\rose\styles\html.css
 data\ui\themes\rose\styles\window.css
 res\appraisalstatextract.cur

@@ -1,0 +1,31 @@
+{
+  "name": "Blue Dragon",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.014+07:00",
+  "createdAt": "2026-11-13T02:11:37.014+07:00",
+  "description": "Deep blue panels in a double silver rim with notched corners, the Blue Dragon in its skull helmet over every title bar breathing frost, its spiked back along every corner and plate buttons that press into sky blue.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=blue-dragon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:dragon",
+    "edge:double",
+    "title:plaque",
+    "buttons:plate",
+    "color:blue",
+    "color:white",
+    "mood:fierce",
+    "cursors"
+  ]
+}

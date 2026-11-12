@@ -1,0 +1,32 @@
+{
+  "name": "Snarling Luna Wolf",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.586+07:00",
+  "createdAt": "2026-11-13T02:11:36.586+07:00",
+  "description": "Night-blue panels in a silver-blue rim with cut corners, the Luna Wolf snarling over every title bar with its tail up, its rust-striped back along every corner and buttons that press into rust.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=snarling-luna-wolf",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:wolf",
+    "edge:metal",
+    "title:bracket",
+    "buttons:tab",
+    "color:blue",
+    "color:orange",
+    "mood:fierce",
+    "mood:mystic",
+    "cursors"
+  ]
+}

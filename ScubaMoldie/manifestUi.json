@@ -1,0 +1,33 @@
+{
+  "name": "Scuba Moldie",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.764+07:00",
+  "createdAt": "2026-11-13T02:11:36.764+07:00",
+  "description": "Deep-sea panels in an aqua rim with soft corners, the Scuba Moldie surfacing over every title bar in its mask and snorkel, the sea along every corner with a rubber ducky bobbing and round buttons that press into life-vest orange.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=scuba-moldie",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:scuba-moldie",
+    "edge:metal",
+    "title:ribbon",
+    "buttons:pill",
+    "color:blue",
+    "color:teal",
+    "color:yellow",
+    "mood:cute",
+    "mood:cozy",
+    "cursors"
+  ]
+}

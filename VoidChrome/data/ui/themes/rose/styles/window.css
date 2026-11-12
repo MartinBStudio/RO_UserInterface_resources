@@ -686,14 +686,14 @@ button.default:not(button[disabled]):hover, button.default:not(button[disabled])
 {
     decorator: none;
     background-color: rgba(54, 57, 70, 255);
-    color: rgba(242, 242, 248, 255);
+    color: rgba(176, 140, 255, 255);
 }
 
 button.default:not(button[disabled]):active, button.default:active, button.default.selected:not(button[disabled]), button.default.selected, body .ui-tabs > button.default.active:not([disabled]), body .ui-tabs > button.default.selected:not([disabled])
 {
     decorator: none;
     background-color: rgba(74, 42, 138, 255);
-    color: rgba(176, 140, 255, 255);
+    color: rgba(242, 242, 248, 255);
     border-width: 2dp;
     border-top-color: rgba(5, 5, 8, 255);
     border-left-color: rgba(5, 5, 8, 255);
@@ -730,14 +730,14 @@ tab.default:not(button[disabled]):hover, tab.default:not(button[disabled]):focus
 {
     decorator: none;
     background-color: rgba(54, 57, 70, 255);
-    color: rgba(242, 242, 248, 255);
+    color: rgba(176, 140, 255, 255);
 }
 
 tab.default:not(button[disabled]):active, tab.default:active, tab.default:selected
 {
     decorator: none;
     background-color: rgba(74, 42, 138, 255);
-    color: rgba(176, 140, 255, 255);
+    color: rgba(242, 242, 248, 255);
     border-width: 2dp;
     border-top-color: rgba(5, 5, 8, 255);
     border-left-color: rgba(5, 5, 8, 255);
@@ -779,7 +779,7 @@ body .ui-tab.selected, body .ui-tab.selected:hover, body .ui-tab.active, body .u
     background-color: rgba(74, 42, 138, 255);
     border-color: rgba(176, 140, 255, 255);
     border-bottom-color: rgba(74, 42, 138, 255);
-    color: rgba(176, 140, 255, 255);
+    color: rgba(242, 242, 248, 255);
 }
 
 body .ui-tab[disabled], body .ui-tab[disabled]:hover, body .ui-tab[disabled]:focus
@@ -1080,9 +1080,22 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
     background-color: rgba(176, 140, 255, 255);
 }
 
+@spritesheet rtb-controls-hd
+{
+    src: ../imgs/rtb-controls.dds;
+    resolution: 2x;
+
+    rtb-mm-band: 204px 204px 308px 308px;
+}
+
 body#game-minimap #minimap-frame
 {
     image-color: rgba(236, 241, 255, 255);
+}
+
+#game-minimap #minimap-frame
+{
+    decorator: image(rtb-mm-band scale-none 41.538% 41.538%), image(GEN_MINIMAP09);
 }
 
 body#game-minimap #minimap-minimized
@@ -1097,7 +1110,7 @@ body#game-minimap #zone-name, body#game-minimap #zone-name-min
     color: rgba(232, 224, 255, 255);
 }
 
-body#game-minimap .btn-zoomin, body#game-minimap .btn-zoomout, body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
+body#game-minimap .btn-minimize, body#game-minimap #minimap-minimized .btn-restore
 {
     image-color: rgba(236, 241, 255, 255);
 }
@@ -1319,7 +1332,7 @@ body #mall-toolbar .mall-layout .ui-tab:not([disabled]):active, body #mall-toolb
 
 body #mall-toolbar .mall-layout .ui-tab.active i
 {
-    background-color: rgba(176, 140, 255, 255);
+    background-color: rgba(242, 242, 248, 255);
 }
 
 body #mall-toolbar .mall-layout .ui-tab:not([disabled]):hover i
@@ -1329,14 +1342,14 @@ body #mall-toolbar .mall-layout .ui-tab:not([disabled]):hover i
 
 body #mall-toolbar .mall-layout .ui-tab.active:not([disabled]):hover i
 {
-    background-color: rgba(176, 140, 255, 255);
+    background-color: rgba(242, 242, 248, 255);
 }
 
 body #mall-purchases-side.active:not([disabled]), body #mall-purchases-side.active:not([disabled]):not([disabled]):active
 {
     decorator: none;
     background-color: rgba(74, 42, 138, 255);
-    color: rgba(176, 140, 255, 255);
+    color: rgba(242, 242, 248, 255);
     border-width: 2dp;
     border-top-color: rgba(5, 5, 8, 255);
     border-left-color: rgba(5, 5, 8, 255);
@@ -1360,4 +1373,46 @@ body .mall-nav-row.active
 body .mall-card.selected
 {
     border-color: rgba(176, 140, 255, 255);
+}
+
+body#game-clan table.clan-member-header
+{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body#game-clan listbox
+{
+    width: 100%;
+}
+
+body#game-clan .clan-member-name
+{
+    width: 20.6%;
+}
+
+body#game-clan .clan-member-rank
+{
+    width: 12.3%;
+}
+
+body#game-clan .clan-member-level
+{
+    width: 6.9%;
+}
+
+body#game-clan .clan-member-job
+{
+    width: 13.5%;
+}
+
+body#game-clan .clan-member-contribution
+{
+    width: 18.4%;
+}
+
+body#game-clan .clan-member-last-seen
+{
+    width: auto;
+    min-width: 100dp;
 }

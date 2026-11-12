@@ -1,0 +1,32 @@
+{
+  "name": "Orlo Dragon",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:37.113+07:00",
+  "createdAt": "2026-11-13T02:11:37.113+07:00",
+  "description": "Desert-dark panels in a gold rim with cut corners, the Orlo Dragon over every title bar with the sun blazing behind its wing, its plated back along every corner and hex buttons that press into amber.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=orlo-dragon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:dragon",
+    "edge:metal",
+    "title:plaque",
+    "buttons:hex",
+    "color:brown",
+    "color:yellow",
+    "color:blue",
+    "mood:regal",
+    "cursors"
+  ]
+}

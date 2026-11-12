@@ -1,0 +1,31 @@
+{
+  "name": "Purple Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.523+07:00",
+  "createdAt": "2026-11-13T02:11:36.523+07:00",
+  "description": "Dark panels edged in purple like its coat, the Purple Tigris prowling over every title bar with sparkles glinting round it, its striped coat and white ruff along every corner and buttons that press into purple.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=purple-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:square",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:glow",
+    "title:bracket",
+    "buttons:tab",
+    "color:purple",
+    "mood:mystic",
+    "mood:fierce",
+    "cursors"
+  ]
+}

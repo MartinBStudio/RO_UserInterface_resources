@@ -1,0 +1,31 @@
+{
+  "name": "Blue Tigris",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.444+07:00",
+  "createdAt": "2026-11-13T02:11:36.444+07:00",
+  "description": "Dark panels edged in blue like its coat, the Blue Tigris prowling over every title bar with water drops flying round it, its striped coat and white ruff along every corner and buttons that press into blue.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=blue-tigris",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:tigris",
+    "edge:metal",
+    "title:bar",
+    "buttons:hex",
+    "color:blue",
+    "mood:fierce",
+    "mood:sleek",
+    "cursors"
+  ]
+}

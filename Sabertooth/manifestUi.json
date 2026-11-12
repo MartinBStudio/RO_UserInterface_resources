@@ -1,0 +1,33 @@
+{
+  "name": "Sabertooth",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.352+07:00",
+  "createdAt": "2026-11-13T02:11:36.352+07:00",
+  "description": "Deep indigo panels in a periwinkle double rim with cut corners, the Sabertooth crouched over every title bar with its sabers bared and its mane up, mane spikes along every corner and buttons that press into pink.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=sabertooth",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:sabertooth",
+    "edge:double",
+    "title:bar",
+    "buttons:soft",
+    "color:blue",
+    "color:pink",
+    "color:purple",
+    "mood:fierce",
+    "mood:cute",
+    "cursors"
+  ]
+}

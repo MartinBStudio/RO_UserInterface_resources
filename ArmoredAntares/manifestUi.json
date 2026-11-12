@@ -1,0 +1,33 @@
+{
+  "name": "Armored Antares",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.710+07:00",
+  "createdAt": "2026-11-13T02:11:36.710+07:00",
+  "description": "Dark plum panels in a steel double rim with stepped corners, the Armored Antares over every title bar in its riveted helmet with its spiked mace raised, a plated pincer along every corner and plate buttons that press into red.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=armored-antares",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:notch",
+    "border:thin",
+    "premium",
+    "ornament:antares",
+    "edge:double",
+    "title:bracket",
+    "buttons:plate",
+    "color:red",
+    "color:white",
+    "color:purple",
+    "mood:fierce",
+    "mood:techy",
+    "cursors"
+  ]
+}

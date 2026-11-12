@@ -1,0 +1,32 @@
+{
+  "name": "Red Dragon",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.923+07:00",
+  "createdAt": "2026-11-13T02:11:36.923+07:00",
+  "description": "Dark magenta panels in a glowing silver rim with cut corners, the Red Dragon in its skull helmet over every title bar with flames at its feet, its spiked back along every corner and hex buttons that press into magenta.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=red-dragon",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:cut",
+    "border:thin",
+    "premium",
+    "ornament:dragon",
+    "edge:glow",
+    "title:bracket",
+    "buttons:hex",
+    "color:purple",
+    "color:pink",
+    "color:white",
+    "mood:fierce",
+    "cursors"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Scorpio",
+  "version": "1.1.0",
+  "upload_date": "2026-11-13T02:11:36.620+07:00",
+  "createdAt": "2026-11-13T02:11:36.620+07:00",
+  "description": "Dark bronze panels in a bronze rim with rounded corners, the Scorpio over every title bar with its pincers on the rim and its tail curled high, its segmented tail along every corner and hex buttons that press into eye blue.",
+  "url": "https://roseonlinetoolbox.com/mods?mod=scorpio",
+  "managedSubfolders": [
+    "FILE_LIST.TXT"
+  ],
+  "author": "ivqonsanada",
+  "made": "ai",
+  "tags": [
+    "kind:theme",
+    "series:monsters",
+    "made:ai",
+    "status:beta",
+    "style:flat",
+    "corners:rounded",
+    "border:thin",
+    "premium",
+    "ornament:scorpio",
+    "edge:metal",
+    "title:plaque",
+    "buttons:hex",
+    "color:brown",
+    "color:blue",
+    "color:orange",
+    "mood:fierce",
+    "mood:cute",
+    "cursors"
+  ]
+}
